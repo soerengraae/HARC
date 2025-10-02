@@ -13,5 +13,6 @@ extern bool vcp_discovered;
 
 int vcp_controller_init(void);
 int vcp_discover(struct bt_conn *conn);
+void vcp_controller_reset_state(void);
 
 #endif // VCP_CONTROLLER_H

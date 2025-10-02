@@ -3,11 +3,13 @@
 #include <zephyr/logging/log.h>
 #include <zephyr/sys/byteorder.h>
 #include <zephyr/bluetooth/uuid.h>
+#include <zephyr/bluetooth/hci.h>
 
 LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_DBG);
 
 struct bt_conn *connection;
 struct bt_conn *auth_conn;
+bool first_pairing = false;
 
 struct deviceInfo
 {
@@ -50,19 +52,24 @@ void auth_cancel(struct bt_conn *conn)
 
 void pairing_complete(struct bt_conn *conn, bool bonded)
 {
-	LOG_INF("Pairing complete. Bonded: %d", bonded);
-	if (!bonded) {
+    LOG_INF("Pairing complete. Bonded: %d", bonded);
+    if (!bonded) {
         LOG_ERR("Pairing did not result in bonding!");
         return;
     }
-
-	LOG_INF("Bond established - disconnecting to persist bond");
-    bt_conn_disconnect(conn, BT_HCI_ERR_REMOTE_USER_TERM_CONN);
+    if (first_pairing) {
+        LOG_INF("First pairing complete - disconnecting to persist bond");
+        first_pairing = false;
+        bt_conn_disconnect(conn, BT_HCI_ERR_REMOTE_USER_TERM_CONN);
+    } else {
+        LOG_INF("Reconnected with existing bond - bond already persisted");
+    }
 }
 
 void pairing_failed(struct bt_conn *conn, enum bt_security_err reason)
 {
-	LOG_ERR("Pairing failed: %d", reason);
+    LOG_ERR("Pairing failed: %d", reason);
+    first_pairing = false;
 }
 
 struct bt_conn_auth_cb auth_callbacks = {
@@ -78,68 +85,67 @@ struct bt_conn_auth_info_cb auth_info_callbacks = {
 
 void security_changed(struct bt_conn *conn, bt_security_t level, enum bt_security_err err)
 {
-	char addr[BT_ADDR_LE_STR_LEN];
-	bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
+    char addr[BT_ADDR_LE_STR_LEN];
+    bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
+    if (!err) {
+        LOG_INF("Security changed: %s level %u", addr, level);
+        if (level >= BT_SECURITY_L2) {
+            LOG_INF("Encryption established at level %u", level);
 
-	if (!err)
-	{
-		LOG_DBG("Security changed: %s level %u", addr, level);
-	}
-	else
-	{
-		LOG_ERR("Security failed: %s level %u err %d", addr, level, err);
-		return;
-	}
+            if (first_pairing) {
+                // Wait a bit to see if pairing_complete gets called
+                // If it's a bonded reconnection, pairing_complete won't be called
+                LOG_INF("Security established - waiting to determine pairing vs bonded reconnection");
+                k_sleep(K_MSEC(500));
 
-	if (level >= BT_SECURITY_WANTED)
-	{
-		LOG_INF("Encryption established - checking if bonded");
-            
-		// Check if we're bonded (not just encrypted)
-		struct bt_conn_info info;
-		bt_conn_get_info(conn, &info);
-		
-		if (info.state == BT_CONN_STATE_CONNECTED && 
-			bt_conn_get_security(conn) >= BT_SECURITY_L2) {
-			
-			// We're encrypted - check if this is a new pairing or existing bond
-			// If pairing_complete hasn't been called yet, this is still initial pairing
-			// If it has, we can proceed with VCP discovery
-			
-			LOG_INF("Ready for VCP discovery on bonded connection");
-			
-			if (!vcp_discovered) {
-				k_sleep(K_MSEC(100)); // Small delay for stability
-				int vcp_err = vcp_discover(conn);
-				if (vcp_err) {
-					LOG_ERR("VCP discovery failed (err %d)", vcp_err);
-				}
-			}
-		}
-	} else {
-		LOG_ERR("Security failed: %s level %u err %d", addr, level, err);
-	}
+                // Check again - if still first_pairing, it's a bonded reconnection
+                if (first_pairing) {
+                    LOG_INF("Bonded device reconnected - starting VCP discovery");
+                    first_pairing = false; // Mark as bonded device
+                    if (!vcp_discovered) {
+                        int vcp_err = vcp_discover(conn);
+                        if (vcp_err) {
+                            LOG_ERR("VCP discovery failed (err %d)", vcp_err);
+                        }
+                    }
+                } else {
+                    LOG_INF("New pairing completed - waiting for disconnect/reconnect");
+                }
+            } else {
+                // first_pairing was already set to false by pairing_complete
+                LOG_INF("Reconnected with existing bond - starting VCP discovery");
+                if (!vcp_discovered) {
+                    k_sleep(K_MSEC(100));
+                    int vcp_err = vcp_discover(conn);
+                    if (vcp_err) {
+                        LOG_ERR("VCP discovery failed (err %d)", vcp_err);
+                    }
+                }
+            }
+        }
+    } else {
+        LOG_ERR("Security failed: %s level %u err %d", addr, level, err);
+    }
 }
 
 /* Connection callbacks */
 static void connected(struct bt_conn *conn, uint8_t err)
 {
-	if (err)
-	{
-		LOG_ERR("Connection failed (err 0x%02X)", err);
-		return;
-	}
+    if (err) {
+        LOG_ERR("Connection failed (err 0x%02X)", err);
+        return;
+    }
+    LOG_INF("Connected");
 
-	LOG_INF("Connected");
-	// LOG_DBG("Connection pointer: %p, stored connection: %p", conn, connection);
+    // Assume first pairing initially - will be corrected in security_changed if bonded
+    first_pairing = true;
+    LOG_INF("Connection established - checking bond status");
 
-	LOG_DBG("Requesting pairing with security %d", BT_SECURITY_WANTED);
-	int pair_err = bt_conn_set_security(conn, BT_SECURITY_WANTED);
-	if (pair_err)
-	{
-		LOG_ERR("Failed to set security (err %d)", pair_err);
-		return;
-	}
+    LOG_DBG("Requesting security level %d", BT_SECURITY_WANTED);
+    int pair_err = bt_conn_set_security(conn, BT_SECURITY_WANTED);
+    if (pair_err) {
+        LOG_ERR("Failed to set security (err %d)", pair_err);
+    }
 }
 
 static void disconnected(struct bt_conn *conn, uint8_t reason)
@@ -152,6 +158,8 @@ static void disconnected(struct bt_conn *conn, uint8_t reason)
 		bt_conn_unref(connection);
 		connection = NULL;
 	}
+
+    vcp_controller_reset_state();
 
 	LOG_DBG("Restarting scan");
 	ble_manager_scan_start();

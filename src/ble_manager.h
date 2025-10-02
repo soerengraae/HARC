@@ -39,4 +39,7 @@ extern struct bt_conn_cb conn_callbacks;
 extern struct bt_conn *conn;
 extern struct bt_conn *auth_conn;
 
+/* Global state */
+extern bool first_pairing;
+
 #endif /* BLE_MANAGER_H */

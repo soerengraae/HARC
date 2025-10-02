@@ -134,8 +134,9 @@ int vcp_controller_init(void)
 /* Reset VCP controller state */
 void vcp_controller_reset_state(void)
 {
-	vcp_discovered = false;
-	vol_ctlr = NULL;
+    vcp_discovered = false;
+    vol_ctlr = NULL;
+    default_conn = NULL;
 }
 
 int vcp_discover(struct bt_conn *conn)
