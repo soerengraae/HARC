@@ -3,55 +3,72 @@
 #include <zephyr/logging/log.h>
 #include <zephyr/sys/byteorder.h>
 #include <zephyr/bluetooth/uuid.h>
-#include <zephyr/bluetooth/audio/vcp.h>
 
 LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_DBG);
 
 struct bt_conn *connection;
+struct bt_conn *auth_conn;
 
-struct deviceInfo {
+struct deviceInfo
+{
 	bt_addr_le_t addr;
 	char name[BT_NAME_MAX_LEN];
 	bool connect;
 } scannedDevice;
 
-void auth_cancel(struct bt_conn *conn)
-{
-    LOG_INF("Pairing cancelled");
-}
-
 void auth_passkey_display(struct bt_conn *conn, unsigned int passkey)
 {
-    LOG_INF("Passkey display: %06u", passkey);
+	char addr[BT_ADDR_LE_STR_LEN];
+
+	bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
+
+	LOG_INF("Passkey for %s: %06u", addr, passkey);
 }
 
 void auth_passkey_confirm(struct bt_conn *conn, unsigned int passkey)
 {
-    LOG_INF("Numeric comparison: %06u - auto-confirming", passkey);
-    bt_conn_auth_passkey_confirm(conn);
+	char addr[BT_ADDR_LE_STR_LEN];
+
+	auth_conn = bt_conn_ref(conn);
+
+	bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
+
+	LOG_INF("Passkey for %s: %06u", addr, passkey);
+	bt_conn_auth_passkey_confirm(auth_conn);
+	bt_conn_unref(auth_conn);
+	auth_conn = NULL;
 }
 
-void auth_pairing_confirm(struct bt_conn *conn)
+void auth_cancel(struct bt_conn *conn)
 {
-    LOG_INF("SC Just Works pairing - auto-confirming");
-    bt_conn_auth_pairing_confirm(conn);
+	char addr[BT_ADDR_LE_STR_LEN];
+
+	bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
+
+	LOG_INF("Pairing cancelled: %s", addr);
 }
 
 void pairing_complete(struct bt_conn *conn, bool bonded)
 {
-    LOG_INF("Pairing complete. Bonded: %d", bonded);
+	LOG_INF("Pairing complete. Bonded: %d", bonded);
+
+	if (!vcp_discovered)
+	{
+		int vcp_err = vcp_discover(conn);
+		if (vcp_err)
+			LOG_ERR("VCP discovery failed (err %d)", vcp_err);
+	}
 }
 
 void pairing_failed(struct bt_conn *conn, enum bt_security_err reason)
 {
-    LOG_ERR("Pairing failed: %d", reason);
+	LOG_ERR("Pairing failed: %d", reason);
 }
 
 struct bt_conn_auth_cb auth_callbacks = {
-	.cancel = auth_cancel,
 	.passkey_display = auth_passkey_display,
 	.passkey_confirm = auth_passkey_confirm,
-	.pairing_confirm = auth_pairing_confirm,
+	.cancel = auth_cancel,
 };
 
 struct bt_conn_auth_info_cb auth_info_callbacks = {
@@ -64,21 +81,19 @@ void security_changed(struct bt_conn *conn, bt_security_t level, enum bt_securit
 	char addr[BT_ADDR_LE_STR_LEN];
 	bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
 
-	if (!err) {
-			LOG_DBG("Security changed: %s level %u", addr, level);
-	} else {
-			LOG_ERR("Security failed: %s level %u err %d", addr, level, err);
-			return;
+	if (!err)
+	{
+		LOG_DBG("Security changed: %s level %u", addr, level);
+	}
+	else
+	{
+		LOG_ERR("Security failed: %s level %u err %d", addr, level, err);
+		return;
 	}
 
-	if (level >= BT_SECURITY_L2) {
+	if (level >= BT_SECURITY_L2)
+	{
 		LOG_INF("Pairing successful - security level: %u", level);
-
-		if (!vcp_discovered) {
-			int vcp_err = vcp_discover(conn);
-			if (vcp_err)
-				LOG_ERR("VCP discovery failed (err %d)", vcp_err);
-		}
 	}
 }
 
@@ -136,28 +151,28 @@ static bool device_found(struct bt_data *data, void *user_data)
 
 	switch (data->type)
 	{
-		case BT_DATA_NAME_COMPLETE:
-		case BT_DATA_NAME_SHORTENED:
-			char name[BT_NAME_MAX_LEN];
-			memset(name, 0, sizeof(name));
-			strncpy(name, (char *)data->data, MIN(data->data_len, BT_NAME_MAX_LEN - 1));
-			
-			LOG_DBG("Found device name: %.*s", data->data_len, (char *)data->data);
-			int cmp = strcmp(name, "HARC HI");
-			LOG_DBG("strcmp result: %d", cmp);
-			if (!cmp)
-			{
-				strncpy(info->name, name, BT_NAME_MAX_LEN - 1);
-				info->name[BT_NAME_MAX_LEN - 1] = '\0'; // Ensure null-termination
-				info->connect = true;
-				LOG_DBG("Will attempt to connect to %s", info->name);
-				return false; // Stop parsing further
-			}
+	case BT_DATA_NAME_COMPLETE:
+	case BT_DATA_NAME_SHORTENED:
+		char name[BT_NAME_MAX_LEN];
+		memset(name, 0, sizeof(name));
+		strncpy(name, (char *)data->data, MIN(data->data_len, BT_NAME_MAX_LEN - 1));
 
-			break;
+		LOG_DBG("Found device name: %.*s", data->data_len, (char *)data->data);
+		int cmp = strcmp(name, "HARC HI");
+		LOG_DBG("strcmp result: %d", cmp);
+		if (!cmp)
+		{
+			strncpy(info->name, name, BT_NAME_MAX_LEN - 1);
+			info->name[BT_NAME_MAX_LEN - 1] = '\0'; // Ensure null-termination
+			info->connect = true;
+			LOG_DBG("Will attempt to connect to %s", info->name);
+			return false; // Stop parsing further
+		}
 
-		default:
-			return true;
+		break;
+
+	default:
+		return true;
 	}
 
 	return true;
@@ -208,7 +223,8 @@ int ble_manager_init(void)
 	bt_conn_auth_info_cb_register(&auth_info_callbacks);
 
 	int err = vcp_controller_init();
-	if (err) {
+	if (err)
+	{
 		LOG_ERR("VCP controller init failed (err %d)", err);
 		return err;
 	}
@@ -219,16 +235,27 @@ int ble_manager_init(void)
 
 void bt_ready(int err)
 {
-	if (err) {
+	if (err)
+	{
 		LOG_ERR("Bluetooth init failed (err %d)", err);
 		return;
 	}
 
 	LOG_INF("Bluetooth initialized");
 
+	// Set fixed passkey for authentication
+	// unsigned int passkey = 123456; // Your chosen 6-digit passkey
+	// err = bt_passkey_set(passkey);
+	// if (err)
+	// {
+	// 	LOG_ERR("Failed to set passkey (err %d)", err);
+	// 	return;
+	// }
+
 	/* Initialize BLE manager */
 	err = ble_manager_init();
-	if (err) {
+	if (err)
+	{
 		LOG_ERR("BLE manager init failed (err %d)", err);
 		return;
 	}
