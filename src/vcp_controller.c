@@ -7,6 +7,21 @@ struct bt_conn *default_conn;
 struct bt_vcp_vol_ctlr *vol_ctlr;
 bool vcp_discovered = false;
 
+void vcp_volume_up(void)
+{
+	if (!vcp_discovered || !vol_ctlr) {
+		LOG_WRN("VCP not discovered, cannot volume up");
+		return;
+	}
+
+	int err = bt_vcp_vol_ctlr_vol_up(vol_ctlr);
+	if (err) {
+		LOG_ERR("Failed to initiate volume up (err %d)", err);
+	} else {
+		LOG_DBG("Volume up initiated");
+	}
+}
+
 /* VCP callback implementations */
 static void vcp_state_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err,
 			 uint8_t volume, uint8_t mute)
@@ -17,6 +32,8 @@ static void vcp_state_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err,
 	}
 
 	LOG_INF("VCP state - Volume: %u, Mute: %u", volume, mute);
+
+	vcp_volume_up();
 }
 
 static void vcp_flags_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err, uint8_t flags)
@@ -113,7 +130,7 @@ static struct bt_vcp_vol_ctlr_cb vcp_callbacks = {
 	.unmute = vcp_unmute_cb,
 	.vol_up_unmute = vcp_vol_up_unmute_cb,
 	.vol_down_unmute = vcp_vol_down_unmute_cb,
-  .vol_set = NULL, // Not implemented
+	.vol_set = NULL, // Not implemented
 };
 
 /* Initialize VCP controller */
