@@ -6,6 +6,7 @@ LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_DBG);
 struct bt_conn *default_conn;
 struct bt_vcp_vol_ctlr *vol_ctlr;
 bool vcp_discovered = false;
+bool volume_direction = true; // true = up, false = down
 
 void vcp_volume_up(void)
 {
@@ -22,6 +23,21 @@ void vcp_volume_up(void)
 	}
 }
 
+void vcp_volume_down(void)
+{
+	if (!vcp_discovered || !vol_ctlr) {
+		LOG_WRN("VCP not discovered, cannot volume down");
+		return;
+	}
+
+	int err = bt_vcp_vol_ctlr_vol_down(vol_ctlr);
+	if (err) {
+		LOG_ERR("Failed to initiate volume down (err %d)", err);
+	} else {
+		LOG_DBG("Volume down initiated");
+	}
+}
+
 /* VCP callback implementations */
 static void vcp_state_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err,
 			 uint8_t volume, uint8_t mute)
@@ -30,10 +46,18 @@ static void vcp_state_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err,
 		LOG_ERR("VCP state error (err %d)", err);
 		return;
 	}
+	// Volume is 0-255, convert to percentage
+	float volume_percent = (float)volume * 100.0f / 255.0f;
+	LOG_INF("VCP state - Volume: %u, Mute: %u", (uint8_t)(volume_percent), mute);
 
-	LOG_INF("VCP state - Volume: %u, Mute: %u", volume, mute);
-
-	vcp_volume_up();
+	if (volume >= 255)
+	{
+		volume_direction = false; // Switch to volume down
+	}
+	else if (volume <= 0)
+	{
+		volume_direction = true; // Switch to volume up
+	}
 }
 
 static void vcp_flags_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err, uint8_t flags)

@@ -104,6 +104,9 @@ void pairing_failed(struct bt_conn *conn, enum bt_security_err reason)
 {
     LOG_ERR("Pairing failed: %d", reason);
     first_pairing = false;
+
+	// Reset scanning
+	ble_manager_scan_start();
 }
 
 struct bt_conn_auth_cb auth_callbacks = {
@@ -178,6 +181,12 @@ static void disconnected(struct bt_conn *conn, uint8_t reason)
 	ble_manager_scan_start();
 }
 
+static void disconnect_cb(struct bt_conn *conn, void *data)
+{
+    LOG_INF("Disconnecting connection");
+    bt_conn_disconnect(conn, BT_HCI_ERR_REMOTE_USER_TERM_CONN);
+}
+
 BT_CONN_CB_DEFINE(conn_callbacks) = {
 	.connected = connected,
 	.disconnected = disconnected,
@@ -242,6 +251,12 @@ static void device_found_cb(const bt_addr_le_t *addr, int8_t rssi, uint8_t type,
 		if (err)
 		{
 			LOG_ERR("Create conn to %s failed (err %d)", info.name, err);
+			if (err == -12) // -ENOMEM
+			{
+				bt_conn_foreach(BT_CONN_TYPE_LE, disconnect_cb, NULL);
+			}
+
+			ble_manager_scan_start();
 		}
 	}
 }
@@ -250,6 +265,15 @@ static void device_found_cb(const bt_addr_le_t *addr, int8_t rssi, uint8_t type,
 void ble_manager_scan_start(void)
 {
 	int err;
+	err = bt_le_scan_stop();
+	if (err && err != -EALREADY)
+	{
+		LOG_ERR("Stopping existing scan failed (err %d)", err);
+		return;
+	}
+
+	bt_conn_unref(connection);
+	connection = NULL;
 
 	err = bt_le_scan_start(BT_LE_SCAN_ACTIVE_CAP_RAP, device_found_cb);
 	if (err)

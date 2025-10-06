@@ -18,7 +18,6 @@ int main(void)
         }
     }
 
-
 	/* Initialize Bluetooth */
 	err = bt_enable(bt_ready);
 	if (err) {
@@ -30,16 +29,12 @@ int main(void)
 		k_sleep(K_SECONDS(5));
 
 		if (vcp_discovered && vol_ctlr) {
-			LOG_DBG("Attempting to read VCP state (vol_ctlr=%p, default_conn=%p)",
-				vol_ctlr, default_conn);
-
-			// Read the current volume state
-			int state_err = bt_vcp_vol_ctlr_read_state(vol_ctlr);
-			if (state_err) {
-				LOG_ERR("Failed to read VCP state (err %d)", state_err);
-			} else {
-				LOG_DBG("Read state initiated successfully");
-			}
+			LOG_DBG("Attempting to write VCP Volume Up (vol_ctlr=%p, default_conn=%p)", vol_ctlr, default_conn);
+			
+			if (volume_direction)
+				vcp_volume_up();
+			else
+				vcp_volume_down();
 		}
 	}
 
