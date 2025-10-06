@@ -5,6 +5,8 @@ LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_DBG);
 /* Global state variables */
 struct bt_conn *default_conn;
 struct bt_vcp_vol_ctlr *vol_ctlr;
+struct bt_conn *pending_vcp_conn = NULL;
+struct k_work_delayable vcp_discovery_work;
 bool vcp_discovered = false;
 bool volume_direction = true; // true = up, false = down
 
@@ -16,7 +18,7 @@ bool volume_direction = true; // true = up, false = down
  * 
  * @param work Pointer to the work item (not used)
  */
-static void vcp_discovery_work_handler(struct k_work *work)
+void vcp_discovery_work_handler(struct k_work *work)
 {
 	(void)work;
 
@@ -199,6 +201,8 @@ int vcp_controller_init(void)
 	}
 
 	LOG_INF("VCP controller initialized");
+
+	k_work_init_delayable(&vcp_discovery_work, vcp_discovery_work_handler);
 	return 0;
 }
 

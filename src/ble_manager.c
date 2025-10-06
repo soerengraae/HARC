@@ -7,9 +7,6 @@
 
 LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_DBG);
 
-struct k_work_delayable vcp_discovery_work;
-struct bt_conn *pending_vcp_conn = NULL;
-
 struct bt_conn *connection;
 struct bt_conn *auth_conn;
 struct deviceInfo scannedDevice;
@@ -53,7 +50,7 @@ void pairing_failed(struct bt_conn *conn, enum bt_security_err reason)
 }
 
 struct bt_conn_auth_info_cb auth_info_callbacks = {
-	.pairing_complete = pairing_complete,
+	.pairing_complete = pairing_complete, // This is only called if new bond created, misleading name :(
 	.pairing_failed = pairing_failed,
 };
 
@@ -87,14 +84,26 @@ static void connected(struct bt_conn *conn, uint8_t err)
 	}
 
 	LOG_INF("Connected");
-	
-	// Assume first pairing - will be corrected if pairing_complete fires
-	first_pairing = true;
+
+	const bt_addr_le_t *addr = bt_conn_get_dst(conn);
+	char addr_str[BT_ADDR_LE_STR_LEN];
+	bt_addr_le_to_str(addr, addr_str, sizeof(addr_str));
+
+	// Check if this device is already bonded
+	bool is_new_device = !is_bonded_device(addr);
+
+	if (is_new_device) {
+		LOG_INF("Connected to new device %s - expecting pairing", addr_str);
+		first_pairing = true;
+	} else {
+		LOG_INF("Connected to bonded device %s", addr_str);
+		first_pairing = false;
+	}
 	
 	LOG_DBG("Requesting security level %d", BT_SECURITY_WANTED);
-	int pair_err = bt_conn_set_security(conn, BT_SECURITY_WANTED);
-	if (pair_err) {
-		LOG_ERR("Failed to set security (err %d)", pair_err);
+	int sec_err = bt_conn_set_security(conn, BT_SECURITY_WANTED);
+	if (sec_err) {
+		LOG_ERR("Failed to set security (err %d)", sec_err);
 	}
 }
 
@@ -232,19 +241,10 @@ int ble_manager_init(void)
 	// bt_conn_auth_cb_register(&auth_callbacks);
 	bt_conn_auth_info_cb_register(&auth_info_callbacks);
 
-	k_work_init_delayable(&vcp_discovery_work, vcp_discovery_work_handler);
-
 	int err = vcp_controller_init();
 	if (err)
 	{
 		LOG_ERR("VCP controller init failed (err %d)", err);
-		return err;
-	}
-
-	err = battery_reader_init();
-	if (err)
-	{
-		LOG_ERR("Battery reader init failed (err %d)", err);
 		return err;
 	}
 
@@ -283,4 +283,36 @@ void bt_ready(int err)
     }
 
 	ble_manager_scan_start();
+}
+
+bool is_bonded_device_cb(const struct bt_bond_info *info, void *user_data) {
+	struct check_bonded_data {
+		const bt_addr_le_t *addr;
+		bool found;
+	} *data = user_data;
+
+	if (!bt_addr_le_cmp(&info->addr, data->addr)) {
+		data->found = true;
+		// Stop iterating
+		return false;
+	}
+
+	return true;
+}
+
+bool is_bonded_device(const bt_addr_le_t *addr)
+{
+    struct check_bonded_data {
+        const bt_addr_le_t *addr;
+        bool found;
+    } check_data = {
+        .addr = addr,
+        .found = false
+    };
+    
+    // Iterate through bonded devices
+		
+    bt_foreach_bond(BT_ID_DEFAULT, is_bonded_device_cb, &check_data);
+    
+    return check_data.found;
 }

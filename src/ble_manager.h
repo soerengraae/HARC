@@ -40,6 +40,8 @@ void auth_passkey_confirm(struct bt_conn *conn, unsigned int passkey);
 void auth_cancel(struct bt_conn *conn);
 void pairing_complete(struct bt_conn *conn, bool bonded);
 void pairing_failed(struct bt_conn *conn, enum bt_security_err reason);
+bool is_bonded_device_cb(const struct bt_bond_info *info, void *user_data);
+bool is_bonded_device(const bt_addr_le_t *addr);
 
 /* Connection management */
 extern struct bt_conn_cb conn_callbacks;
