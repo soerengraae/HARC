@@ -304,7 +304,7 @@ int battery_subscribe_notifications(struct bt_conn *conn)
 }
 
 /* Reset battery reader state */
-void battery_reader_reset_state(void)
+void battery_reader_reset(void)
 {
 	battery_discovered = false;
 	battery_level_handle = 0;

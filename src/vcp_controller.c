@@ -188,7 +188,7 @@ int vcp_controller_init(void)
 		return err;
 	}
 
-	vcp_controller_reset_state();
+	vcp_controller_reset();
 
 	LOG_INF("VCP controller initialized");
 
@@ -196,7 +196,7 @@ int vcp_controller_init(void)
 }
 
 /* Reset VCP controller state */
-void vcp_controller_reset_state(void)
+void vcp_controller_reset(void)
 {
 	vcp_discovered = false;
 	vol_ctlr = NULL;

@@ -6,11 +6,11 @@
 #include <zephyr/bluetooth/uuid.h>
 #include <zephyr/bluetooth/hci.h>
 
-LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_INF);
+LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_DBG);
 
-struct bt_conn *auth_conn;
 struct connection_context *conn_ctx;
 static struct k_work_delayable auto_connect_work;
+static struct k_work_delayable auto_connect_timeout_work;
 
 /* Callback for iterating bonded devices to find the first one */
 static void get_bonded_devices(const struct bt_bond_info *info, void *user_data)
@@ -119,6 +119,7 @@ static void connected_cb(struct bt_conn *conn, uint8_t err)
 
 		// Cancel auto-connect if it was active
 		bt_conn_create_auto_stop();
+		k_work_cancel_delayable(&auto_connect_timeout_work);
 
 		if (err == BT_HCI_ERR_UNKNOWN_CONN_ID) {
 			// Connection failed, retry
@@ -126,6 +127,9 @@ static void connected_cb(struct bt_conn *conn, uint8_t err)
 		}
 		return;
 	}
+
+	// Cancel the timeout since we connected successfully
+	k_work_cancel_delayable(&auto_connect_timeout_work);
 
 	const bt_addr_le_t *addr = bt_conn_get_dst(conn);
 	char addr_str[BT_ADDR_LE_STR_LEN];
@@ -165,7 +169,8 @@ static void disconnected_cb(struct bt_conn *conn, uint8_t reason)
 		conn_ctx->conn = NULL;
 	}
 
-	vcp_controller_reset_state();
+	vcp_controller_reset();
+	battery_reader_reset();
 	
 	if (conn_ctx->state == CONN_STATE_BONDED) {
 		conn_ctx->state = CONN_STATE_DISCONNECTED;
@@ -271,13 +276,15 @@ void ble_manager_scan_start(void)
 {
 	int err;
 	err = bt_le_scan_stop();
-	if (err && err != -EALREADY) {
+	if (err) {
 		LOG_ERR("Stopping existing scan failed (err %d)", err);
 		return;
 	}
 
-	bt_conn_unref(conn_ctx->conn);
-	conn_ctx->conn = NULL;
+	// if (conn_ctx->conn) {
+		bt_conn_unref(conn_ctx->conn);
+		conn_ctx->conn = NULL;
+	// }
 
 	err = bt_le_scan_start(BT_LE_SCAN_ACTIVE_CAP_RAP, device_found_cb);
 	if (err) {
@@ -295,7 +302,6 @@ void ble_manager_scan_start(void)
  */
 int ble_manager_init(void)
 {
-	// bt_conn_auth_cb_register(&auth_callbacks);
 	bt_conn_auth_info_cb_register(&auth_info_callbacks);
 
 	int err = vcp_controller_init();
@@ -314,10 +320,29 @@ int ble_manager_init(void)
 	return 0;
 }
 
+static void auto_connect_timeout_handler(struct k_work *work)
+{
+	LOG_WRN("Auto-connect timeout - falling back to active scan");
+	if (conn_ctx->conn) {
+		LOG_DBG("Cancelling ongoing connection attempt");
+		int err = bt_conn_create_auto_stop();
+		if (err) {
+			LOG_ERR("Failed to stop auto-connect (err %d)", err);
+		}
+	}
+
+	k_sleep(K_MSEC(100));
+
+	LOG_DBG("Starting active scan for devices");
+	ble_manager_scan_start();
+}
+
 static void auto_connect_work_handler(struct k_work *work)
 {
+	(void)work;
+
 	if (!conn_ctx->info.connect) {
-		LOG_WRN("No bonded device to connect to");
+		LOG_WRN("No bonded device stored - scanning for devices");
 		ble_manager_scan_start();
 		return;
 	}
@@ -326,8 +351,13 @@ static void auto_connect_work_handler(struct k_work *work)
 	int err = bt_conn_le_create_auto(BT_CONN_LE_CREATE_CONN, BT_LE_CONN_PARAM_DEFAULT);
 	if (err) {
 		LOG_ERR("Failed to set auto-connect (err %d)", err);
+		LOG_DBG("Starting active scan for devices");
 		ble_manager_scan_start();
+		return;
 	}
+
+	// Set a timeout to fall back to active scanning if auto-connect doesn't work
+	// k_work_schedule(&auto_connect_timeout_work, K_SECONDS(4));
 }
 
 void bt_ready_cb(int err)
@@ -347,7 +377,6 @@ void bt_ready_cb(int err)
 	}
 
 	if (IS_ENABLED(CONFIG_SETTINGS)) {
-		// Load settings - this is critical for bonding to work
 		err = settings_load_subtree("bt");
 		if (err) {
 			LOG_WRN("Failed to load BT settings (err %d)", err);
@@ -361,10 +390,10 @@ void bt_ready_cb(int err)
 	// Initialize and schedule the deferred auto-connect work
 	LOG_DBG("Initializing auto-connect work");
 	k_work_init_delayable(&auto_connect_work, auto_connect_work_handler);
+	k_work_init_delayable(&auto_connect_timeout_work, auto_connect_timeout_handler);
 
 	if (conn_ctx->info.connect) {
 		LOG_DBG("Scheduling auto-connect to bonded device");
-		// Delay by 100ms to ensure BT stack is fully ready
 		k_work_schedule(&auto_connect_work, K_MSEC(0));
 	} else {
 		LOG_INF("No previously bonded device found");

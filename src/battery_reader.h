@@ -9,11 +9,11 @@
 #include <zephyr/logging/log.h>
 
 /* Battery Service UUID */
-#define BT_UUID_BAS_VAL 0x180f
+#define BT_UUID_BAS_VAL 0x180F
 #define BT_UUID_BAS BT_UUID_DECLARE_16(BT_UUID_BAS_VAL)
 
 /* Battery Level Characteristic UUID */
-#define BT_UUID_BAS_BATTERY_LEVEL_VAL 0x2a19
+#define BT_UUID_BAS_BATTERY_LEVEL_VAL 0x2A19
 #define BT_UUID_BAS_BATTERY_LEVEL BT_UUID_DECLARE_16(BT_UUID_BAS_BATTERY_LEVEL_VAL)
 
 /**
@@ -43,7 +43,7 @@ int battery_subscribe_notifications(struct bt_conn *conn);
 /**
  * @brief Reset battery reader state
  */
-void battery_reader_reset_state(void);
+void battery_reader_reset(void);
 
 /**
  * @brief Get the read battery level
