@@ -6,7 +6,7 @@
 #include <zephyr/bluetooth/uuid.h>
 #include <zephyr/bluetooth/hci.h>
 
-LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_INF);
 
 struct bt_conn *auth_conn;
 struct connection_context *conn_ctx;
@@ -59,18 +59,18 @@ void security_changed_cb(struct bt_conn *conn, bt_security_t level, enum bt_secu
 	bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
 
 	if (!err) {
-		LOG_INF("Security changed: %s level %u", addr, level);
+		LOG_DBG("Security changed: %s level %u", addr, level);
 		
 		if (level >= BT_SECURITY_L2) {
-			LOG_INF("Encryption established at level %u", level);
-			
+			LOG_DBG("Encryption established at level %u", level);
+
 			// Only proceed with VCP if this is a reconnection (not new pairing)
 			if (conn_ctx->state == CONN_STATE_BONDED) {
-					LOG_INF("Bonded device encrypted - starting service discovery");
+					LOG_DBG("Bonded device encrypted - starting service discovery");
 					vcp_discover_start(conn_ctx);
 					battery_discover(conn_ctx);
 			} else {
-					LOG_INF("New device - waiting for pairing completion");
+					LOG_DBG("New device - waiting for pairing completion");
 					conn_ctx->state = CONN_STATE_PAIRING;
 			}
 		}
@@ -115,7 +115,7 @@ static void connected_cb(struct bt_conn *conn, uint8_t err)
 	conn_ctx->info.is_new_device = !is_bonded_device(addr);
 
 	if (conn_ctx->info.is_new_device) {
-		LOG_INF("Connected to new device %s - expecting pairing", addr_str);
+		LOG_DBG("Connected to new device %s - expecting pairing", addr_str);
 		conn_ctx->state = CONN_STATE_PAIRING;
 	} else {
 		LOG_INF("Connected to bonded device %s", addr_str);

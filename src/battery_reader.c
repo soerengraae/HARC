@@ -1,6 +1,6 @@
 #include "battery_reader.h"
 
-LOG_MODULE_REGISTER(battery_reader, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(battery_reader, LOG_LEVEL_INF);
 
 /* Global state variables */
 bool battery_discovered = false;
@@ -87,17 +87,17 @@ static uint8_t discover_char_cb(struct bt_conn *conn,
 			/* We finished searching for CCC descriptor */
 			if (battery_level_ccc_handle == 0) {
 				/* Didn't find CCC - notifications not available */
-				LOG_INF("CCC descriptor not found - notifications not available");
+				LOG_WRN("CCC descriptor not found - notifications not available");
 			}
 		}
 		
 		/* If we have the characteristic handle, mark discovery as complete */
 		if (battery_level_handle != 0) {
 			battery_discovered = true;
-			LOG_INF("Battery Service discovery complete (handle: 0x%04x, CCC: 0x%04x)", 
+			LOG_DBG("Battery Service discovery complete (handle: 0x%04x, CCC: 0x%04x)", 
 			        battery_level_handle, battery_level_ccc_handle);
 		} else {
-			LOG_WRN("Battery Service discovery completed but no characteristic found");
+			LOG_ERR("Battery Service discovery completed but no characteristic found");
 		}
 		
 		return BT_GATT_ITER_STOP;
@@ -109,13 +109,13 @@ static uint8_t discover_char_cb(struct bt_conn *conn,
 		struct bt_gatt_chrc *chrc = (struct bt_gatt_chrc *)attr->user_data;
 		
 		if (!bt_uuid_cmp(chrc->uuid, BT_UUID_BAS_BATTERY_LEVEL)) {
-			LOG_INF("Found Battery Level characteristic at handle %u (properties 0x%02x)", 
+			LOG_DBG("Found Battery Level characteristic at handle %u (properties 0x%02x)", 
 			        chrc->value_handle, chrc->properties);
 			battery_level_handle = chrc->value_handle;
 			
 			/* Check if notifications are supported based on properties */
 			if (chrc->properties & BT_GATT_CHRC_NOTIFY) {
-				LOG_INF("Characteristic supports notifications, discovering CCC");
+				LOG_DBG("Characteristic supports notifications, discovering CCC");
 				/* Try to discover CCC descriptor */
 				static struct bt_gatt_discover_params discover_params;
 				memset(&discover_params, 0, sizeof(discover_params));
@@ -131,7 +131,7 @@ static uint8_t discover_char_cb(struct bt_conn *conn,
 					battery_discovered = true;
 				}
 			} else {
-				LOG_INF("Characteristic does not support notifications");
+				LOG_WRN("Characteristic does not support notifications");
 				battery_discovered = true;
 			}
 			
@@ -141,7 +141,7 @@ static uint8_t discover_char_cb(struct bt_conn *conn,
 		struct bt_gatt_chrc *chrc = (struct bt_gatt_chrc *)attr->user_data;
 		
 		if (!bt_uuid_cmp(chrc->uuid, BT_UUID_GATT_CCC)) {
-			LOG_INF("Found CCC descriptor at handle %u", attr->handle);
+			LOG_DBG("Found CCC descriptor at handle %u", attr->handle);
 			battery_level_ccc_handle = attr->handle;
 			battery_discovered = true;
 			return BT_GATT_ITER_STOP;

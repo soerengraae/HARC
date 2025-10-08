@@ -1,6 +1,6 @@
 #include "vcp_controller.h"
 
-LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_INF);
 
 /* Global state variables */
 struct bt_conn *default_conn;
@@ -84,7 +84,7 @@ static void vcp_flags_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err, uint8_t flag
 		return;
 	}
 
-	LOG_INF("VCP flags: 0x%02X", flags);
+	LOG_DBG("VCP flags: 0x%02X", flags);
 }
 
 static void vcp_discover_cb(struct bt_vcp_vol_ctlr *vcp_vol_ctlr, int err,
