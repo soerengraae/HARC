@@ -20,7 +20,7 @@ int main(void)
     }
 
 	/* Initialize Bluetooth */
-	err = bt_enable(bt_ready);
+	err = bt_enable(bt_ready_cb);
 	if (err) {
 		LOG_ERR("Bluetooth init failed (err %d)", err);
 		return err;

@@ -28,6 +28,7 @@ struct deviceInfo
 	bt_addr_le_t addr;
 	char name[BT_NAME_MAX_LEN];
 	bool connect;
+    bool is_new_device;  // True if not previously bonded
 };
 
 enum connection_state {
@@ -40,23 +41,17 @@ enum connection_state {
 struct connection_context {
     struct bt_conn *conn;
     enum connection_state state;
-    bt_addr_le_t addr;
-    bool is_new_device;  // True if not previously bonded
+    struct deviceInfo info;
 };
 
 /* BLE scanner functions */
 int ble_manager_init(void);
 void ble_manager_scan_start(void);
-void bt_ready(int err);
-void security_changed(struct bt_conn *conn, bt_security_t level, enum bt_security_err err);
-void pairing_complete(struct bt_conn *conn, bool bonded);
-void pairing_failed(struct bt_conn *conn, enum bt_security_err reason);
-void is_bonded_device_cb(const struct bt_bond_info *info, void *user_data);
+void bt_ready_cb(int err);
 bool is_bonded_device(const bt_addr_le_t *addr);
 
 /* Connection management */
 extern struct bt_conn_cb conn_callbacks;
-extern struct bt_conn *conn;
 extern struct bt_conn *auth_conn;
 extern struct connection_context *conn_ctx;
 

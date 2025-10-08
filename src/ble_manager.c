@@ -8,7 +8,6 @@
 
 LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_DBG);
 
-struct bt_conn *connection;
 struct bt_conn *auth_conn;
 struct connection_context *conn_ctx;
 bool first_pairing = true;
@@ -24,7 +23,7 @@ void pairing_complete(struct bt_conn *conn, bool bonded)
 
 	conn_ctx->state = CONN_STATE_BONDED;
 
-	if (conn_ctx->is_new_device) {
+	if (conn_ctx->info.is_new_device) {
 		LOG_INF("New device paired successfully - saving and disconnecting");
 		
 		// Save the bond
@@ -54,7 +53,7 @@ struct bt_conn_auth_info_cb auth_info_callbacks = {
 	.pairing_failed = pairing_failed,
 };
 
-void security_changed(struct bt_conn *conn, bt_security_t level, enum bt_security_err err)
+void security_changed_cb(struct bt_conn *conn, bt_security_t level, enum bt_security_err err)
 {
 	char addr[BT_ADDR_LE_STR_LEN];
 	bt_addr_le_to_str(bt_conn_get_dst(conn), addr, sizeof(addr));
@@ -81,11 +80,12 @@ void security_changed(struct bt_conn *conn, bt_security_t level, enum bt_securit
 	}
 }
 
-static void connected(struct bt_conn *conn, uint8_t err)
+static void connected_cb(struct bt_conn *conn, uint8_t err)
 {
 	if (err) {
 		LOG_ERR("Connection failed (err 0x%02X)", err);
 		conn_ctx->state = CONN_STATE_DISCONNECTED;
+		LOG_DBG("Should return to origin");
 		return;
 	}
 
@@ -96,12 +96,12 @@ static void connected(struct bt_conn *conn, uint8_t err)
 	bt_addr_le_to_str(addr, addr_str, sizeof(addr_str));
 
 	conn_ctx->conn = bt_conn_ref(conn);
-	bt_addr_le_copy(&conn_ctx->addr, addr);
+	bt_addr_le_copy(&conn_ctx->info.addr, addr);
 
 	 // Check if this device is already bonded
-	conn_ctx->is_new_device = !is_bonded_device(addr);
+	conn_ctx->info.is_new_device = !is_bonded_device(addr);
 
-	if (conn_ctx->is_new_device) {
+	if (conn_ctx->info.is_new_device) {
 		LOG_INF("Connected to new device %s - expecting pairing", addr_str);
 		conn_ctx->state = CONN_STATE_CONNECTING;
 	} else {
@@ -116,13 +116,13 @@ static void connected(struct bt_conn *conn, uint8_t err)
 	}
 }
 
-static void disconnected(struct bt_conn *conn, uint8_t reason)
+static void disconnected_cb(struct bt_conn *conn, uint8_t reason)
 {
 	LOG_INF("Disconnected (reason 0x%02X)", reason);
 
-	if (connection) {
-		bt_conn_unref(connection);
-		connection = NULL;
+	if (conn_ctx->conn) {
+		bt_conn_unref(conn_ctx->conn);
+		conn_ctx->conn = NULL;
 	}
 	
 	vcp_controller_reset_state();
@@ -136,18 +136,18 @@ static void disconnected(struct bt_conn *conn, uint8_t reason)
 	ble_manager_scan_start();
 }
 
-static void disconnect_cb(struct bt_conn *conn, void *data)
+static void disconnect(struct bt_conn *conn, void *data)
 {
     LOG_INF("Disconnecting connection");
     bt_conn_disconnect(conn, BT_HCI_ERR_REMOTE_USER_TERM_CONN);
-		bt_conn_unref(conn);
-		conn = NULL;
+	bt_conn_unref(conn);
+	conn = NULL;
 }
 
 BT_CONN_CB_DEFINE(conn_callbacks) = {
-	.connected = connected,
-	.disconnected = disconnected,
-	.security_changed = security_changed,
+	.connected = connected_cb,
+	.disconnected = disconnected_cb,
+	.security_changed = security_changed_cb,
 };
 
 /* Device discovery function
@@ -189,6 +189,27 @@ static bool device_found(struct bt_data *data, void *user_data)
 	return true;
 }
 
+static uint8_t connect(struct deviceInfo info) {
+	char addr_str[BT_ADDR_LE_STR_LEN];
+	bt_addr_le_to_str(&info.addr, addr_str, sizeof(addr_str));
+	LOG_INF("Connecting to %s (with address %s)", info.name, addr_str);
+
+	bt_le_scan_stop();
+	int err = bt_conn_le_create(&info.addr, BT_CONN_LE_CREATE_CONN, BT_LE_CONN_PARAM_DEFAULT, &conn_ctx->conn);
+	if (err)
+	{
+		LOG_ERR("Create conn to %s failed (err %d)", info.name, err);
+		if (err == -12) // -ENOMEM
+		{
+			bt_conn_foreach(BT_CONN_TYPE_LE, disconnect, NULL);
+		}
+
+		return err; // Will restart scan
+	}
+
+	return 0;
+}
+
 static void device_found_cb(const bt_addr_le_t *addr, int8_t rssi, uint8_t type, struct net_buf_simple *ad)
 {
 	char addr_str[BT_ADDR_LE_STR_LEN];
@@ -202,17 +223,8 @@ static void device_found_cb(const bt_addr_le_t *addr, int8_t rssi, uint8_t type,
 
 	if (info.connect)
 	{
-		LOG_INF("Connecting to %s (RSSI %d)", info.name, rssi);
-		bt_le_scan_stop();
-		int err = bt_conn_le_create(addr, BT_CONN_LE_CREATE_CONN, BT_LE_CONN_PARAM_DEFAULT, &connection);
-		if (err)
-		{
-			LOG_ERR("Create conn to %s failed (err %d)", info.name, err);
-			if (err == -12) // -ENOMEM
-			{
-				bt_conn_foreach(BT_CONN_TYPE_LE, disconnect_cb, NULL);
-			}
-
+		if (connect(info)) {
+			LOG_DBG("Restarting scan");
 			ble_manager_scan_start();
 		}
 	}
@@ -229,8 +241,8 @@ void ble_manager_scan_start(void)
 		return;
 	}
 
-	bt_conn_unref(connection);
-	connection = NULL;
+	bt_conn_unref(conn_ctx->conn);
+	conn_ctx->conn = NULL;
 
 	err = bt_le_scan_start(BT_LE_SCAN_ACTIVE_CAP_RAP, device_found_cb);
 	if (err)
@@ -269,7 +281,17 @@ int ble_manager_init(void)
 	return 0;
 }
 
-void bt_ready(int err)
+static void connect_to_existing_bond(const struct bt_bond_info *info, void *user_data) {
+	struct deviceInfo *data = (struct deviceInfo *)user_data;
+
+	char addr_str[BT_ADDR_LE_STR_LEN];
+	bt_addr_le_to_str(&info->addr, addr_str, sizeof(addr_str));
+	LOG_DBG("Found bonded device: %s", addr_str);
+	bt_addr_le_copy(&data->addr, &info->addr);
+	data->connect = true;
+}
+
+void bt_ready_cb(int err)
 {
 	if (err)
 	{
@@ -299,7 +321,21 @@ void bt_ready(int err)
         }
     }
 
-	ble_manager_scan_start();
+	LOG_DBG("Checking for existing bonds and attempting connection");
+	struct deviceInfo info = {0};
+	bt_foreach_bond(BT_ID_DEFAULT, connect_to_existing_bond, &info);
+	LOG_DBG("Bond check complete. Connect flag: %d", info.connect);
+
+	if (info.connect) {
+		int err = connect(info);
+		if (err) {
+			LOG_DBG("Couldn't connect to bonded device. Restarting scan");
+			ble_manager_scan_start();
+		}
+	} else {
+		LOG_DBG("No existing bond found");
+		ble_manager_scan_start();
+	}
 }
 
 void is_bonded_device_cb(const struct bt_bond_info *info, void *user_data) {
