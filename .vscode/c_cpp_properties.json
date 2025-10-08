@@ -4,7 +4,6 @@
             "name": "Win32",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/Users/sorengraae/zephyrproject/zephyr/include"
             ],
             "defines": [
                 "_DEBUG",

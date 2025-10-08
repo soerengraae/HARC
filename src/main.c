@@ -35,7 +35,7 @@ int main(void)
 		k_sleep(K_SECONDS(5));
 
 		if (vcp_discovered && vol_ctlr) {
-			LOG_DBG("Attempting to write VCP Volume Change (vol_ctlr=%p, default_conn=%p)", vol_ctlr, default_conn);
+			LOG_DBG("Attempting to write VCP Volume Change (vol_ctlr=%p, conn=%p)", vol_ctlr, conn_ctx->conn);
 			
 			if (volume_direction)
 				vcp_volume_up();

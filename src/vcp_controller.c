@@ -1,9 +1,8 @@
 #include "vcp_controller.h"
 
-LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_INF);
+LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_DBG);
 
 /* Global state variables */
-struct bt_conn *default_conn;
 struct bt_vcp_vol_ctlr *vol_ctlr;
 struct bt_conn *pending_vcp_conn = NULL;
 struct k_work_delayable vcp_discovery_work;
@@ -36,6 +35,8 @@ void vcp_volume_up(void)
 	if (err) {
 		LOG_ERR("Failed to initiate volume up (err %d)", err);
 	} else {
+		bt_security_t sec = bt_conn_get_security(conn_ctx->conn);
+	LOG_DBG("Current security before VCP discover: %d", sec);
 		LOG_DBG("Volume up initiated");
 	}
 }
@@ -197,7 +198,6 @@ void vcp_controller_reset_state(void)
 {
 	vcp_discovered = false;
 	vol_ctlr = NULL;
-	default_conn = NULL;
 }
 
 int vcp_discover(struct bt_conn *conn)
@@ -205,12 +205,10 @@ int vcp_discover(struct bt_conn *conn)
 	int err;
 	struct bt_vcp_vol_ctlr *discovered_ctlr = NULL;
 
-	default_conn = conn;
-
-	bt_security_t sec = bt_conn_get_security(conn);
+	bt_security_t sec = bt_conn_get_security(conn_ctx->conn);
 	LOG_DBG("Current security before VCP discover: %d", sec);
 
-	err = bt_vcp_vol_ctlr_discover(conn, &discovered_ctlr);
+	err = bt_vcp_vol_ctlr_discover(conn_ctx->conn, &discovered_ctlr);
 	if (err) {
 		return err;
 	}
