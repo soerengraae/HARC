@@ -1,0 +1,1021 @@
+[00:01:15.537,933] <err> vcp_controller: VCP volume up error (err 15)
+[00:01:15.537,994] <dbg> bt_att: att_tx_destroy: 0x2000bd7c
+[00:01:15.538,024] <dbg> bt_att: att_on_sent_cb: opcode 0xa
+[00:01:15.538,055] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:01:15.538,055] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:01:15.538,085] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdd0
+[00:01:15.637,664] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x0b len 1
+[00:01:15.637,664] <dbg> bt_att: att_handle_read_rsp: 
+[00:01:15.637,725] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 1: 28
+[00:01:15.637,756] <dbg> bt_att: bt_att_req_free: req 0x2000bdd0
+[00:01:15.637,756] <dbg> bt_gatt: gatt_read_rsp: err 0
+[00:01:15.637,756] <inf> battery_reader: Battery level read: 40%
+[00:01:20.279,418] <dbg> bt_gatt: bt_gatt_write: handle 0x00d8 length 2
+[00:01:20.279,418] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdd0
+[00:01:20.279,479] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdd0
+[00:01:20.279,479] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdd0 len 5
+[00:01:20.279,510] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x12
+[00:01:20.279,510] <dbg> bt_att: chan_send: code 0x12
+[00:01:20.279,602] <dbg> bt_att: att_tx_destroy: 0x2000bd7c
+[00:01:20.279,632] <dbg> bt_att: att_on_sent_cb: opcode 0x12
+[00:01:20.279,663] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:01:20.279,663] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:01:20.279,693] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdd0
+[00:01:20.279,815] <dbg> vcp_controller: vcp_volume_up: Current security before VCP change: 2
+[00:01:20.279,815] <dbg> vcp_controller: vcp_volume_up: Volume up initiated
+[00:01:20.279,846] <dbg> bt_gatt: bt_gatt_read: handle 0x0120
+[00:01:20.279,846] <dbg> bt_att: bt_att_req_alloc: req 0x2000be08
+[00:01:20.279,907] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000be08
+[00:01:20.279,907] <inf> main: Battery level: 40%
+[00:01:20.437,683] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x01 len 4
+[00:01:20.437,713] <dbg> bt_att: att_error_rsp: request 0x12 handle 0x00d8 error 0x0f
+[00:01:20.437,744] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 15 len 0: 
+[00:01:20.437,774] <dbg> bt_att: bt_att_req_free: req 0x2000bdd0
+[00:01:20.437,774] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000be08 len 3
+[00:01:20.437,805] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x0a
+[00:01:20.437,805] <dbg> bt_att: chan_send: code 0x0a
+[00:01:20.437,835] <dbg> bt_gatt: gatt_write_rsp: err 15
+[00:01:20.437,866] <dbg> bt_gatt: att_err_from_int: 15
+[00:01:20.437,866] <dbg> bt_vcp_vol_ctlr: vcp_vol_ctlr_write_vcs_cp_cb: err: 0x0F
+[00:01:20.437,927] <dbg> bt_vcp_vol_ctlr: vcs_cp_notify_app: 0x200056c8 opcode 1 err 15
+[00:01:20.437,927] <err> vcp_controller: VCP volume up error (err 15)
+[00:01:20.438,018] <dbg> bt_att: att_tx_destroy: 0x2000bd7c
+[00:01:20.438,018] <dbg> bt_att: att_on_sent_cb: opcode 0xa
+[00:01:20.438,049] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:01:20.438,049] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:01:20.438,079] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000be08
+[00:01:20.537,658] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x0b len 1
+[00:01:20.537,689] <dbg> bt_att: att_handle_read_rsp: 
+[00:01:20.537,719] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 1: 28
+[00:01:20.537,750] <dbg> bt_att: bt_att_req_free: req 0x2000be08
+[00:01:20.537,750] <dbg> bt_gatt: gatt_read_rsp: err 0
+[00:01:20.537,780] <inf> battery_reader: Battery level read: 40%
+[00:01:25.280,029] <dbg> bt_gatt: bt_gatt_write: handle 0x00d8 length 2
+[00:01:25.280,029] <dbg> bt_att: bt_att_req_alloc: req 0x2000be08
+[00:01:25.280,090] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000be08
+[00:01:25.280,090] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000be08 len 5
+[00:01:25.280,120] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x12
+[00:01:25.280,120] <dbg> bt_att: chan_send: code 0x12
+[00:01:25.280,212] <dbg> bt_att: att_tx_destroy: 0x2000bd7c
+[00:01:25.280,242] <dbg> bt_att: att_on_sent_cb: opcode 0x12
+[00:01:25.280,273] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:01:25.280,273] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:01:25.280,303] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000be08
+[00:01:25.280,426] <dbg> vcp_controller: vcp_volume_up: Current security before VCP change: 2
+[00:01:25.280,426] <dbg> vcp_controller: vcp_volume_up: Volume up initiated
+[00:01:25.280,456] <dbg> bt_gatt: bt_gatt_read: handle 0x0120
+[00:01:25.280,456] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdd0
+[00:01:25.280,517] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdd0
+[00:01:25.280,517] <inf> main: Battery level: 40%
+[00:01:25.337,677] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x01 len 4
+[00:01:25.337,707] <dbg> bt_att: att_error_rsp: request 0x12 handle 0x00d8 error 0x0f
+[00:01:25.337,738] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 15 len 0: 
+[00:01:25.337,768] <dbg> bt_att: bt_att_req_free: req 0x2000be08
+[00:01:25.337,768] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdd0 len 3
+[00:01:25.337,799] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x0a
+[00:01:25.337,799] <dbg> bt_att: chan_send: code 0x0a
+[00:01:25.337,829] <dbg> bt_gatt: gatt_write_rsp: err 15
+[00:01:25.337,860] <dbg> bt_gatt: att_err_from_int: 15
+[00:01:25.337,860] <dbg> bt_vcp_vol_ctlr: vcp_vol_ctlr_write_vcs_cp_cb: err: 0x0F
+[00:01:25.337,890] <dbg> bt_vcp_vol_ctlr: vcs_cp_notify_app: 0x200056c8 opcode 1 err 15
+[00:01:25.337,890] <err> vcp_controller: VCP volume up error (err 15)
+[00:01:25.337,982] <dbg> bt_att: att_tx_destroy: 0x2000bd7c
+[00:01:25.338,012] <dbg> bt_att: att_on_sent_cb: opcode 0xa
+[00:01:25.338,012] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:01:25.338,043] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:01:25.338,043] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdd0
+[00:01:25.437,652] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x0b len 1
+[00:01:25.437,683] <dbg> bt_att: att_handle_read_rsp: 
+[00:01:25.437,713] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 1: 28
+[00:01:25.437,744] <dbg> bt_att: bt_att_req_free: req 0x2000bdd0
+[00:01:25.437,744] <dbg> bt_gatt: gatt_read_rsp: err 0
+[00:01:25.437,774] <inf> battery_reader: Battery level read: 40%
+*** Booting Zephyr OS build v4.2.0-3326-g8e6077e3e507 ***
+[00:00:00.494,171] <inf> fs_nvs: 6 Sectors of 4096 bytes
+[00:00:00.494,171] <inf> fs_nvs: alloc wra: 0, fe8
+[00:00:00.494,171] <inf> fs_nvs: data wra: 0, 0
+[00:00:00.494,201] <dbg> settings: settings_nvs_backend_init: Initialized
+[00:00:00.495,544] <inf> bt_hci_core: HW Platform: Nordic Semiconductor (0x0002)
+[00:00:00.495,574] <inf> bt_hci_core: HW Variant: nRF52x (0x0002)
+[00:00:00.495,605] <inf> bt_hci_core: Firmware: Standard Bluetooth controller (0x00) Version 4.2 Build 99
+[00:00:00.495,788] <dbg> bt_smp: bt_smp_init: LE SC enabled
+[00:00:00.495,819] <inf> bt_hci_core: No ID address. App must call settings_load()
+[00:00:00.495,819] <inf> ble_manager: Bluetooth initialized
+[00:00:00.495,849] <inf> vcp_controller: VCP controller initialized
+[00:00:00.495,849] <dbg> ble_manager: ble_manager_init: Initializing connect work
+[00:00:00.495,880] <inf> ble_manager: BLE manager initialized
+[00:00:00.496,093] <dbg> bt_smp: smp_d1: key bbc6d7035671c8e577d7e73fd39503a4 d 1 r 0
+[00:00:00.496,154] <dbg> bt_smp: smp_d1: res 48ccf4848f2815bb750c0e276ced67ae
+[00:00:00.496,185] <inf> bt_hci_core: HCI transport: Controller
+[00:00:00.496,276] <inf> bt_hci_core: Identity: D0:26:7A:4D:45:9E (random)
+[00:00:00.496,307] <inf> bt_hci_core: HCI: version 5.4 (0x0d) revision 0x0000, manufacturer 0x05f1
+[00:00:00.496,337] <inf> bt_hci_core: LMP: version 5.4 (0x0d) subver 0xffff
+[00:00:00.496,368] <inf> ble_manager: No previously bonded device found
+[00:00:00.496,459] <dbg> bt_rpa: ah: irk 48ccf4848f2815bb750c0e276ced67ae
+[00:00:00.496,490] <dbg> bt_rpa: ah: r 24a775
+[00:00:00.496,582] <dbg> bt_rpa: bt_rpa_create: Created RPA 75:A7:24:1A:2D:97
+[00:00:00.496,917] <inf> ble_manager: Scanning for HIs
+[00:00:00.501,464] <dbg> bt_keys: bt_keys_find_irk: 3A:D9:2C:A3:8D:A3 (random)
+[00:00:00.501,617] <dbg> ble_manager: device_found: Advertisement data type 0xFF len 29 from 3A:D9:2C:A3:8D:A3 (random)
+[00:00:00.502,258] <dbg> bt_keys: bt_keys_find_irk: 39:02:6B:70:60:5B (random)
+[00:00:00.502,441] <dbg> ble_manager: device_found: Advertisement data type 0xFF len 29 from 39:02:6B:70:60:5B (random)
+[00:00:00.503,906] <dbg> bt_keys: bt_keys_find_irk: 1F:88:EA:03:21:A4 (random)
+[00:00:00.504,058] <dbg> ble_manager: device_found: Advertisement data type 0xFF len 29 from 1F:88:EA:03:21:A4 (random)
+[00:00:00.508,880] <dbg> bt_keys: bt_keys_find_irk: 62:FE:D7:6C:8D:84 (random)
+[00:00:00.508,972] <dbg> bt_keys: bt_keys_find_irk: No IRK for 62:FE:D7:6C:8D:84 (random)
+[00:00:00.509,155] <dbg> ble_manager: device_found: Advertisement data type 0x1 len 1 from 62:FE:D7:6C:8D:84 (random)
+[00:00:00.509,307] <dbg> ble_manager: device_found: Advertisement data type 0xA len 1 from 62:FE:D7:6C:8D:84 (random)
+[00:00:00.509,429] <dbg> ble_manager: device_found: Advertisement data type 0xFF len 10 from 62:FE:D7:6C:8D:84 (random)
+[00:00:00.509,613] <dbg> bt_keys: bt_keys_find_irk: 62:FE:D7:6C:8D:84 (random)
+[00:00:00.509,704] <dbg> bt_keys: bt_keys_find_irk: No IRK for 62:FE:D7:6C:8D:84 (random)
+[00:00:00.940,307] <dbg> bt_smp: bt_smp_pkey_ready: 
+[00:00:01.785,400] <dbg> bt_keys: bt_keys_find_irk: 6C:71:0D:95:98:20 (random)
+[00:00:01.785,522] <dbg> bt_keys: bt_keys_find_irk: No IRK for 6C:71:0D:95:98:20 (random)
+[00:00:01.785,675] <dbg> ble_manager: device_found: Advertisement data type 0x1 len 1 from 6C:71:0D:95:98:20 (random)
+[00:00:01.785,797] <dbg> ble_manager: device_found: Advertisement data type 0x2 len 2 from 6C:71:0D:95:98:20 (random)
+[00:00:01.785,919] <dbg> ble_manager: device_found: Advertisement data type 0xFF len 6 from 6C:71:0D:95:98:20 (random)
+[00:00:01.787,017] <dbg> bt_keys: bt_keys_find_irk: 04:B9:E8:14:96:48 (random)
+[00:00:01.787,200] <dbg> ble_manager: device_found: Advertisement data type 0xFF len 29 from 04:B9:E8:14:96:48 (random)
+[00:00:01.787,780] <dbg> bt_keys: bt_keys_find_irk: 6F:6F:BA:D3:4D:65 (random)
+[00:00:01.787,872] <dbg> bt_keys: bt_keys_find_irk: No IRK for 6F:6F:BA:D3:4D:65 (random)
+[00:00:01.788,055] <dbg> ble_manager: device_found: Advertisement data type 0x1 len 1 from 6F:6F:BA:D3:4D:65 (random)
+[00:00:01.788,177] <dbg> ble_manager: device_found: Advertisement data type 0x7 len 16 from 6F:6F:BA:D3:4D:65 (random)
+[00:00:01.788,452] <dbg> bt_keys: bt_keys_find_irk: 6F:6F:BA:D3:4D:65 (random)
+[00:00:01.788,574] <dbg> bt_keys: bt_keys_find_irk: No IRK for 6F:6F:BA:D3:4D:65 (random)
+[00:00:01.788,726] <dbg> ble_manager: device_found: Advertisement data type 0x9 len 7 from 6F:6F:BA:D3:4D:65 (random)
+[00:00:01.788,787] <dbg> ble_manager: device_found: Found device name: HARC HI
+[00:00:01.788,818] <dbg> ble_manager: device_found: strcmp result: 0
+[00:00:01.788,848] <dbg> ble_manager: device_found: Will attempt to connect to HARC HI
+[00:00:01.788,970] <inf> ble_manager: Connecting to HARC HI (with address 6F:6F:BA:D3:4D:65 (random))
+[00:00:01.789,306] <dbg> bt_keys: bt_keys_find_irk: 6F:6F:BA:D3:4D:65 (random)
+[00:00:01.789,398] <dbg> bt_keys: bt_keys_find_irk: No IRK for 6F:6F:BA:D3:4D:65 (random)
+[00:00:01.847,656] <dbg> bt_keys: bt_keys_find_irk: 6F:6F:BA:D3:4D:65 (random)
+[00:00:01.847,747] <dbg> bt_keys: bt_keys_find_irk: No IRK for 6F:6F:BA:D3:4D:65 (random)
+[00:00:01.847,778] <dbg> bt_smp: bt_smp_accept: conn 0x20004a28 handle 0
+[00:00:01.847,808] <dbg> bt_smp: bt_smp_connected: chan 0x20004c94 cid 0x0006
+[00:00:01.847,839] <dbg> bt_att: bt_att_accept: conn 0x20004a28 handle 0
+[00:00:01.847,869] <dbg> bt_att: att_chan_attach: att 0x2000bda4 chan 0x2000aa40 flags 0
+[00:00:01.847,900] <dbg> bt_att: bt_att_connected: chan 0x2000aa44 cid 0x0004
+[00:00:01.847,930] <dbg> bt_gatt: bt_gatt_connected: conn 0x20004a28
+[00:00:01.848,022] <dbg> bt_keys: bt_keys_find_addr: 6F:6F:BA:D3:4D:65 (random)
+[00:00:01.848,052] <dbg> bt_att: bt_att_status: chan 0x2000aa44 status 0x2000aa54
+[00:00:01.848,205] <dbg> ble_manager: is_bonded_device: Checking if device 6F:6F:BA:D3:4D:65 (random) is bonded
+[00:00:01.848,266] <dbg> ble_manager: connected_cb: Connected to new device 6F:6F:BA:D3:4D:65 (random) - expecting pairing
+[00:00:02.348,327] <dbg> ble_manager: security_request_handler: Requesting security level 2
+[00:00:02.348,449] <dbg> bt_keys: bt_keys_find: type 32 6F:6F:BA:D3:4D:65 (random)
+[00:00:02.348,571] <dbg> bt_keys: bt_keys_find: type 4 6F:6F:BA:D3:4D:65 (random)
+[00:00:02.348,571] <dbg> bt_smp: smp_send_pairing_req: 
+[00:00:02.348,663] <dbg> bt_keys: bt_keys_get_addr: 6F:6F:BA:D3:4D:65 (random)
+[00:00:02.348,815] <dbg> bt_keys: bt_keys_get_addr: created 0x20005590 for 6F:6F:BA:D3:4D:65 (random)
+[00:00:02.350,097] <dbg> bt_smp: smp_init: prnd c43d7924ae39aa6bdd877da720dbc741
+[00:00:02.350,128] <dbg> bt_smp: smp_send_pairing_req: req: io_capability 0x03, oob_flag 0x00, auth_req 0x09, max_key_size 0x10, init_key_dist 0x07, resp_key_dist 0x07
+[00:00:02.449,005] <dbg> bt_smp: bt_smp_recv: Received SMP code 0x02 len 6
+[00:00:02.449,005] <dbg> bt_smp: smp_pairing_rsp: rsp: io_capability 0x03, oob_flag 0x00, auth_req 0x09, max_key_size 0x10, init_key_dist 0x02, resp_key_dist 0x02
+[00:00:03.549,194] <dbg> bt_smp: bt_smp_recv: Received SMP code 0x0c len 64
+[00:00:03.549,224] <dbg> bt_smp: smp_public_key: 
+[00:00:03.549,743] <dbg> bt_smp: bt_smp_recv: Received SMP code 0x03 len 16
+[00:00:03.549,743] <dbg> bt_smp: smp_pairing_confirm: 
+[00:00:03.648,986] <dbg> bt_smp: bt_smp_recv: Received SMP code 0x04 len 16
+[00:00:03.649,017] <dbg> bt_smp: smp_pairing_random: 
+[00:00:03.649,627] <dbg> bt_smp: sc_smp_check_confirm: pcnf ebac5d09e965f2789ee5955116c7577b
+[00:00:03.649,688] <dbg> bt_smp: sc_smp_check_confirm: cfm ebac5d09e965f2789ee5955116c7577b
+[00:00:03.770,751] <dbg> bt_smp: bt_smp_dhkey_ready: 0x2000814c
+[00:00:03.772,644] <dbg> bt_smp: sc_smp_send_dhkey_check: 
+[00:00:03.848,999] <dbg> bt_smp: bt_smp_recv: Received SMP code 0x0d len 16
+[00:00:03.849,029] <dbg> bt_smp: smp_dhkey_check: 
+[00:00:04.148,986] <dbg> bt_keys: bt_keys_clear: 6F:6F:BA:D3:4D:65 (random) (keys 0x0000)
+[00:00:04.149,169] <dbg> bt_keys: bt_keys_get_addr: 6F:6F:BA:D3:4D:65 (random)
+[00:00:04.149,322] <dbg> bt_keys: bt_keys_get_addr: created 0x20005590 for 6F:6F:BA:D3:4D:65 (random)
+[00:00:04.149,383] <dbg> bt_smp: bt_smp_encrypt_change: chan 0x20004c94 conn 0x20004a28 handle 0 encrypt 0x01 hci status 0x00 
+[00:00:04.149,444] <dbg> bt_att: bt_att_encrypt_change: chan 0x2000aa44 conn 0x20004a28 handle 0 sec_level 0x02 status 0x00 
+[00:00:04.149,475] <dbg> bt_gatt: bt_gatt_encrypt_change: conn 0x20004a28
+[00:00:04.149,566] <dbg> bt_keys: bt_keys_find_addr: 6F:6F:BA:D3:4D:65 (random)
+[00:00:04.149,749] <dbg> ble_manager: security_changed_cb: Security changed: 6F:6F:BA:D3:4D:65 (random) level 2
+[00:00:04.149,780] <dbg> ble_manager: security_changed_cb: Encryption established at level 2
+[00:00:04.149,810] <dbg> ble_manager: security_changed_cb: New device - waiting for pairing completion
+[00:00:04.149,993] <dbg> bt_smp: bt_smp_recv: Received SMP code 0x08 len 16
+[00:00:04.150,024] <dbg> bt_smp: smp_ident_info: 
+[00:00:04.150,115] <dbg> bt_keys: bt_keys_get_type: type 2 6F:6F:BA:D3:4D:65 (random)
+[00:00:04.150,207] <dbg> bt_keys: bt_keys_find: type 2 6F:6F:BA:D3:4D:65 (random)
+[00:00:04.150,299] <dbg> bt_keys: bt_keys_get_addr: 6F:6F:BA:D3:4D:65 (random)
+[00:00:04.150,390] <dbg> bt_smp: bt_smp_recv: Received SMP code 0x09 len 7
+[00:00:04.150,482] <dbg> bt_smp: smp_ident_addr_info: identity CC:89:6C:EE:40:F3 (public)
+[00:00:04.150,573] <dbg> bt_keys: bt_keys_find_addr: CC:89:6C:EE:40:F3 (public)
+[00:00:04.150,665] <dbg> bt_keys: bt_keys_get_type: type 2 6F:6F:BA:D3:4D:65 (random)
+[00:00:04.150,756] <dbg> bt_keys: bt_keys_find: type 2 6F:6F:BA:D3:4D:65 (random)
+[00:00:04.150,848] <dbg> bt_keys: bt_keys_find_addr: CC:89:6C:EE:40:F3 (public)
+[00:00:04.151,062] <dbg> bt_gatt: gatt_store_ccc: Stored CCCs for CC:89:6C:EE:40:F3 (public)
+[00:00:04.151,062] <dbg> bt_gatt: gatt_store_ccc:   CCC: NULL
+[00:00:04.199,432] <dbg> bt_smp: smp_pairing_complete: got status 0x0
+[00:00:04.214,782] <dbg> bt_keys: bt_keys_store: Stored keys for CC:89:6C:EE:40:F3 (public)
+[00:00:04.214,965] <dbg> bt_gatt: gatt_store_ccc: Stored CCCs for CC:89:6C:EE:40:F3 (public)
+[00:00:04.214,996] <dbg> bt_gatt: gatt_store_ccc:   CCC: NULL
+[00:00:04.214,996] <dbg> ble_manager: pairing_complete: Pairing complete. Bonded: 1
+[00:00:04.215,026] <inf> ble_manager: New device paired successfully - saving and disconnecting
+[00:00:04.215,026] <dbg> ble_manager: pairing_complete: Saving bond information to flash
+[00:00:04.215,209] <inf> ble_manager: Found bonded device: CC:89:6C:EE:40:F3 (public)
+[00:00:04.249,206] <wrn> bt_l2cap: Ignoring data for unknown channel ID 0x002a
+[00:00:04.249,328] <dbg> bt_smp: bt_smp_disconnected: chan 0x20004c94 cid 0x0006
+[00:00:04.249,420] <dbg> bt_att: bt_att_disconnected: chan 0x2000aa44 cid 0x0004
+[00:00:04.249,420] <dbg> bt_att: att_chan_detach: chan 0x2000aa40
+[00:00:04.249,450] <dbg> bt_gatt: bt_gatt_disconnected: conn 0x20004a28
+[00:00:04.249,542] <dbg> bt_keys: bt_keys_find_addr: CC:89:6C:EE:40:F3 (public)
+[00:00:04.249,633] <dbg> bt_keys: bt_keys_find_addr: CC:89:6C:EE:40:F3 (public)
+[00:00:04.249,694] <dbg> bt_att: bt_att_released: chan 0x2000aa40
+[00:00:04.249,694] <inf> ble_manager: Disconnected (reason 0x16)
+[00:00:04.249,725] <inf> ble_manager: Connecting to previously bonded device
+[00:00:04.250,549] <dbg> bt_rpa: ah: irk 88375043bce1b450b50b97b8b1938f71
+[00:00:04.250,579] <dbg> bt_rpa: ah: r 000b77
+[00:00:04.250,671] <dbg> bt_rpa: bt_rpa_create: Created RPA 77:0B:00:47:B3:B0
+[00:00:04.250,793] <dbg> bt_rpa: ah: irk 48ccf4848f2815bb750c0e276ced67ae
+[00:00:04.250,823] <dbg> bt_rpa: ah: r a5ff61
+[00:00:04.250,946] <dbg> bt_rpa: bt_rpa_create: Created RPA 61:FF:A5:28:C6:97
+[00:00:04.370,178] <dbg> bt_smp: bt_smp_accept: conn 0x20004a28 handle 0
+[00:00:04.370,208] <dbg> bt_smp: bt_smp_connected: chan 0x20004c94 cid 0x0006
+[00:00:04.370,239] <dbg> bt_att: bt_att_accept: conn 0x20004a28 handle 0
+[00:00:04.370,269] <dbg> bt_att: att_chan_attach: att 0x2000bda4 chan 0x2000aa40 flags 0
+[00:00:04.370,300] <dbg> bt_att: bt_att_connected: chan 0x2000aa44 cid 0x0004
+[00:00:04.370,330] <dbg> bt_gatt: bt_gatt_connected: conn 0x20004a28
+[00:00:04.370,422] <dbg> bt_keys: bt_keys_find_addr: CC:89:6C:EE:40:F3 (public)
+[00:00:04.370,544] <dbg> bt_att: bt_att_status: chan 0x2000aa44 status 0x2000aa54
+[00:00:04.370,697] <dbg> ble_manager: is_bonded_device: Checking if device CC:89:6C:EE:40:F3 (public) is bonded
+[00:00:04.370,727] <dbg> ble_manager: is_bonded_device_cb: Found bonded device
+[00:00:04.370,788] <inf> ble_manager: Connected to bonded device CC:89:6C:EE:40:F3 (public)
+[00:00:04.870,849] <dbg> ble_manager: security_request_handler: Requesting security level 2
+[00:00:04.870,971] <dbg> bt_keys: bt_keys_find: type 32 CC:89:6C:EE:40:F3 (public)
+[00:00:05.221,557] <dbg> bt_smp: bt_smp_encrypt_change: chan 0x20004c94 conn 0x20004a28 handle 0 encrypt 0x01 hci status 0x00 
+[00:00:05.221,618] <dbg> bt_att: bt_att_encrypt_change: chan 0x2000aa44 conn 0x20004a28 handle 0 sec_level 0x02 status 0x00 
+[00:00:05.221,618] <dbg> bt_gatt: bt_gatt_encrypt_change: conn 0x20004a28
+[00:00:05.221,710] <dbg> bt_keys: bt_keys_find_addr: CC:89:6C:EE:40:F3 (public)
+[00:00:05.221,893] <dbg> ble_manager: security_changed_cb: Security changed: CC:89:6C:EE:40:F3 (public) level 2
+[00:00:05.221,893] <dbg> ble_manager: security_changed_cb: Encryption established at level 2
+[00:00:05.221,923] <dbg> ble_manager: security_changed_cb: Bonded device encrypted - starting service discovery
+[00:00:05.221,923] <dbg> vcp_controller: vcp_discover: Current security before VCP discover: 2
+[00:00:05.221,954] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:05.221,984] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdd0
+[00:00:05.222,076] <dbg> bt_gatt: gatt_find_type_encode: uuid 1844 start_handle 0x0001 end_handle 0xffff
+[00:00:05.222,076] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdd0
+[00:00:05.222,106] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdd0 len 9
+[00:00:05.222,137] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x06
+[00:00:05.222,137] <dbg> bt_att: chan_send: code 0x06
+[00:00:05.222,229] <dbg> vcp_controller: vcp_discover: VCP discovery initiated
+[00:00:05.222,229] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:05.222,259] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdec
+[00:00:05.222,320] <dbg> bt_gatt: gatt_find_type_encode: uuid 180f start_handle 0x0001 end_handle 0xffff
+[00:00:05.222,351] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdec
+[00:00:05.222,534] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:05.222,534] <dbg> bt_att: att_on_sent_cb: opcode 0x6
+[00:00:05.222,564] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:05.222,564] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:05.222,595] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdd0
+[00:00:05.222,656] <wrn> bt_l2cap: Ignoring data for unknown channel ID 0x002a
+[00:00:05.271,575] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x08 len 6
+[00:00:05.271,667] <dbg> bt_att: att_read_type_req: start_handle 0x0001 end_handle 0xffff type 2a00
+[00:00:05.271,728] <dbg> bt_att: read_type_cb: handle 0x0007
+[00:00:05.271,728] <dbg> bt_gatt: bt_gatt_attr_read: handle 0x0000 offset 0 length 11
+[00:00:05.271,759] <dbg> bt_att: chan_send: code 0x09
+[00:00:05.271,911] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:05.271,942] <dbg> bt_att: att_on_sent_cb: opcode 0x9
+[00:00:05.271,942] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:05.271,972] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:05.321,746] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x07 len 4
+[00:00:05.321,746] <dbg> bt_att: att_handle_find_type_rsp: 
+[00:00:05.321,807] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 4: d100db00
+[00:00:05.321,807] <dbg> bt_att: bt_att_req_free: req 0x2000bdd0
+[00:00:05.321,838] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdec len 9
+[00:00:05.321,838] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x06
+[00:00:05.321,868] <dbg> bt_att: chan_send: code 0x06
+[00:00:05.321,899] <dbg> bt_gatt: gatt_find_type_rsp: err 0
+[00:00:05.321,899] <dbg> bt_gatt: gatt_find_type_rsp: start_handle 0x00d1 end_handle 0x00db
+[00:00:05.321,929] <dbg> bt_vcp_vol_ctlr: primary_discover_func: [ATTRIBUTE] handle 0x00D1
+[00:00:05.321,960] <dbg> bt_vcp_vol_ctlr: primary_discover_func: Primary discover complete
+[00:00:05.321,960] <dbg> bt_gatt: gatt_read_type: start_handle 0x00d2 end_handle 0x00db
+[00:00:05.321,990] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:05.321,990] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdd0
+[00:00:05.322,021] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdd0
+[00:00:05.322,113] <dbg> bt_att: att_tx_destroy: 0x2000bd54
+[00:00:05.322,143] <dbg> bt_att: att_on_sent_cb: opcode 0x6
+[00:00:05.322,143] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:05.322,174] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:05.322,174] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdec
+[00:00:05.371,734] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x06 len 8
+[00:00:05.371,734] <dbg> bt_att: att_find_type_req: start_handle 0x0001 end_handle 0xffff type 10240
+[00:00:05.371,765] <dbg> bt_att: find_type_cb: handle 0x0001
+[00:00:05.371,795] <dbg> bt_gatt: bt_gatt_attr_read: handle 0x0000 offset 0 length 2
+[00:00:05.371,826] <dbg> bt_att: find_type_cb: handle 0x0005
+[00:00:05.371,856] <dbg> bt_gatt: bt_gatt_attr_read: handle 0x0000 offset 0 length 2
+[00:00:05.371,887] <dbg> bt_att: att_tx_destroy: 0x2000bd54
+[00:00:05.371,917] <dbg> bt_att: chan_send: code 0x01
+[00:00:05.372,009] <dbg> bt_att: att_tx_destroy: 0x2000bd54
+[00:00:05.372,039] <dbg> bt_att: att_on_sent_cb: opcode 0x1
+[00:00:05.372,070] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:05.372,070] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:05.421,691] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x07 len 4
+[00:00:05.421,722] <dbg> bt_att: att_handle_find_type_rsp: 
+[00:00:05.421,752] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 4: 1e012101
+[00:00:05.421,783] <dbg> bt_att: bt_att_req_free: req 0x2000bdec
+[00:00:05.421,783] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdd0 len 7
+[00:00:05.421,813] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x08
+[00:00:05.421,844] <dbg> bt_att: chan_send: code 0x08
+[00:00:05.421,875] <dbg> bt_gatt: gatt_find_type_rsp: err 0
+[00:00:05.421,936] <dbg> bt_gatt: gatt_find_type_rsp: start_handle 0x011e end_handle 0x0121
+[00:00:05.421,966] <dbg> bt_gatt: gatt_read_type: start_handle 0x011f end_handle 0x0121
+[00:00:05.421,997] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:05.421,997] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdec
+[00:00:05.422,027] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdec
+[00:00:05.422,210] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:05.422,241] <dbg> bt_att: att_on_sent_cb: opcode 0x8
+[00:00:05.422,271] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:05.422,271] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:05.422,302] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdd0
+[00:00:05.471,710] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x06 len 8
+[00:00:05.471,710] <dbg> bt_att: att_find_type_req: start_handle 0x0001 end_handle 0xffff type 10240
+[00:00:05.471,771] <dbg> bt_att: find_type_cb: handle 0x0001
+[00:00:05.471,801] <dbg> bt_gatt: bt_gatt_attr_read: handle 0x0000 offset 0 length 2
+[00:00:05.471,832] <dbg> bt_att: find_type_cb: handle 0x0005
+[00:00:05.471,862] <dbg> bt_gatt: bt_gatt_attr_read: handle 0x0000 offset 0 length 2
+[00:00:05.471,893] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:05.471,923] <dbg> bt_att: chan_send: code 0x01
+[00:00:05.472,137] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:05.472,167] <dbg> bt_att: att_on_sent_cb: opcode 0x1
+[00:00:05.472,198] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:05.472,229] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:05.522,216] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x09 len 22
+[00:00:05.522,216] <dbg> bt_att: att_handle_read_type_rsp: 
+[00:00:05.522,277] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 22: 07d40012d5007d2bd70008d8007e2bd90012da007f2b
+[00:00:05.522,308] <dbg> bt_att: bt_att_req_free: req 0x2000bdd0
+[00:00:05.522,308] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdec len 7
+[00:00:05.522,338] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x08
+[00:00:05.522,369] <dbg> bt_att: chan_send: code 0x08
+[00:00:05.522,399] <dbg> bt_gatt: gatt_read_type_rsp: err 0
+[00:00:05.522,460] <dbg> bt_gatt: parse_characteristic: handle 0x00d4 uuid 2b7d properties 0x12
+[00:00:05.522,460] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: [ATTRIBUTE] handle 0x00D4
+[00:00:05.522,491] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: Volume state
+[00:00:05.522,521] <dbg> bt_gatt: gatt_find_info: start_handle 0x00d5 end_handle 0x00db
+[00:00:05.522,521] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:05.522,552] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdd0
+[00:00:05.522,583] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdd0
+[00:00:05.522,613] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: Subscribed to handle 0x00D4
+[00:00:05.522,674] <dbg> bt_gatt: parse_characteristic: handle 0x00d7 uuid 2b7e properties 0x08
+[00:00:05.522,674] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: [ATTRIBUTE] handle 0x00D7
+[00:00:05.522,705] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: Control Point
+[00:00:05.522,766] <dbg> bt_gatt: parse_characteristic: handle 0x00d9 uuid 2b7f properties 0x12
+[00:00:05.522,766] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: [ATTRIBUTE] handle 0x00D9
+[00:00:05.522,796] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: Volume Flags
+[00:00:05.522,827] <dbg> bt_gatt: gatt_find_info: start_handle 0x00da end_handle 0x00db
+[00:00:05.522,827] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:05.522,857] <dbg> bt_att: bt_att_req_alloc: req 0x2000be08
+[00:00:05.522,888] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000be08
+[00:00:05.522,918] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: Subscribed to handle 0x00D9
+[00:00:05.522,918] <dbg> bt_gatt: gatt_read_type: start_handle 0x00da end_handle 0x00db
+[00:00:05.522,949] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:05.522,949] <dbg> bt_att: bt_att_req_alloc: No space for req
+[00:00:05.522,979] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: Setup complete for vol_ctlr
+[00:00:05.522,979] <inf> vcp_controller: VCP discovery complete - VOCS: 0, AICS: 0
+[00:00:05.523,071] <dbg> bt_att: att_tx_destroy: 0x2000bd54
+[00:00:05.523,071] <dbg> bt_att: att_on_sent_cb: opcode 0x8
+[00:00:05.523,101] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:05.523,101] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:05.523,132] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdec
+[00:00:05.571,716] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x06 len 22
+[00:00:05.571,746] <dbg> bt_att: att_find_type_req: start_handle 0x0001 end_handle 0xffff type 10240
+[00:00:05.571,777] <dbg> bt_att: find_type_cb: handle 0x0001
+[00:00:05.571,807] <dbg> bt_gatt: bt_gatt_attr_read: handle 0x0000 offset 0 length 2
+[00:00:05.571,838] <dbg> bt_att: find_type_cb: handle 0x0005
+[00:00:05.571,868] <dbg> bt_gatt: bt_gatt_attr_read: handle 0x0000 offset 0 length 2
+[00:00:05.571,899] <dbg> bt_att: att_tx_destroy: 0x2000bd54
+[00:00:05.572,021] <dbg> bt_att: chan_send: code 0x01
+[00:00:05.572,174] <dbg> bt_att: att_tx_destroy: 0x2000bd54
+[00:00:05.572,174] <dbg> bt_att: att_on_sent_cb: opcode 0x1
+[00:00:05.572,204] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:05.572,204] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:05.621,704] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x09 len 8
+[00:00:05.621,734] <dbg> bt_att: att_handle_read_type_rsp: 
+[00:00:05.621,765] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 8: 071f01122001192a
+[00:00:05.621,795] <dbg> bt_att: bt_att_req_free: req 0x2000bdec
+[00:00:05.621,826] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdd0 len 5
+[00:00:05.621,826] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x04
+[00:00:05.621,856] <dbg> bt_att: chan_send: code 0x04
+[00:00:05.621,887] <dbg> bt_gatt: gatt_read_type_rsp: err 0
+[00:00:05.621,948] <dbg> bt_gatt: parse_characteristic: handle 0x011f uuid 2a19 properties 0x12
+[00:00:05.621,948] <dbg> bt_gatt: gatt_find_info: start_handle 0x0121 end_handle 0x0121
+[00:00:05.621,978] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:05.621,978] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdec
+[00:00:05.622,039] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdec
+[00:00:05.622,131] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:05.622,131] <dbg> bt_att: att_on_sent_cb: opcode 0x4
+[00:00:05.622,161] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:05.622,161] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:05.622,192] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdd0
+[00:00:05.721,649] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x05 len 21
+[00:00:05.721,679] <dbg> bt_att: att_handle_find_info_rsp: 
+[00:00:05.721,740] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 21: 01d5007d2bd6000229d7000328d8007e2bd9000328
+[00:00:05.721,740] <dbg> bt_att: bt_att_req_free: req 0x2000bdd0
+[00:00:05.721,771] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000be08 len 5
+[00:00:05.721,771] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x04
+[00:00:05.721,801] <dbg> bt_att: chan_send: code 0x04
+[00:00:05.721,832] <dbg> bt_gatt: gatt_find_info_rsp: err 0
+[00:00:05.721,893] <dbg> bt_gatt: gatt_find_info_rsp: handle 0x00d5 uuid 2b7d
+[00:00:05.721,954] <dbg> bt_gatt: gatt_find_info_rsp: handle 0x00d6 uuid 2902
+[00:00:05.721,984] <dbg> bt_gatt: gatt_write_ccc: handle 0x00d6 value 0x0001
+[00:00:05.721,984] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:05.722,015] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdd0
+[00:00:05.722,045] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdd0
+[00:00:05.722,137] <dbg> bt_att: att_tx_destroy: 0x2000bd7c
+[00:00:05.722,137] <dbg> bt_att: att_on_sent_cb: opcode 0x4
+[00:00:05.722,167] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:05.722,167] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:05.722,198] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000be08
+[00:00:05.821,655] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x05 len 9
+[00:00:05.821,655] <dbg> bt_att: att_handle_find_info_rsp: 
+[00:00:05.821,716] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 9: 01da007f2bdb000229
+[00:00:05.821,716] <dbg> bt_att: bt_att_req_free: req 0x2000be08
+[00:00:05.821,746] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdec len 5
+[00:00:05.821,777] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x04
+[00:00:05.821,777] <dbg> bt_att: chan_send: code 0x04
+[00:00:05.821,807] <dbg> bt_gatt: gatt_find_info_rsp: err 0
+[00:00:05.821,868] <dbg> bt_gatt: gatt_find_info_rsp: handle 0x00da uuid 2b7f
+[00:00:05.821,929] <dbg> bt_gatt: gatt_find_info_rsp: handle 0x00db uuid 2902
+[00:00:05.821,960] <dbg> bt_gatt: gatt_write_ccc: handle 0x00db value 0x0001
+[00:00:05.821,960] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:05.821,990] <dbg> bt_att: bt_att_req_alloc: req 0x2000be08
+[00:00:05.822,021] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000be08
+[00:00:05.822,113] <dbg> bt_att: att_tx_destroy: 0x2000bd54
+[00:00:05.822,143] <dbg> bt_att: att_on_sent_cb: opcode 0x4
+[00:00:05.822,143] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:05.822,174] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:05.822,174] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdec
+[00:00:05.921,630] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x05 len 5
+[00:00:05.921,630] <dbg> bt_att: att_handle_find_info_rsp: 
+[00:00:05.921,691] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 5: 0121010229
+[00:00:05.921,722] <dbg> bt_att: bt_att_req_free: req 0x2000bdec
+[00:00:05.921,722] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdd0 len 5
+[00:00:05.921,752] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x12
+[00:00:05.921,752] <dbg> bt_att: chan_send: code 0x12
+[00:00:05.921,783] <dbg> bt_gatt: gatt_find_info_rsp: err 0
+[00:00:05.921,844] <dbg> bt_gatt: gatt_find_info_rsp: handle 0x0121 uuid 2902
+[00:00:05.921,875] <wrn> battery_reader: CCC descriptor not found - notifications not available
+[00:00:05.921,936] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:05.921,966] <dbg> bt_att: att_on_sent_cb: opcode 0x12
+[00:00:05.921,966] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:05.921,997] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:05.922,027] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdd0
+[00:00:06.021,606] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x13 len 0
+[00:00:06.021,636] <dbg> bt_att: att_handle_write_rsp: 
+[00:00:06.021,667] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 0: 
+[00:00:06.021,697] <dbg> bt_att: bt_att_req_free: req 0x2000bdd0
+[00:00:06.021,697] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000be08 len 5
+[00:00:06.021,728] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x12
+[00:00:06.021,728] <dbg> bt_att: chan_send: code 0x12
+[00:00:06.021,759] <dbg> bt_gatt: gatt_write_ccc_rsp: err 0
+[00:00:06.021,789] <dbg> bt_gatt: att_err_from_int: 0
+[00:00:06.021,881] <dbg> bt_att: att_tx_destroy: 0x2000bd7c
+[00:00:06.021,881] <dbg> bt_att: att_on_sent_cb: opcode 0x12
+[00:00:06.021,911] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:06.021,911] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:06.021,942] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000be08
+[00:00:06.121,612] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x13 len 0
+[00:00:06.121,612] <dbg> bt_att: att_handle_write_rsp: 
+[00:00:06.121,673] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 0: 
+[00:00:06.121,673] <dbg> bt_att: bt_att_req_free: req 0x2000be08
+[00:00:06.121,704] <dbg> bt_gatt: gatt_write_ccc_rsp: err 0
+[00:00:06.121,704] <dbg> bt_gatt: att_err_from_int: 0
+[00:00:10.497,192] <dbg> bt_gatt: bt_gatt_write: handle 0x00d8 length 2
+[00:00:10.497,192] <dbg> bt_att: bt_att_req_alloc: req 0x2000be08
+[00:00:10.497,253] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000be08
+[00:00:10.497,253] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000be08 len 5
+[00:00:10.497,283] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x12
+[00:00:10.497,283] <dbg> bt_att: chan_send: code 0x12
+[00:00:10.497,375] <dbg> bt_att: att_tx_destroy: 0x2000bd7c
+[00:00:10.497,406] <dbg> bt_att: att_on_sent_cb: opcode 0x12
+[00:00:10.497,436] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:10.497,436] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:10.497,467] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000be08
+[00:00:10.497,589] <dbg> vcp_controller: vcp_volume_up: Current security before VCP change: 2
+[00:00:10.497,589] <dbg> vcp_controller: vcp_volume_up: Volume up initiated
+[00:00:10.497,619] <dbg> bt_gatt: bt_gatt_read: handle 0x0120
+[00:00:10.497,619] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdd0
+[00:00:10.497,680] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdd0
+[00:00:10.497,680] <inf> main: Battery level: 0%
+[00:00:10.671,630] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x01 len 4
+[00:00:10.671,661] <dbg> bt_att: att_error_rsp: request 0x12 handle 0x00d8 error 0x80
+[00:00:10.671,691] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 128 len 0: 
+[00:00:10.671,722] <dbg> bt_att: bt_att_req_free: req 0x2000be08
+[00:00:10.671,722] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdd0 len 3
+[00:00:10.671,752] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x0a
+[00:00:10.671,752] <dbg> bt_att: chan_send: code 0x0a
+[00:00:10.671,783] <dbg> bt_gatt: gatt_write_rsp: err 128
+[00:00:10.671,813] <dbg> bt_gatt: att_err_from_int: 128
+[00:00:10.671,813] <dbg> bt_vcp_vol_ctlr: vcp_vol_ctlr_write_vcs_cp_cb: err: 0x80
+[00:00:10.671,875] <dbg> bt_gatt: bt_gatt_read: handle 0x00d5
+[00:00:10.671,875] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:10.671,905] <dbg> bt_att: bt_att_req_alloc: req 0x2000be08
+[00:00:10.671,936] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000be08
+[00:00:10.672,027] <dbg> bt_att: att_tx_destroy: 0x2000bd7c
+[00:00:10.672,027] <dbg> bt_att: att_on_sent_cb: opcode 0xa
+[00:00:10.672,058] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:10.672,058] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:10.672,088] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdd0
+[00:00:10.771,606] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x0b len 1
+[00:00:10.771,636] <dbg> bt_att: att_handle_read_rsp: 
+[00:00:10.771,667] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 1: 28
+[00:00:10.771,697] <dbg> bt_att: bt_att_req_free: req 0x2000bdd0
+[00:00:10.771,697] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000be08 len 3
+[00:00:10.771,728] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x0a
+[00:00:10.771,728] <dbg> bt_att: chan_send: code 0x0a
+[00:00:10.771,789] <dbg> bt_gatt: gatt_read_rsp: err 0
+[00:00:10.771,789] <inf> battery_reader: Battery level read: 40%
+[00:00:10.771,881] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:10.771,881] <dbg> bt_att: att_on_sent_cb: opcode 0xa
+[00:00:10.771,911] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:10.771,911] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:10.771,942] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000be08
+[00:00:10.871,612] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x0b len 3
+[00:00:10.871,643] <dbg> bt_att: att_handle_read_rsp: 
+[00:00:10.871,673] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 3: ef00e9
+[00:00:10.871,704] <dbg> bt_att: bt_att_req_free: req 0x2000be08
+[00:00:10.871,734] <dbg> bt_gatt: gatt_read_rsp: err 0
+[00:00:10.871,734] <dbg> bt_vcp_vol_ctlr: internal_read_vol_state_cb: Volume 239, mute 0, counter 233
+[00:00:10.871,765] <dbg> bt_gatt: bt_gatt_write: handle 0x00d8 length 2
+[00:00:10.871,765] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:10.871,795] <dbg> bt_att: bt_att_req_alloc: req 0x2000be08
+[00:00:10.871,826] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000be08
+[00:00:10.871,856] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000be08 len 5
+[00:00:10.871,856] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x12
+[00:00:10.871,887] <dbg> bt_att: chan_send: code 0x12
+[00:00:10.871,978] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:10.872,009] <dbg> bt_att: att_on_sent_cb: opcode 0x12
+[00:00:10.872,009] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:10.872,039] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:10.872,039] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000be08
+[00:00:10.971,618] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x01 len 4
+[00:00:10.971,649] <dbg> bt_att: att_error_rsp: request 0x12 handle 0x00d8 error 0x80
+[00:00:10.971,679] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 128 len 0: 
+[00:00:10.971,710] <dbg> bt_att: bt_att_req_free: req 0x2000be08
+[00:00:10.971,710] <dbg> bt_gatt: gatt_write_rsp: err 128
+[00:00:10.971,740] <dbg> bt_gatt: att_err_from_int: 128
+[00:00:10.971,740] <dbg> bt_vcp_vol_ctlr: vcp_vol_ctlr_write_vcs_cp_cb: err: 0x80
+[00:00:10.971,771] <dbg> bt_vcp_vol_ctlr: vcs_cp_notify_app: 0x200056c8 opcode 1 err 128
+[00:00:10.971,771] <err> vcp_controller: VCP volume up error (err 128)
+[00:00:15.497,802] <dbg> bt_gatt: bt_gatt_write: handle 0x00d8 length 2
+[00:00:15.497,802] <dbg> bt_att: bt_att_req_alloc: req 0x2000be08
+[00:00:15.497,863] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000be08
+[00:00:15.497,863] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000be08 len 5
+[00:00:15.497,894] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x12
+[00:00:15.497,894] <dbg> bt_att: chan_send: code 0x12
+[00:00:15.497,985] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:15.498,016] <dbg> bt_att: att_on_sent_cb: opcode 0x12
+[00:00:15.498,046] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:15.498,046] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:15.498,077] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000be08
+[00:00:15.498,199] <dbg> vcp_controller: vcp_volume_up: Current security before VCP change: 2
+[00:00:15.498,199] <dbg> vcp_controller: vcp_volume_up: Volume up initiated
+[00:00:15.498,229] <dbg> bt_gatt: bt_gatt_read: handle 0x0120
+[00:00:15.498,229] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdd0
+[00:00:15.498,291] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdd0
+[00:00:15.498,291] <inf> main: Battery level: 40%
+[00:00:15.771,606] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x13 len 0
+[00:00:15.771,636] <dbg> bt_att: att_handle_write_rsp: 
+[00:00:15.771,667] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 0: 
+[00:00:15.771,697] <dbg> bt_att: bt_att_req_free: req 0x2000be08
+[00:00:15.771,728] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdd0 len 3
+[00:00:15.771,728] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x0a
+[00:00:15.771,759] <dbg> bt_att: chan_send: code 0x0a
+[00:00:15.771,789] <dbg> bt_gatt: gatt_write_rsp: err 0
+[00:00:15.771,789] <dbg> bt_gatt: att_err_from_int: 0
+[00:00:15.771,820] <dbg> bt_vcp_vol_ctlr: vcp_vol_ctlr_write_vcs_cp_cb: err: 0x00
+[00:00:15.771,911] <dbg> bt_vcp_vol_ctlr: vcs_cp_notify_app: 0x200056c8 opcode 1 err 0
+[00:00:15.771,911] <inf> vcp_controller: Volume up success
+[00:00:15.772,094] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:15.772,125] <dbg> bt_att: att_on_sent_cb: opcode 0xa
+[00:00:15.772,155] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:15.772,155] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:15.772,186] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdd0
+[00:00:15.772,247] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x1b len 5
+[00:00:15.772,277] <dbg> bt_att: att_notify: chan 0x2000aa40 handle 0x00d5
+[00:00:15.772,277] <dbg> bt_gatt: bt_gatt_notification: handle 0x00d5 length 3
+[00:00:15.772,308] <dbg> bt_vcp_vol_ctlr: vcp_vol_ctlr_notify_handler: Volume 255, mute 0, counter 234
+[00:00:15.772,338] <inf> vcp_controller: VCP state - Volume: 100%, Mute: 0
+[00:00:15.871,612] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x0b len 1
+[00:00:15.871,612] <dbg> bt_att: att_handle_read_rsp: 
+[00:00:15.871,673] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 1: 28
+[00:00:15.871,704] <dbg> bt_att: bt_att_req_free: req 0x2000bdd0
+[00:00:15.871,704] <dbg> bt_gatt: gatt_read_rsp: err 0
+[00:00:15.871,704] <inf> battery_reader: Battery level read: 40%
+[00:00:20.498,413] <dbg> bt_gatt: bt_gatt_write: handle 0x00d8 length 2
+[00:00:20.498,413] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdd0
+[00:00:20.498,474] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdd0
+[00:00:20.498,474] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdd0 len 5
+[00:00:20.498,504] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x12
+[00:00:20.498,504] <dbg> bt_att: chan_send: code 0x12
+[00:00:20.498,596] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:20.498,626] <dbg> bt_att: att_on_sent_cb: opcode 0x12
+[00:00:20.498,657] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:20.498,657] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:20.498,687] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdd0
+[00:00:20.498,809] <dbg> vcp_controller: vcp_volume_down: Current security before VCP change: 2
+[00:00:20.498,809] <dbg> vcp_controller: vcp_volume_down: Volume down initiated
+[00:00:20.498,840] <dbg> bt_gatt: bt_gatt_read: handle 0x0120
+[00:00:20.498,840] <dbg> bt_att: bt_att_req_alloc: req 0x2000be08
+[00:00:20.498,901] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000be08
+[00:00:20.498,901] <inf> main: Battery level: 40%
+[00:00:20.671,600] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x13 len 0
+[00:00:20.671,630] <dbg> bt_att: att_handle_write_rsp: 
+[00:00:20.671,691] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 0: 
+[00:00:20.671,691] <dbg> bt_att: bt_att_req_free: req 0x2000bdd0
+[00:00:20.671,722] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000be08 len 3
+[00:00:20.671,722] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x0a
+[00:00:20.671,752] <dbg> bt_att: chan_send: code 0x0a
+[00:00:20.671,783] <dbg> bt_gatt: gatt_write_rsp: err 0
+[00:00:20.671,813] <dbg> bt_gatt: att_err_from_int: 0
+[00:00:20.671,813] <dbg> bt_vcp_vol_ctlr: vcp_vol_ctlr_write_vcs_cp_cb: err: 0x00
+[00:00:20.671,905] <dbg> bt_vcp_vol_ctlr: vcs_cp_notify_app: 0x200056c8 opcode 0 err 0
+[00:00:20.671,936] <inf> vcp_controller: Volume down success
+[00:00:20.672,119] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:20.672,119] <dbg> bt_att: att_on_sent_cb: opcode 0xa
+[00:00:20.672,149] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:20.672,149] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:20.672,180] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000be08
+[00:00:20.672,241] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x1b len 5
+[00:00:20.672,271] <dbg> bt_att: att_notify: chan 0x2000aa40 handle 0x00d5
+[00:00:20.672,302] <dbg> bt_gatt: bt_gatt_notification: handle 0x00d5 length 3
+[00:00:20.672,302] <dbg> bt_vcp_vol_ctlr: vcp_vol_ctlr_notify_handler: Volume 232, mute 0, counter 235
+[00:00:20.672,332] <inf> vcp_controller: VCP state - Volume: 90%, Mute: 0
+[00:00:20.771,606] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x0b len 1
+[00:00:20.771,636] <dbg> bt_att: att_handle_read_rsp: 
+[00:00:20.771,667] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 1: 28
+[00:00:20.771,697] <dbg> bt_att: bt_att_req_free: req 0x2000be08
+[00:00:20.771,697] <dbg> bt_gatt: gatt_read_rsp: err 0
+[00:00:20.771,728] <inf> battery_reader: Battery level read: 40%
+*** Booting Zephyr OS build v4.2.0-3326-g8e6077e3e507 ***
+[00:00:00.265,899] <inf> fs_nvs: 6 Sectors of 4096 bytes
+[00:00:00.265,899] <inf> fs_nvs: alloc wra: 0, fd0
+[00:00:00.265,899] <inf> fs_nvs: data wra: 0, 78
+[00:00:00.265,960] <dbg> settings: settings_nvs_backend_init: Initialized
+[00:00:00.266,143] <dbg> bt_keys: keys_set: name cc896cee40f30 val 1010220000000000000000000000d6ec2c47b7a92124d3523cbabe5562dd88375043bce1b450b50b97b8b1938f71654dd3ba6f6f000000000000000000000000
+[00:00:00.266,235] <dbg> bt_keys: bt_keys_get_addr: CC:89:6C:EE:40:F3 (public)
+[00:00:00.266,326] <dbg> bt_keys: bt_keys_get_addr: created 0x20005590 for CC:89:6C:EE:40:F3 (public)
+[00:00:00.266,448] <dbg> bt_keys: keys_set: Successfully restored keys for CC:89:6C:EE:40:F3 (public)
+[00:00:00.266,479] <dbg> settings: settings_call_set_handler: set-value OK. key: bt/keys/cc896cee40f30
+[00:00:00.267,883] <inf> bt_hci_core: HW Platform: Nordic Semiconductor (0x0002)
+[00:00:00.267,913] <inf> bt_hci_core: HW Variant: nRF52x (0x0002)
+[00:00:00.267,944] <inf> bt_hci_core: Firmware: Standard Bluetooth controller (0x00) Version 4.2 Build 99
+[00:00:00.268,157] <dbg> bt_smp: bt_smp_init: LE SC enabled
+[00:00:00.268,157] <inf> bt_hci_core: No ID address. App must call settings_load()
+[00:00:00.268,188] <inf> ble_manager: Bluetooth initialized
+[00:00:00.268,188] <inf> vcp_controller: VCP controller initialized
+[00:00:00.268,218] <dbg> ble_manager: ble_manager_init: Initializing connect work
+[00:00:00.268,249] <inf> ble_manager: BLE manager initialized
+[00:00:00.268,432] <dbg> bt_keys: keys_set: name cc896cee40f30 val 1010220000000000000000000000d6ec2c47b7a92124d3523cbabe5562dd88375043bce1b450b50b97b8b1938f71654dd3ba6f6f000000000000000000000000
+[00:00:00.268,524] <dbg> bt_keys: bt_keys_get_addr: CC:89:6C:EE:40:F3 (public)
+[00:00:00.268,646] <dbg> bt_keys: keys_set: Successfully restored keys for CC:89:6C:EE:40:F3 (public)
+[00:00:00.268,676] <dbg> settings: settings_call_set_handler: set-value OK. key: bt/keys/cc896cee40f30
+[00:00:00.268,890] <dbg> bt_smp: smp_d1: key bbc6d7035671c8e577d7e73fd39503a4 d 1 r 0
+[00:00:00.268,920] <dbg> bt_smp: smp_d1: res 48ccf4848f2815bb750c0e276ced67ae
+[00:00:00.268,981] <inf> bt_hci_core: HCI transport: Controller
+[00:00:00.269,073] <inf> bt_hci_core: Identity: D0:26:7A:4D:45:9E (random)
+[00:00:00.269,104] <inf> bt_hci_core: HCI: version 5.4 (0x0d) revision 0x0000, manufacturer 0x05f1
+[00:00:00.269,134] <inf> bt_hci_core: LMP: version 5.4 (0x0d) subver 0xffff
+[00:00:00.269,348] <inf> ble_manager: Found bonded device: CC:89:6C:EE:40:F3 (public)
+[00:00:00.269,348] <dbg> ble_manager: bt_ready_cb: Scheduling auto-connect to bonded device
+[00:00:00.269,683] <inf> ble_manager: Connecting to previously bonded device
+[00:00:00.269,775] <dbg> bt_rpa: ah: irk 48ccf4848f2815bb750c0e276ced67ae
+[00:00:00.269,805] <dbg> bt_rpa: ah: r be2655
+[00:00:00.269,927] <dbg> bt_rpa: bt_rpa_create: Created RPA 55:26:BE:DB:66:8B
+[00:00:00.270,874] <dbg> bt_rpa: ah: irk 88375043bce1b450b50b97b8b1938f71
+[00:00:00.270,904] <dbg> bt_rpa: ah: r 38a65f
+[00:00:00.271,026] <dbg> bt_rpa: bt_rpa_create: Created RPA 5F:A6:38:AA:80:3E
+[00:00:00.271,240] <dbg> bt_rpa: ah: irk 48ccf4848f2815bb750c0e276ced67ae
+[00:00:00.271,270] <dbg> bt_rpa: ah: r cff240
+[00:00:00.271,392] <dbg> bt_rpa: bt_rpa_create: Created RPA 40:F2:CF:0F:70:64
+[00:00:00.282,989] <dbg> bt_smp: bt_smp_accept: conn 0x20004a28 handle 0
+[00:00:00.282,989] <dbg> bt_smp: bt_smp_connected: chan 0x20004c94 cid 0x0006
+[00:00:00.283,020] <dbg> bt_att: bt_att_accept: conn 0x20004a28 handle 0
+[00:00:00.283,081] <dbg> bt_att: att_chan_attach: att 0x2000bda4 chan 0x2000aa40 flags 0
+[00:00:00.283,081] <dbg> bt_att: bt_att_connected: chan 0x2000aa44 cid 0x0004
+[00:00:00.283,111] <dbg> bt_gatt: bt_gatt_connected: conn 0x20004a28
+[00:00:00.283,203] <dbg> bt_keys: bt_keys_find_addr: CC:89:6C:EE:40:F3 (public)
+[00:00:00.283,355] <dbg> bt_att: bt_att_status: chan 0x2000aa44 status 0x2000aa54
+[00:00:00.283,508] <dbg> ble_manager: is_bonded_device: Checking if device CC:89:6C:EE:40:F3 (public) is bonded
+[00:00:00.283,538] <dbg> ble_manager: is_bonded_device_cb: Found bonded device
+[00:00:00.283,569] <inf> ble_manager: Connected to bonded device CC:89:6C:EE:40:F3 (public)
+[00:00:00.715,423] <dbg> bt_smp: bt_smp_pkey_ready: 
+[00:00:00.783,630] <dbg> ble_manager: security_request_handler: Requesting security level 2
+[00:00:00.783,752] <dbg> bt_keys: bt_keys_find: type 32 CC:89:6C:EE:40:F3 (public)
+[00:00:01.634,368] <dbg> bt_smp: bt_smp_encrypt_change: chan 0x20004c94 conn 0x20004a28 handle 0 encrypt 0x01 hci status 0x00 
+[00:00:01.634,429] <dbg> bt_att: bt_att_encrypt_change: chan 0x2000aa44 conn 0x20004a28 handle 0 sec_level 0x02 status 0x00 
+[00:00:01.634,460] <dbg> bt_gatt: bt_gatt_encrypt_change: conn 0x20004a28
+[00:00:01.634,552] <dbg> bt_keys: bt_keys_find_addr: CC:89:6C:EE:40:F3 (public)
+[00:00:01.634,735] <dbg> ble_manager: security_changed_cb: Security changed: CC:89:6C:EE:40:F3 (public) level 2
+[00:00:01.634,765] <dbg> ble_manager: security_changed_cb: Encryption established at level 2
+[00:00:01.634,765] <dbg> ble_manager: security_changed_cb: Bonded device encrypted - starting service discovery
+[00:00:01.634,796] <dbg> vcp_controller: vcp_discover: Current security before VCP discover: 2
+[00:00:01.634,826] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:01.634,857] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdd0
+[00:00:01.634,948] <dbg> bt_gatt: gatt_find_type_encode: uuid 1844 start_handle 0x0001 end_handle 0xffff
+[00:00:01.634,948] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdd0
+[00:00:01.634,979] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdd0 len 9
+[00:00:01.634,979] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x06
+[00:00:01.635,009] <dbg> bt_att: chan_send: code 0x06
+[00:00:01.635,040] <dbg> vcp_controller: vcp_discover: VCP discovery initiated
+[00:00:01.635,131] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:01.635,162] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdec
+[00:00:01.635,223] <dbg> bt_gatt: gatt_find_type_encode: uuid 180f start_handle 0x0001 end_handle 0xffff
+[00:00:01.635,223] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdec
+[00:00:01.635,437] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:01.635,467] <dbg> bt_att: att_on_sent_cb: opcode 0x6
+[00:00:01.635,498] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:01.635,498] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:01.635,528] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdd0
+[00:00:01.635,589] <wrn> bt_l2cap: Ignoring data for unknown channel ID 0x002a
+[00:00:01.635,681] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x08 len 6
+[00:00:01.635,772] <dbg> bt_att: att_read_type_req: start_handle 0x0001 end_handle 0xffff type 2a00
+[00:00:01.635,803] <dbg> bt_att: read_type_cb: handle 0x0007
+[00:00:01.635,833] <dbg> bt_gatt: bt_gatt_attr_read: handle 0x0000 offset 0 length 11
+[00:00:01.635,864] <dbg> bt_att: chan_send: code 0x09
+[00:00:01.635,955] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:01.635,986] <dbg> bt_att: att_on_sent_cb: opcode 0x9
+[00:00:01.635,986] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:01.636,016] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:01.734,405] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x07 len 4
+[00:00:01.734,436] <dbg> bt_att: att_handle_find_type_rsp: 
+[00:00:01.734,466] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 4: d100db00
+[00:00:01.734,497] <dbg> bt_att: bt_att_req_free: req 0x2000bdd0
+[00:00:01.734,497] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdec len 9
+[00:00:01.734,527] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x06
+[00:00:01.734,527] <dbg> bt_att: chan_send: code 0x06
+[00:00:01.734,558] <dbg> bt_gatt: gatt_find_type_rsp: err 0
+[00:00:01.734,588] <dbg> bt_gatt: gatt_find_type_rsp: start_handle 0x00d1 end_handle 0x00db
+[00:00:01.734,619] <dbg> bt_vcp_vol_ctlr: primary_discover_func: [ATTRIBUTE] handle 0x00D1
+[00:00:01.734,619] <dbg> bt_vcp_vol_ctlr: primary_discover_func: Primary discover complete
+[00:00:01.734,710] <dbg> bt_gatt: gatt_read_type: start_handle 0x00d2 end_handle 0x00db
+[00:00:01.734,710] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:01.734,741] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdd0
+[00:00:01.734,771] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdd0
+[00:00:01.734,954] <dbg> bt_att: att_tx_destroy: 0x2000bd54
+[00:00:01.734,985] <dbg> bt_att: att_on_sent_cb: opcode 0x6
+[00:00:01.734,985] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:01.735,015] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:01.735,015] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdec
+[00:00:01.735,107] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x06 len 8
+[00:00:01.735,107] <dbg> bt_att: att_find_type_req: start_handle 0x0001 end_handle 0xffff type 10240
+[00:00:01.735,168] <dbg> bt_att: find_type_cb: handle 0x0001
+[00:00:01.735,168] <dbg> bt_gatt: bt_gatt_attr_read: handle 0x0000 offset 0 length 2
+[00:00:01.735,198] <dbg> bt_att: find_type_cb: handle 0x0005
+[00:00:01.735,229] <dbg> bt_gatt: bt_gatt_attr_read: handle 0x0000 offset 0 length 2
+[00:00:01.735,260] <dbg> bt_att: att_tx_destroy: 0x2000bd54
+[00:00:01.735,290] <dbg> bt_att: chan_send: code 0x01
+[00:00:01.735,412] <dbg> bt_att: att_tx_destroy: 0x2000bd54
+[00:00:01.735,412] <dbg> bt_att: att_on_sent_cb: opcode 0x1
+[00:00:01.735,443] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:01.735,443] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:01.834,411] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x07 len 4
+[00:00:01.834,411] <dbg> bt_att: att_handle_find_type_rsp: 
+[00:00:01.834,472] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 4: 1e012101
+[00:00:01.834,472] <dbg> bt_att: bt_att_req_free: req 0x2000bdec
+[00:00:01.834,503] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdd0 len 7
+[00:00:01.834,533] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x08
+[00:00:01.834,533] <dbg> bt_att: chan_send: code 0x08
+[00:00:01.834,564] <dbg> bt_gatt: gatt_find_type_rsp: err 0
+[00:00:01.834,594] <dbg> bt_gatt: gatt_find_type_rsp: start_handle 0x011e end_handle 0x0121
+[00:00:01.834,625] <dbg> bt_gatt: gatt_read_type: start_handle 0x011f end_handle 0x0121
+[00:00:01.834,625] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:01.834,716] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdec
+[00:00:01.834,747] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdec
+[00:00:01.834,930] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:01.834,960] <dbg> bt_att: att_on_sent_cb: opcode 0x8
+[00:00:01.834,960] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:01.834,991] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:01.834,991] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdd0
+[00:00:01.835,083] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x06 len 8
+[00:00:01.835,083] <dbg> bt_att: att_find_type_req: start_handle 0x0001 end_handle 0xffff type 10240
+[00:00:01.835,144] <dbg> bt_att: find_type_cb: handle 0x0001
+[00:00:01.835,144] <dbg> bt_gatt: bt_gatt_attr_read: handle 0x0000 offset 0 length 2
+[00:00:01.835,174] <dbg> bt_att: find_type_cb: handle 0x0005
+[00:00:01.835,205] <dbg> bt_gatt: bt_gatt_attr_read: handle 0x0000 offset 0 length 2
+[00:00:01.835,235] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:01.835,266] <dbg> bt_att: chan_send: code 0x01
+[00:00:01.835,357] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:01.835,388] <dbg> bt_att: att_on_sent_cb: opcode 0x1
+[00:00:01.835,418] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:01.835,418] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:01.934,478] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x09 len 22
+[00:00:01.934,509] <dbg> bt_att: att_handle_read_type_rsp: 
+[00:00:01.934,570] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 22: 07d40012d5007d2bd70008d8007e2bd90012da007f2b
+[00:00:01.934,570] <dbg> bt_att: bt_att_req_free: req 0x2000bdd0
+[00:00:01.934,600] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdec len 7
+[00:00:01.934,600] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x08
+[00:00:01.934,631] <dbg> bt_att: chan_send: code 0x08
+[00:00:01.934,661] <dbg> bt_gatt: gatt_read_type_rsp: err 0
+[00:00:01.934,722] <dbg> bt_gatt: parse_characteristic: handle 0x00d4 uuid 2b7d properties 0x12
+[00:00:01.934,753] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: [ATTRIBUTE] handle 0x00D4
+[00:00:01.934,753] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: Volume state
+[00:00:01.934,844] <dbg> bt_gatt: gatt_find_info: start_handle 0x00d5 end_handle 0x00db
+[00:00:01.934,875] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:01.934,875] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdd0
+[00:00:01.934,936] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdd0
+[00:00:01.934,936] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: Subscribed to handle 0x00D4
+[00:00:01.934,997] <dbg> bt_gatt: parse_characteristic: handle 0x00d7 uuid 2b7e properties 0x08
+[00:00:01.935,028] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: [ATTRIBUTE] handle 0x00D7
+[00:00:01.935,028] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: Control Point
+[00:00:01.935,089] <dbg> bt_gatt: parse_characteristic: handle 0x00d9 uuid 2b7f properties 0x12
+[00:00:01.935,119] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: [ATTRIBUTE] handle 0x00D9
+[00:00:01.935,119] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: Volume Flags
+[00:00:01.935,150] <dbg> bt_gatt: gatt_find_info: start_handle 0x00da end_handle 0x00db
+[00:00:01.935,180] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:01.935,180] <dbg> bt_att: bt_att_req_alloc: req 0x2000be08
+[00:00:01.935,211] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000be08
+[00:00:01.935,241] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: Subscribed to handle 0x00D9
+[00:00:01.935,272] <dbg> bt_gatt: gatt_read_type: start_handle 0x00da end_handle 0x00db
+[00:00:01.935,272] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:01.935,302] <dbg> bt_att: bt_att_req_alloc: No space for req
+[00:00:01.935,302] <dbg> bt_vcp_vol_ctlr: vcs_discover_func: Setup complete for vol_ctlr
+[00:00:01.935,333] <inf> vcp_controller: VCP discovery complete - VOCS: 0, AICS: 0
+[00:00:01.935,516] <dbg> bt_att: att_tx_destroy: 0x2000bd54
+[00:00:01.935,516] <dbg> bt_att: att_on_sent_cb: opcode 0x8
+[00:00:01.935,546] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:01.935,546] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:01.935,577] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdec
+[00:00:01.935,638] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x06 len 22
+[00:00:01.935,668] <dbg> bt_att: att_find_type_req: start_handle 0x0001 end_handle 0xffff type 10240
+[00:00:01.935,699] <dbg> bt_att: find_type_cb: handle 0x0001
+[00:00:01.935,729] <dbg> bt_gatt: bt_gatt_attr_read: handle 0x0000 offset 0 length 2
+[00:00:01.935,760] <dbg> bt_att: find_type_cb: handle 0x0005
+[00:00:01.935,791] <dbg> bt_gatt: bt_gatt_attr_read: handle 0x0000 offset 0 length 2
+[00:00:01.935,821] <dbg> bt_att: att_tx_destroy: 0x2000bd54
+[00:00:01.935,852] <dbg> bt_att: chan_send: code 0x01
+[00:00:01.935,943] <dbg> bt_att: att_tx_destroy: 0x2000bd54
+[00:00:01.935,974] <dbg> bt_att: att_on_sent_cb: opcode 0x1
+[00:00:01.936,004] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:01.936,004] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:02.034,423] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x09 len 8
+[00:00:02.034,423] <dbg> bt_att: att_handle_read_type_rsp: 
+[00:00:02.034,484] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 8: 071f01122001192a
+[00:00:02.034,515] <dbg> bt_att: bt_att_req_free: req 0x2000bdec
+[00:00:02.034,515] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdd0 len 5
+[00:00:02.034,545] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x04
+[00:00:02.034,545] <dbg> bt_att: chan_send: code 0x04
+[00:00:02.034,576] <dbg> bt_gatt: gatt_read_type_rsp: err 0
+[00:00:02.034,637] <dbg> bt_gatt: parse_characteristic: handle 0x011f uuid 2a19 properties 0x12
+[00:00:02.034,667] <dbg> bt_gatt: gatt_find_info: start_handle 0x0121 end_handle 0x0121
+[00:00:02.034,698] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:02.034,698] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdec
+[00:00:02.034,729] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdec
+[00:00:02.034,820] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:02.034,851] <dbg> bt_att: att_on_sent_cb: opcode 0x4
+[00:00:02.034,851] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:02.034,881] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:02.034,912] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdd0
+[00:00:02.134,460] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x05 len 21
+[00:00:02.134,490] <dbg> bt_att: att_handle_find_info_rsp: 
+[00:00:02.134,552] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 21: 01d5007d2bd6000229d7000328d8007e2bd9000328
+[00:00:02.134,582] <dbg> bt_att: bt_att_req_free: req 0x2000bdd0
+[00:00:02.134,582] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000be08 len 5
+[00:00:02.134,613] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x04
+[00:00:02.134,613] <dbg> bt_att: chan_send: code 0x04
+[00:00:02.134,643] <dbg> bt_gatt: gatt_find_info_rsp: err 0
+[00:00:02.134,704] <dbg> bt_gatt: gatt_find_info_rsp: handle 0x00d5 uuid 2b7d
+[00:00:02.134,765] <dbg> bt_gatt: gatt_find_info_rsp: handle 0x00d6 uuid 2902
+[00:00:02.134,796] <dbg> bt_gatt: gatt_write_ccc: handle 0x00d6 value 0x0001
+[00:00:02.134,826] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:02.134,826] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdd0
+[00:00:02.134,857] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdd0
+[00:00:02.134,948] <dbg> bt_att: att_tx_destroy: 0x2000bd7c
+[00:00:02.134,979] <dbg> bt_att: att_on_sent_cb: opcode 0x4
+[00:00:02.134,979] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:02.135,009] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:02.135,009] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000be08
+[00:00:02.234,436] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x05 len 9
+[00:00:02.234,436] <dbg> bt_att: att_handle_find_info_rsp: 
+[00:00:02.234,497] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 9: 01da007f2bdb000229
+[00:00:02.234,497] <dbg> bt_att: bt_att_req_free: req 0x2000be08
+[00:00:02.234,527] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdec len 5
+[00:00:02.234,558] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x04
+[00:00:02.234,558] <dbg> bt_att: chan_send: code 0x04
+[00:00:02.234,588] <dbg> bt_gatt: gatt_find_info_rsp: err 0
+[00:00:02.234,649] <dbg> bt_gatt: gatt_find_info_rsp: handle 0x00da uuid 2b7f
+[00:00:02.234,710] <dbg> bt_gatt: gatt_find_info_rsp: handle 0x00db uuid 2902
+[00:00:02.234,741] <dbg> bt_gatt: gatt_write_ccc: handle 0x00db value 0x0001
+[00:00:02.234,741] <dbg> bt_att: bt_att_req_alloc: Timeout discarded. No blocking on BT RX WQ or SYS WQ threads.
+[00:00:02.234,771] <dbg> bt_att: bt_att_req_alloc: req 0x2000be08
+[00:00:02.234,802] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000be08
+[00:00:02.234,893] <dbg> bt_att: att_tx_destroy: 0x2000bd54
+[00:00:02.234,924] <dbg> bt_att: att_on_sent_cb: opcode 0x4
+[00:00:02.234,924] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:02.234,954] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:02.234,954] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdec
+[00:00:02.334,411] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x05 len 5
+[00:00:02.334,411] <dbg> bt_att: att_handle_find_info_rsp: 
+[00:00:02.334,472] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 5: 0121010229
+[00:00:02.334,503] <dbg> bt_att: bt_att_req_free: req 0x2000bdec
+[00:00:02.334,503] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdd0 len 5
+[00:00:02.334,533] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x12
+[00:00:02.334,533] <dbg> bt_att: chan_send: code 0x12
+[00:00:02.334,564] <dbg> bt_gatt: gatt_find_info_rsp: err 0
+[00:00:02.334,625] <dbg> bt_gatt: gatt_find_info_rsp: handle 0x0121 uuid 2902
+[00:00:02.334,655] <wrn> battery_reader: CCC descriptor not found - notifications not available
+[00:00:02.334,716] <dbg> bt_att: att_tx_destroy: 0x2000bd2c
+[00:00:02.334,747] <dbg> bt_att: att_on_sent_cb: opcode 0x12
+[00:00:02.334,747] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:02.334,777] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:02.334,777] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdd0
+[00:00:02.434,387] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x13 len 0
+[00:00:02.434,417] <dbg> bt_att: att_handle_write_rsp: 
+[00:00:02.434,448] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 0: 
+[00:00:02.434,478] <dbg> bt_att: bt_att_req_free: req 0x2000bdd0
+[00:00:02.434,478] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000be08 len 5
+[00:00:02.434,509] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x12
+[00:00:02.434,509] <dbg> bt_att: chan_send: code 0x12
+[00:00:02.434,539] <dbg> bt_gatt: gatt_write_ccc_rsp: err 0
+[00:00:02.434,570] <dbg> bt_gatt: att_err_from_int: 0
+[00:00:02.434,631] <dbg> bt_att: att_tx_destroy: 0x2000bd7c
+[00:00:02.434,661] <dbg> bt_att: att_on_sent_cb: opcode 0x12
+[00:00:02.434,692] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:02.434,692] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:02.434,722] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000be08
+[00:00:02.534,393] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x13 len 0
+[00:00:02.534,393] <dbg> bt_att: att_handle_write_rsp: 
+[00:00:02.534,454] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 0: 
+[00:00:02.534,454] <dbg> bt_att: bt_att_req_free: req 0x2000be08
+[00:00:02.534,484] <dbg> bt_gatt: gatt_write_ccc_rsp: err 0
+[00:00:02.534,484] <dbg> bt_gatt: att_err_from_int: 0
+[00:00:05.270,263] <dbg> bt_gatt: bt_gatt_write: handle 0x00d8 length 2
+[00:00:05.270,263] <dbg> bt_att: bt_att_req_alloc: req 0x2000be08
+[00:00:05.270,324] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000be08
+[00:00:05.270,324] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000be08 len 5
+[00:00:05.270,355] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x12
+[00:00:05.270,355] <dbg> bt_att: chan_send: code 0x12
+[00:00:05.270,446] <dbg> bt_att: att_tx_destroy: 0x2000bd7c
+[00:00:05.270,477] <dbg> bt_att: att_on_sent_cb: opcode 0x12
+[00:00:05.270,507] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:05.270,507] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:05.270,538] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000be08
+[00:00:05.270,660] <dbg> vcp_controller: vcp_volume_up: Current security before VCP change: 2
+[00:00:05.270,660] <dbg> vcp_controller: vcp_volume_up: Volume up initiated
+[00:00:05.270,690] <dbg> bt_gatt: bt_gatt_read: handle 0x0120
+[00:00:05.270,690] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdd0
+[00:00:05.270,751] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdd0
+[00:00:05.270,751] <inf> main: Battery level: 0%
+[00:00:05.434,417] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x13 len 0
+[00:00:05.434,448] <dbg> bt_att: att_handle_write_rsp: 
+[00:00:05.434,509] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 0: 
+[00:00:05.434,509] <dbg> bt_att: bt_att_req_free: req 0x2000be08
+[00:00:05.434,539] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdd0 len 3
+[00:00:05.434,539] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x0a
+[00:00:05.434,570] <dbg> bt_att: chan_send: code 0x0a
+[00:00:05.434,600] <dbg> bt_gatt: gatt_write_rsp: err 0
+[00:00:05.434,631] <dbg> bt_gatt: att_err_from_int: 0
+[00:00:05.434,631] <dbg> bt_vcp_vol_ctlr: vcp_vol_ctlr_write_vcs_cp_cb: err: 0x00
+[00:00:05.434,661] <dbg> bt_vcp_vol_ctlr: vcs_cp_notify_app: 0x200056c8 opcode 1 err 0
+[00:00:05.434,692] <inf> vcp_controller: Volume up success
+[00:00:05.434,753] <dbg> bt_att: att_tx_destroy: 0x2000bd7c
+[00:00:05.434,783] <dbg> bt_att: att_on_sent_cb: opcode 0xa
+[00:00:05.434,783] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:05.434,814] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:05.434,844] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdd0
+[00:00:05.534,423] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x0b len 1
+[00:00:05.534,454] <dbg> bt_att: att_handle_read_rsp: 
+[00:00:05.534,484] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 1: 28
+[00:00:05.534,515] <dbg> bt_att: bt_att_req_free: req 0x2000bdd0
+[00:00:05.534,515] <dbg> bt_gatt: gatt_read_rsp: err 0
+[00:00:05.534,545] <inf> battery_reader: Battery level read: 40%
+[00:00:10.270,874] <dbg> bt_gatt: bt_gatt_write: handle 0x00d8 length 2
+[00:00:10.270,874] <dbg> bt_att: bt_att_req_alloc: req 0x2000bdd0
+[00:00:10.270,935] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000bdd0
+[00:00:10.270,935] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000bdd0 len 5
+[00:00:10.270,965] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x12
+[00:00:10.270,965] <dbg> bt_att: chan_send: code 0x12
+[00:00:10.271,057] <dbg> bt_att: att_tx_destroy: 0x2000bd7c
+[00:00:10.271,087] <dbg> bt_att: att_on_sent_cb: opcode 0x12
+[00:00:10.271,118] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:10.271,118] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:10.271,148] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000bdd0
+[00:00:10.271,270] <dbg> vcp_controller: vcp_volume_up: Current security before VCP change: 2
+[00:00:10.271,270] <dbg> vcp_controller: vcp_volume_up: Volume up initiated
+[00:00:10.271,301] <dbg> bt_gatt: bt_gatt_read: handle 0x0120
+[00:00:10.271,301] <dbg> bt_att: bt_att_req_alloc: req 0x2000be08
+[00:00:10.271,362] <dbg> bt_att: bt_att_req_send: conn 0x20004a28 req 0x2000be08
+[00:00:10.271,362] <inf> main: Battery level: 40%
+[00:00:10.334,442] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x01 len 4
+[00:00:10.334,472] <dbg> bt_att: att_error_rsp: request 0x12 handle 0x00d8 error 0x0f
+[00:00:10.334,503] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 15 len 0: 
+[00:00:10.334,533] <dbg> bt_att: bt_att_req_free: req 0x2000bdd0
+[00:00:10.334,533] <dbg> bt_att: bt_att_chan_req_send: chan 0x2000aa40 req 0x2000be08 len 3
+[00:00:10.334,564] <dbg> bt_att: bt_att_chan_send: chan 0x2000aa40 flags 1 code 0x0a
+[00:00:10.334,564] <dbg> bt_att: chan_send: code 0x0a
+[00:00:10.334,625] <dbg> bt_gatt: gatt_write_rsp: err 15
+[00:00:10.334,625] <dbg> bt_gatt: att_err_from_int: 15
+[00:00:10.334,655] <dbg> bt_vcp_vol_ctlr: vcp_vol_ctlr_write_vcs_cp_cb: err: 0x0F
+[00:00:10.334,655] <dbg> bt_vcp_vol_ctlr: vcs_cp_notify_app: 0x200056c8 opcode 1 err 15
+[00:00:10.334,686] <err> vcp_controller: VCP volume up error (err 15)
+[00:00:10.334,747] <dbg> bt_att: att_tx_destroy: 0x2000bd7c
+[00:00:10.334,777] <dbg> bt_att: att_on_sent_cb: opcode 0xa
+[00:00:10.334,777] <dbg> bt_att: att_on_sent_cb: UATT bearer, calling bt_att_sent: conn 0x20004a28 chan 0x2000aa44
+[00:00:10.334,808] <dbg> bt_att: bt_att_sent: chan 0x2000aa40
+[00:00:10.334,808] <dbg> bt_att: chan_rebegin_att_timeout: chan 0x2000aa40 chan->req 0x2000be08
+[00:00:10.434,417] <dbg> bt_att: bt_att_recv: Received ATT chan 0x2000aa40 code 0x0b len 1
+[00:00:10.434,448] <dbg> bt_att: att_handle_read_rsp: 
+[00:00:10.434,478] <dbg> bt_att: att_handle_rsp: chan 0x2000aa40 err 0 len 1: 28
+[00:00:10.434,509] <dbg> bt_att: bt_att_req_free: req 0x2000be08
+[00:00:10.434,539] <dbg> bt_gatt: gatt_read_rsp: err 0
+[00:00:10.434,539] <inf> battery_reader: Battery level read: 40%

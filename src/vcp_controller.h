@@ -12,6 +12,7 @@ extern struct bt_vcp_vol_ctlr *vol_ctlr;
 extern struct k_work_delayable vcp_discovery_work;
 extern bool vcp_discovered;
 extern bool volume_direction;
+extern bool vcp_ready;
 
 int vcp_controller_init(void);
 int vcp_discover(struct bt_conn *conn);
@@ -19,5 +20,6 @@ void vcp_controller_reset(void);
 void vcp_volume_up(void);
 void vcp_volume_down(void);
 void vcp_discover_start(struct connection_context *ctx);
+void vcp_discovery_work_handler(struct k_work *work);
 
 #endif // VCP_CONTROLLER_H

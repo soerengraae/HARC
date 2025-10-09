@@ -11,6 +11,21 @@ LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_DBG);
 struct connection_context *conn_ctx;
 static struct k_work_delayable auto_connect_work;
 static struct k_work_delayable auto_connect_timeout_work;
+static struct k_work_delayable security_request_work;
+
+static void security_request_handler(struct k_work *work)
+{
+    if (!conn_ctx->conn) {
+		LOG_WRN("No connection to secure");
+        return;
+    }
+    
+    LOG_DBG("Requesting security level %d", BT_SECURITY_WANTED);
+    int err = bt_conn_set_security(conn_ctx->conn, BT_SECURITY_WANTED);
+    if (err) {
+        LOG_ERR("Failed to set security (err %d)", err);
+    }
+}
 
 /* Callback for iterating bonded devices to find the first one */
 static void get_bonded_devices(const struct bt_bond_info *info, void *user_data)
@@ -63,14 +78,12 @@ void pairing_complete(struct bt_conn *conn, bool bonded)
 void pairing_failed(struct bt_conn *conn, enum bt_security_err reason)
 {
 	LOG_ERR("Pairing failed: %d", reason);
-
 	disconnect(conn, NULL);
-	ble_manager_scan_start();
 }
 
 struct bt_conn_auth_info_cb auth_info_callbacks = {
 	.pairing_complete = pairing_complete, // This is only called if new bond created
-	.pairing_failed = pairing_failed,
+	.pairing_failed = pairing_failed, // Same for this - if it fails during new bond
 };
 
 void security_changed_cb(struct bt_conn *conn, bt_security_t level, enum bt_security_err err)
@@ -153,11 +166,7 @@ static void connected_cb(struct bt_conn *conn, uint8_t err)
 		conn_ctx->state = CONN_STATE_BONDED;
 	}
 
-	LOG_DBG("Requesting security level %d", BT_SECURITY_WANTED);
-	int sec_err = bt_conn_set_security(conn, BT_SECURITY_WANTED);
-	if (sec_err) {
-		LOG_ERR("Failed to set security (err %d)", sec_err);
-	}
+	k_work_schedule(&security_request_work, K_MSEC(500));
 }
 
 static void disconnected_cb(struct bt_conn *conn, uint8_t reason)
@@ -281,10 +290,8 @@ void ble_manager_scan_start(void)
 		return;
 	}
 
-	// if (conn_ctx->conn) {
-		bt_conn_unref(conn_ctx->conn);
-		conn_ctx->conn = NULL;
-	// }
+	bt_conn_unref(conn_ctx->conn);
+	conn_ctx->conn = NULL;
 
 	err = bt_le_scan_start(BT_LE_SCAN_ACTIVE_CAP_RAP, device_found_cb);
 	if (err) {
@@ -295,40 +302,13 @@ void ble_manager_scan_start(void)
 	LOG_INF("Scanning for HIs");
 }
 
-/** Initialize BLE manager
- * @brief Sets up connection callbacks, authentication, VCP controller, and battery reader
- *
- * @return 0 on success, negative error code on failure
- */
-int ble_manager_init(void)
-{
-	bt_conn_auth_info_cb_register(&auth_info_callbacks);
-
-	int err = vcp_controller_init();
-	if (err) {
-		LOG_ERR("VCP controller init failed (err %d)", err);
-		return err;
-	}
-
-	conn_ctx = (struct connection_context *)k_calloc(1, sizeof(struct connection_context));
-	if (!conn_ctx) {
-		LOG_ERR("Failed to allocate memory for connection context");
-		return -ENOMEM;
-	}
-
-	LOG_INF("BLE manager initialized");
-	return 0;
-}
-
 static void auto_connect_timeout_handler(struct k_work *work)
 {
 	LOG_WRN("Auto-connect timeout - falling back to active scan");
-	if (conn_ctx->conn) {
-		LOG_DBG("Cancelling ongoing connection attempt");
-		int err = bt_conn_create_auto_stop();
-		if (err) {
-			LOG_ERR("Failed to stop auto-connect (err %d)", err);
-		}
+	LOG_DBG("Cancelling ongoing connection attempt");
+	int err = bt_conn_create_auto_stop();
+	if (err) {
+		LOG_ERR("Failed to stop auto-connect (err %d)", err);
 	}
 
 	k_sleep(K_MSEC(100));
@@ -357,7 +337,38 @@ static void auto_connect_work_handler(struct k_work *work)
 	}
 
 	// Set a timeout to fall back to active scanning if auto-connect doesn't work
-	// k_work_schedule(&auto_connect_timeout_work, K_SECONDS(4));
+	k_work_schedule(&auto_connect_timeout_work, K_SECONDS(4));
+}
+
+/** Initialize BLE manager
+ * @brief Sets up connection callbacks, authentication, VCP controller, and battery reader
+ *
+ * @return 0 on success, negative error code on failure
+ */
+int ble_manager_init(void)
+{
+	bt_conn_auth_info_cb_register(&auth_info_callbacks);
+
+	int err = vcp_controller_init();
+	if (err) {
+		LOG_ERR("VCP controller init failed (err %d)", err);
+		return err;
+	}
+
+	conn_ctx = (struct connection_context *)k_calloc(1, sizeof(struct connection_context));
+	if (!conn_ctx) {
+		LOG_ERR("Failed to allocate memory for connection context");
+		return -ENOMEM;
+	}
+
+	LOG_DBG("Initializing connect work");
+	k_work_init_delayable(&security_request_work, security_request_handler);
+	k_work_init_delayable(&auto_connect_work, auto_connect_work_handler);
+	k_work_init_delayable(&auto_connect_timeout_work, auto_connect_timeout_handler);
+	k_work_init_delayable(&vcp_discovery_work, vcp_discovery_work_handler);
+
+	LOG_INF("BLE manager initialized");
+	return 0;
 }
 
 void bt_ready_cb(int err)
@@ -386,11 +397,6 @@ void bt_ready_cb(int err)
 	// Check for bonded devices
 	memset(&conn_ctx->info, 0, sizeof(conn_ctx->info));
 	bt_foreach_bond(BT_ID_DEFAULT, get_bonded_devices, &conn_ctx->info);
-
-	// Initialize and schedule the deferred auto-connect work
-	LOG_DBG("Initializing auto-connect work");
-	k_work_init_delayable(&auto_connect_work, auto_connect_work_handler);
-	k_work_init_delayable(&auto_connect_timeout_work, auto_connect_timeout_handler);
 
 	if (conn_ctx->info.connect) {
 		LOG_DBG("Scheduling auto-connect to bonded device");

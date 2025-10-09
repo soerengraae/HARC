@@ -1,68 +1,86 @@
 #include "vcp_controller.h"
 
-LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_INF);
+LOG_MODULE_REGISTER(vcp_controller, CONFIG_BT_VCP_VOL_CTLR_LOG_LEVEL);
 
 /* Global state variables */
 struct bt_vcp_vol_ctlr *vol_ctlr;
 struct bt_conn *pending_vcp_conn = NULL;
 struct k_work_delayable vcp_discovery_work;
 bool vcp_discovered = false;
+bool vcp_ready = false;
 bool volume_direction = true; // true = up, false = down
+
+void vcp_discovery_work_handler(struct k_work *work)
+{
+    vcp_discovered = true;
+    LOG_INF("VCP discovered");
+}
 
 void vcp_discover_start(struct connection_context *ctx)
 {
-    if (ctx->state != CONN_STATE_BONDED) {
-        LOG_WRN("Not starting VCP discovery - wrong state: %d", ctx->state);
-        return;
-    }
-		
-    if (!vcp_discovered) {
-        int vcp_err = vcp_discover(ctx->conn);
-        if (vcp_err) {
-            LOG_ERR("VCP discovery failed (err %d)", vcp_err);
-        }
-    }
+	if (ctx->state != CONN_STATE_BONDED)
+	{
+		LOG_WRN("Not starting VCP discovery - wrong state: %d", ctx->state);
+		return;
+	}
+
+	int vcp_err = vcp_discover(ctx->conn);
+	if (vcp_err)
+	{
+		LOG_ERR("VCP discovery failed (err %d)", vcp_err);
+	}
 }
 
 void vcp_volume_up(void)
 {
-	if (!vcp_discovered || !vol_ctlr) {
+	if (!vcp_discovered || !vol_ctlr)
+	{
 		LOG_WRN("VCP not discovered, cannot volume up");
 		return;
 	}
 
 	int err = bt_vcp_vol_ctlr_vol_up(vol_ctlr);
-	if (err) {
+	if (err)
+	{
 		LOG_ERR("Failed to initiate volume up (err %d)", err);
-	} else {
+	}
+	else
+	{
 		bt_security_t sec = bt_conn_get_security(conn_ctx->conn);
 		LOG_DBG("Current security before VCP change: %d", sec);
 		LOG_DBG("Volume up initiated");
+		vcp_ready = false;
 	}
 }
 
 void vcp_volume_down(void)
 {
-	if (!vcp_discovered || !vol_ctlr) {
+	if (!vcp_discovered || !vol_ctlr)
+	{
 		LOG_WRN("VCP not discovered, cannot volume down");
 		return;
 	}
 
 	int err = bt_vcp_vol_ctlr_vol_down(vol_ctlr);
-	if (err) {
+	if (err)
+	{
 		LOG_ERR("Failed to initiate volume down (err %d)", err);
-	} else {
+	}
+	else
+	{
 		bt_security_t sec = bt_conn_get_security(conn_ctx->conn);
 		LOG_DBG("Current security before VCP change: %d", sec);
 		LOG_DBG("Volume down initiated");
+		vcp_ready = false;
 	}
 }
 
 /* VCP callback implementations */
 static void vcp_state_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err,
-			 uint8_t volume, uint8_t mute)
+						 uint8_t volume, uint8_t mute)
 {
-	if (err) {
+	if (err)
+	{
 		LOG_ERR("VCP state error (err %d)", err);
 		return;
 	}
@@ -78,35 +96,58 @@ static void vcp_state_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err,
 	{
 		volume_direction = true; // Switch to volume up
 	}
+
+	vcp_ready = true;
 }
 
 static void vcp_flags_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err, uint8_t flags)
 {
-	if (err) {
+	if (err)
+	{
 		LOG_ERR("VCP flags error (err %d)", err);
 		return;
 	}
 
 	LOG_DBG("VCP flags: 0x%02X", flags);
+	vcp_ready = true;
 }
 
 static void vcp_discover_cb(struct bt_vcp_vol_ctlr *vcp_vol_ctlr, int err,
-			    uint8_t vocs_count, uint8_t aics_count)
+                uint8_t vocs_count, uint8_t aics_count)
 {
-	if (err) {
-		LOG_ERR("VCP discovery failed (err %d)", err);
-		return;
-	}
+    if (err) {
+        LOG_ERR("VCP discovery failed (err %d)", err);
+        return;
+    }
 
-	LOG_INF("VCP discovery complete - VOCS: %u, AICS: %u", vocs_count, aics_count);
+    LOG_INF("VCP discovery complete - VOCS: %u, AICS: %u", vocs_count, aics_count);
 
-	vol_ctlr = vcp_vol_ctlr;
-	vcp_discovered = true;
+    vol_ctlr = vcp_vol_ctlr;
+    
+    // Explicitly request state after discovery
+    err = bt_vcp_vol_ctlr_read_state(vol_ctlr);
+    if (err) {
+        LOG_ERR("Failed to read VCP state (err %d)", err);
+    }
+    
+    // Also read flags
+    err = bt_vcp_vol_ctlr_read_flags(vol_ctlr);
+    if (err) {
+        LOG_ERR("Failed to read VCP flags (err %d)", err);
+    }
+    
+    // Wait for state to be received before allowing operations
+    vcp_discovered = false;
+    
+    // Start a timeout to release the block if state never comes
+    k_work_schedule(&vcp_discovery_work, K_SECONDS(3));
 }
 
 static void vcp_vol_down_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err)
 {
-	if (err) {
+	vcp_ready = true;
+	if (err)
+	{
 		LOG_ERR("VCP volume down error (err %d)", err);
 		return;
 	}
@@ -116,7 +157,10 @@ static void vcp_vol_down_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err)
 
 static void vcp_vol_up_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err)
 {
-	if (err) {
+	vcp_ready = true;
+
+	if (err)
+	{
 		LOG_ERR("VCP volume up error (err %d)", err);
 		return;
 	}
@@ -126,7 +170,9 @@ static void vcp_vol_up_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err)
 
 static void vcp_mute_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err)
 {
-	if (err) {
+	vcp_ready = true;
+	if (err)
+	{
 		LOG_ERR("VCP mute error (err %d)", err);
 		return;
 	}
@@ -136,7 +182,9 @@ static void vcp_mute_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err)
 
 static void vcp_unmute_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err)
 {
-	if (err) {
+	vcp_ready = true;
+	if (err)
+	{
 		LOG_ERR("VCP unmute error (err %d)", err);
 		return;
 	}
@@ -146,7 +194,9 @@ static void vcp_unmute_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err)
 
 static void vcp_vol_up_unmute_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err)
 {
-	if (err) {
+	vcp_ready = true;
+	if (err)
+	{
 		LOG_ERR("VCP volume up and unmute error (err %d)", err);
 		return;
 	}
@@ -156,7 +206,9 @@ static void vcp_vol_up_unmute_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err)
 
 static void vcp_vol_down_unmute_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err)
 {
-	if (err) {
+	vcp_ready = true;
+	if (err)
+	{
 		LOG_ERR("VCP volume down and unmute error (err %d)", err);
 		return;
 	}
@@ -183,7 +235,8 @@ int vcp_controller_init(void)
 	int err;
 
 	err = bt_vcp_vol_ctlr_cb_register(&vcp_callbacks);
-	if (err) {
+	if (err)
+	{
 		LOG_ERR("Failed to register VCP callbacks (err %d)", err);
 		return err;
 	}
@@ -211,7 +264,8 @@ int vcp_discover(struct bt_conn *conn)
 	LOG_DBG("Current security before VCP discover: %d", sec);
 
 	err = bt_vcp_vol_ctlr_discover(conn_ctx->conn, &discovered_ctlr);
-	if (err) {
+	if (err)
+	{
 		return err;
 	}
 
