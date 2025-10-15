@@ -1,6 +1,6 @@
 #include "vcp_controller.h"
 
-LOG_MODULE_REGISTER(vcp_controller, CONFIG_BT_VCP_VOL_CTLR_LOG_LEVEL);
+LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_INF);
 
 /* Global state variables */
 struct bt_vcp_vol_ctlr *vol_ctlr;
@@ -12,7 +12,7 @@ static sys_slist_t vcp_cmd_queue;
 static struct k_mutex vcp_queue_mutex;
 static struct k_sem vcp_cmd_sem;
 static struct k_work_delayable vcp_cmd_timeout_work;
-static struct k_work_delayable vcp_cmd_retry_work;  // NEW: Separate retry work
+static struct k_work_delayable vcp_cmd_retry_work;
 static struct vcp_cmd *current_cmd = NULL;
 static bool vcp_cmd_in_progress = false;
 
@@ -96,11 +96,15 @@ static int vcp_execute_command(struct vcp_cmd *cmd)
 {
     int err = 0;
 
-    if ((!vcp_discovered && cmd->type != VCP_CMD_DISCOVER) || !vol_ctlr) {
-        LOG_WRN("VCP not ready");
-        return -ENOTCONN;
+    // DISCOVER command doesn't need vol_ctlr or vcp_discovered
+    // All other commands require both
+    if (cmd->type != VCP_CMD_DISCOVER) {
+        if (!vcp_discovered || !vol_ctlr) {
+            LOG_WRN("VCP not ready");
+            return -ENOTCONN;
+        }
     }
-    
+
     bt_security_t sec = bt_conn_get_security(conn_ctx->conn);
     LOG_DBG("Executing command type %d, security: %d", cmd->type, sec);
     
@@ -228,12 +232,11 @@ static void vcp_cmd_complete(int err)
 
     if (err) {
         LOG_WRN("Command failed: type=%d, err=%d, retry=%d/%d",
-                current_cmd->type, err, current_cmd->retry_count, VCP_CMD_MAX_RETRIES);
+                current_cmd->type, err, (current_cmd->retry_count)+1, VCP_CMD_MAX_RETRIES);
 
-        // Retry logic for certain errors
-        if ((err == 15 || err == 128) && current_cmd->retry_count < VCP_CMD_MAX_RETRIES) {
+        if (current_cmd->retry_count < VCP_CMD_MAX_RETRIES) {
             current_cmd->retry_count++;
-            LOG_INF("Retrying command type %d (attempt %d)",
+            LOG_DBG("Retrying command type %d (attempt %d)",
                     current_cmd->type, current_cmd->retry_count);
 
             // Keep vcp_cmd_in_progress = true and current_cmd valid
@@ -243,6 +246,9 @@ static void vcp_cmd_complete(int err)
         }
 
         LOG_ERR("Command failed permanently: type=%d", current_cmd->type);
+        if (err == 15) {
+            disconnect(conn_ctx->conn, NULL);
+        }
     } else {
         LOG_DBG("Command completed successfully: type=%d", current_cmd->type);
     }
@@ -461,14 +467,18 @@ static void vcp_discover_cb(struct bt_vcp_vol_ctlr *vcp_vol_ctlr, int err,
 {
     if (err) {
         LOG_ERR("VCP discovery failed (err %d)", err);
+        vcp_cmd_complete(err);
         return;
     }
 
     LOG_INF("VCP discovery complete - VOCS: %u, AICS: %u", vocs_count, aics_count);
 
     vol_ctlr = vcp_vol_ctlr;
-    
+
 	vcp_discovered = true;
+
+	// Mark discovery command as complete
+	vcp_cmd_complete(0);
 
 	// Initial reads
 	vcp_cmd_read_state();

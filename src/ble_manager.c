@@ -106,6 +106,7 @@ static void security_request_handler(struct k_work *work)
     if (err) {
         LOG_ERR("Failed to set security (err %d)", err);
     }
+		LOG_DBG("Security request initiated");
 }
 
 /* Callback for iterating bonded devices to find the first one */
@@ -201,6 +202,8 @@ void security_changed_cb(struct bt_conn *conn, bt_security_t level, enum bt_secu
 	} else {
 		LOG_ERR("Security failed: %s level %u err %d", addr, level, err);
 	}
+
+	ble_cmd_complete(err);
 }
 
 void disconnect(struct bt_conn *conn, void *data)
@@ -255,7 +258,7 @@ static void connected_cb(struct bt_conn *conn, uint8_t err)
 		conn_ctx->state = CONN_STATE_BONDED;
 	}
 
-	k_work_schedule(&security_request_work, K_MSEC(500));
+	ble_cmd_request_security();
 }
 
 static void disconnected_cb(struct bt_conn *conn, uint8_t reason)
@@ -534,6 +537,10 @@ static int ble_execute_command(struct ble_cmd *cmd)
     LOG_DBG("Executing BLE command type %d", cmd->type);
 
     switch (cmd->type) {
+		case BLE_CMD_REQUEST_SECURITY:
+				k_work_schedule(&security_request_work, K_MSEC(0));
+				break;
+
     /* VCP commands - route to VCP controller (has its own queue & completion handling) */
     case BLE_CMD_VCP_DISCOVER:
         err = vcp_cmd_discover();
@@ -583,7 +590,7 @@ static int ble_execute_command(struct ble_cmd *cmd)
     return err;
 }
 
-/* Handle command timeout - safety net only, VCP handles retries */
+/* Handle command timeout */
 static void ble_cmd_timeout_handler(struct k_work *work)
 {
     if (!current_ble_cmd) {
@@ -593,10 +600,10 @@ static void ble_cmd_timeout_handler(struct k_work *work)
         return;
     }
 
-    LOG_ERR("BLE command timeout (safety net): type=%d - VCP subsystem may have hung",
+    LOG_ERR("BLE command timeout (safety net): type=%d",
             current_ble_cmd->type);
 
-    // Free the command and move on (VCP already did retries if appropriate)
+    // Free the command and move on
     ble_cmd_free(current_ble_cmd);
     current_ble_cmd = NULL;
     ble_cmd_in_progress = false;
@@ -635,11 +642,6 @@ void ble_cmd_complete(int err)
 /* Process the next command in the queue */
 static void ble_process_next_command(void)
 {
-    if (ble_cmd_in_progress) {
-        LOG_DBG("BLE command already in progress, skipping");
-        return;
-    }
-
     struct ble_cmd *cmd = ble_cmd_dequeue();
     if (!cmd) {
         LOG_DBG("No BLE commands in queue");
@@ -649,7 +651,7 @@ static void ble_process_next_command(void)
     current_ble_cmd = cmd;
     ble_cmd_in_progress = true;
 
-    // Check if this is a BAS command (they complete immediately since they just queue GATT ops)
+    // Check if this is a BAS command (they complete immediately)
     bool is_bas_cmd = (cmd->type == BLE_CMD_BAS_DISCOVER ||
                        cmd->type == BLE_CMD_BAS_READ_LEVEL);
 
@@ -682,21 +684,20 @@ static void ble_process_next_command(void)
         return;
     }
 
-    // BAS commands complete immediately since they just queue GATT operations
-    // VCP commands wait for completion callback from VCP subsystem
-    if (is_bas_cmd) {
-        LOG_DBG("BAS command completed immediately: type=%d", cmd->type);
-        ble_cmd_free(cmd);
-        current_ble_cmd = NULL;
-        ble_cmd_in_progress = false;
+		// Wait for completion callback with timeout
+		LOG_DBG("Command waiting for completion: type=%d", cmd->type);
+		k_work_schedule(&ble_cmd_timeout_work, K_MSEC(BLE_CMD_TIMEOUT_MS));
+}
 
-        // Process next command
-        ble_process_next_command();
-    } else {
-        // VCP command - wait for completion callback with timeout
-        LOG_DBG("VCP command enqueued, waiting for completion: type=%d", cmd->type);
-        k_work_schedule(&ble_cmd_timeout_work, K_MSEC(BLE_CMD_TIMEOUT_MS));
+int ble_cmd_request_security(void)
+{
+    struct ble_cmd *cmd = ble_cmd_alloc();
+    if (!cmd) {
+        return -ENOMEM;
     }
+
+    cmd->type = BLE_CMD_REQUEST_SECURITY;
+    return ble_cmd_enqueue(cmd);
 }
 
 /* Public API - VCP Commands */
@@ -844,8 +845,12 @@ static void ble_cmd_thread(void)
         // Wait for a command to be enqueued
         k_sem_take(&ble_cmd_sem, K_FOREVER);
 
-        // Process the next command
-        ble_process_next_command();
+        // Process the next command only if nothing is in progress
+        // If a command is already in progress, it will call ble_process_next_command()
+        // when it completes via ble_cmd_complete()
+        if (!ble_cmd_in_progress) {
+            ble_process_next_command();
+        }
     }
 }
 

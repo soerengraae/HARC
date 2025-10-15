@@ -46,6 +46,8 @@ struct connection_context {
 
 /* BLE command types */
 enum ble_cmd_type {
+    BLE_CMD_REQUEST_SECURITY,
+
     /* VCP commands */
     BLE_CMD_VCP_DISCOVER,
     BLE_CMD_VCP_VOLUME_UP,
@@ -82,6 +84,7 @@ bool is_bonded_device(const bt_addr_le_t *addr);
 void disconnect(struct bt_conn *conn, void *data);
 
 /* BLE command queue API */
+int ble_cmd_request_security(void);
 int ble_cmd_vcp_discover(void);
 int ble_cmd_vcp_volume_up(void);
 int ble_cmd_vcp_volume_down(void);

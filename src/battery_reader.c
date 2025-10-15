@@ -66,6 +66,8 @@ static uint8_t battery_read_cb(struct bt_conn *conn, uint8_t err,
 	battery_level = *(uint8_t *)data;
 	LOG_INF("Battery level read: %u%%", battery_level);
 
+	ble_cmd_complete(0);
+
 	return BT_GATT_ITER_STOP;
 }
 

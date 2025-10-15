@@ -42,21 +42,19 @@ int main(void)
 
         if (vcp_discovered && vol_ctlr) {
             LOG_DBG("Queueing VCP Volume Change");
-            
             if (volume_direction) {
                 ble_cmd_vcp_volume_up();
+                ble_cmd_vcp_read_state();
+                ble_cmd_vcp_volume_up();
             } else {
+                ble_cmd_vcp_volume_down();
+                ble_cmd_vcp_read_state();
                 ble_cmd_vcp_volume_down();
             }
         }
 
         if (battery_discovered) {
             ble_cmd_bas_read_level();
-            if (battery_level >= 0) {
-                LOG_INF("Battery level: %d%%", battery_level);
-            } else {
-                LOG_ERR("Battery level not available");
-            }
         }
     }
 
