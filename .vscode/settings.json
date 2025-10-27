@@ -1,5 +1,8 @@
 {
   "nrf-connect.applications": [
     "${workspaceFolder}"
-  ]
+  ],
+  "files.associations": {
+    "csip.h": "c"
+  }
 }
