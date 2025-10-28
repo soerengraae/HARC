@@ -96,6 +96,8 @@ static uint8_t discover_char_cb(struct bt_conn *conn,
 		/* If we have the characteristic handle, mark discovery as complete */
 		if (battery_level_handle != 0) {
 			battery_discovered = true;
+			// Complete the discovery command
+			ble_cmd_complete(0);
 			LOG_DBG("Battery Service discovery complete (handle: 0x%04x, CCC: 0x%04x)", 
 			        battery_level_handle, battery_level_ccc_handle);
 		} else {

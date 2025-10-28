@@ -18,8 +18,8 @@ static sys_slist_t ble_cmd_queue;
 static struct k_mutex ble_queue_mutex;
 static struct k_sem ble_cmd_sem;
 static struct k_work_delayable ble_cmd_timeout_work;
-static struct ble_cmd *current_ble_cmd = NULL;
 static bool ble_cmd_in_progress = false;
+struct ble_cmd *current_ble_cmd;
 
 /* Memory pool for BLE commands */
 K_MEM_SLAB_DEFINE(ble_cmd_slab, sizeof(struct ble_cmd), BLE_CMD_QUEUE_SIZE, 4);
@@ -35,6 +35,7 @@ static int ble_queue_init(void)
     k_mutex_init(&ble_queue_mutex);
     k_sem_init(&ble_cmd_sem, 0, 1);
     k_work_init_delayable(&ble_cmd_timeout_work, ble_cmd_timeout_handler);
+		current_ble_cmd = NULL;
 
     return 0;
 }

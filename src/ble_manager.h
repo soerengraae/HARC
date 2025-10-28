@@ -72,6 +72,8 @@ struct ble_cmd {
     sys_snode_t node;  // For linked list
 };
 
+extern struct ble_cmd *current_ble_cmd;
+
 /* Command queue configuration */
 #define BLE_CMD_QUEUE_SIZE 10
 #define BLE_CMD_MAX_RETRIES 3
