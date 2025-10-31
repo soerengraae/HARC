@@ -9,7 +9,7 @@
 
 LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_DBG);
 
-static struct device_context *device_ctx;
+struct device_context *device_ctx;
 static struct device_context *current_device_ctx;
 static struct k_work_delayable auto_connect_work;
 static struct k_work_delayable auto_connect_timeout_work;
@@ -30,11 +30,16 @@ K_MEM_SLAB_DEFINE(ble_cmd_slab, sizeof(struct ble_cmd), BLE_CMD_QUEUE_SIZE, 4);
 /* Forward declarations */
 static void ble_process_next_command(void);
 static void ble_cmd_timeout_handler(struct k_work *work);
+static bool is_bonded_device(const bt_addr_le_t *addr);
+static void disconnect(struct bt_conn *conn, void *data); // void *data ensures compatibility with bt_conn_foreach
+static int connect_to_bonded_device(void);
+static void scan_for_HIs(void);
+static char *command_type_to_string(enum ble_cmd_type type);
 
 static void select_device_ctx(uint8_t choice)
 {
 	current_device_ctx = &device_ctx[choice];
-	LOG_DBG("Selected connection context: %d", choice);
+	LOG_DBG("Selected device context: %d", choice);
 }
 
 static void activate_ble_cmd_queue(void)
@@ -248,7 +253,7 @@ void security_changed_cb(struct bt_conn *conn, bt_security_t level, enum bt_secu
 	ble_cmd_complete(err);
 }
 
-void disconnect(struct bt_conn *conn, void *data)
+static void disconnect(struct bt_conn *conn, void *data)
 {
 	LOG_INF("Disconnecting connection");
 	bt_conn_disconnect(conn, BT_HCI_ERR_REMOTE_USER_TERM_CONN);
@@ -393,9 +398,6 @@ static uint8_t connect(struct device_info info)
 	if ((current_device_ctx)->conn != NULL)
 	{
 		LOG_WRN("Connection already exists in first slot, moving to second slot");
-	}
-	else
-	{
 		select_device_ctx(1);
 		if ((current_device_ctx)->conn != NULL)
 		{
@@ -450,7 +452,7 @@ static void device_found_cb(const bt_addr_le_t *addr, int8_t rssi, uint8_t type,
 }
 
 /* Start BLE scanning */
-void scan_for_HIs(void)
+static void scan_for_HIs(void)
 {
 	int err;
 	err = bt_le_scan_stop();
@@ -547,6 +549,12 @@ int ble_manager_init(void)
 		return err;
 	}
 
+	err = battery_reader_init(current_device_ctx);
+	if (err) {
+		LOG_ERR("Battery reader init failed (err %d)", err);
+		return err;
+	}
+
 	LOG_DBG("Initializing connection works");
 	k_work_init_delayable(&security_request_work, security_request_handler);
 	k_work_init_delayable(&auto_connect_work, auto_connect_work_handler);
@@ -556,7 +564,7 @@ int ble_manager_init(void)
 	return 0;
 }
 
-int connect_to_bonded_device(void)
+static int connect_to_bonded_device(void)
 {
 	// Check for bonded devices
 	memset(&device_ctx->info, 0, sizeof(device_ctx->info));
@@ -627,7 +635,7 @@ static void is_bonded_device_cb(const struct bt_bond_info *info, void *user_data
 	}
 }
 
-bool is_bonded_device(const bt_addr_le_t *addr)
+static bool is_bonded_device(const bt_addr_le_t *addr)
 {
 	struct check_bonded_data
 	{
@@ -648,6 +656,7 @@ static int ble_cmd_execute(struct ble_cmd *cmd)
 {
 	int err = 0;
 
+	select_device_ctx(cmd->device_id);
 	LOG_DBG("Executing BLE command type %s", command_type_to_string(cmd->type));
 
 	switch (cmd->type)
@@ -842,14 +851,13 @@ static void ble_process_next_command(void)
 
 int ble_cmd_request_security(uint8_t select_device)
 {
-	select_device_ctx(select_device);
-
 	struct ble_cmd *cmd = ble_cmd_alloc();
 	if (!cmd)
 	{
 		return -ENOMEM;
 	}
 
+	cmd->device_id = select_device;
 	cmd->type = BLE_CMD_REQUEST_SECURITY;
 	return ble_cmd_enqueue(cmd, true); // Security requests should always be high priority
 }
@@ -1043,7 +1051,7 @@ static void ble_cmd_thread(void)
 /* Command thread */
 K_THREAD_DEFINE(ble_cmd_thread_id, 1024, ble_cmd_thread, NULL, NULL, NULL, 7, 0, 0);
 
-char *command_type_to_string(enum ble_cmd_type type)
+static char *command_type_to_string(enum ble_cmd_type type)
 {
 	switch (type)
 	{
@@ -1074,4 +1082,23 @@ char *command_type_to_string(enum ble_cmd_type type)
 	default:
 		return "UNKNOWN_COMMAND";
 	}
+}
+
+/* Called from the battery_reader notification cb*/
+void ble_manager_set_device_ctx_battery_level(struct bt_conn *conn, uint8_t level)
+{
+	if (bt_addr_le_cmp(bt_conn_get_dst(device_ctx[0].conn), bt_conn_get_dst(conn)) == 0)
+	{
+		select_device_ctx(0);
+	} else if (bt_addr_le_cmp(bt_conn_get_dst(device_ctx[1].conn), bt_conn_get_dst(conn)) == 0)
+	{
+		select_device_ctx(1);
+	} 
+	else
+	{
+		LOG_WRN("Battery level update from unknown connection");
+		return;
+	}
+
+	current_device_ctx->bas_ctlr.battery_level = level;
 }

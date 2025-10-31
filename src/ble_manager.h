@@ -43,6 +43,8 @@ enum connection_state {
 };
 
 struct bt_bas_ctlr {
+    uint16_t battery_service_handle;
+    uint16_t battery_service_handle_end;
     uint16_t battery_level_handle;
     uint16_t battery_level_ccc_handle;
     uint8_t battery_level;
@@ -54,7 +56,7 @@ struct device_context {
     enum connection_state state;
     struct device_info info;
     struct bt_vcp_vol_ctlr *vol_ctlr;
-    struct bt_bas_ctlr *bas_ctlr;
+    struct bt_bas_ctlr bas_ctlr;
 };
 
 /* BLE command types */
@@ -94,15 +96,10 @@ extern struct ble_cmd *current_ble_cmd;
 #define BLE_CMD_QUEUE_SIZE 10
 #define BLE_CMD_TIMEOUT_MS 5000
 
-/* BLE scanner functions */
+/* BLE manager public functions */
 int ble_manager_init(void);
-int connect_to_bonded_device(void);
-void scan_for_HIs(void);
 void bt_ready_cb(int err);
-bool is_bonded_device(const bt_addr_le_t *addr);
-void disconnect(struct bt_conn *conn, void *data); // void *data ensures compatibility with bt_conn_foreach
-
-char *command_type_to_string(enum ble_cmd_type type);
+void ble_manager_set_device_ctx_battery_level(struct bt_conn *conn, uint8_t level);
 
 /* BLE command queue API */
 int ble_cmd_request_security(uint8_t select_device);
@@ -126,6 +123,6 @@ void ble_cmd_complete(int err);
 /* Connection management */
 extern struct bt_conn_cb conn_callbacks;
 extern struct bt_conn *auth_conn;
-// extern struct connection_context *current_conn_ctx;
+extern struct device_context *device_ctx;
 
 #endif /* BLE_MANAGER_H */

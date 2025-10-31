@@ -37,11 +37,13 @@ int battery_read_level(struct device_context *conn_ctx);
  * @param conn Pointer to the BLE connection
  * @return 0 on success, negative error code on failure
  */
-int battery_subscribe_notifications(struct bt_conn *conn);
+int battery_subscribe_notifications();
 
 /**
  * @brief Reset battery reader state
  */
 void battery_reader_reset(struct device_context *conn_ctx);
+
+int battery_reader_init(struct device_context *device_ctx);
 
 #endif /* BATTERY_READER_H */

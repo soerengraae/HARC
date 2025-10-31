@@ -36,11 +36,13 @@ int main(void)
     while (1) {
         k_sleep(K_SECONDS(5));
 
-        LOG_DBG("Queueing VCP Volume Change");
-        if (volume_direction) {
-            ble_cmd_vcp_volume_up(0, false);
-        } else {
-            ble_cmd_vcp_volume_down(0, false);
+        if (device_ctx[0].info.vcp_discovered) {
+            LOG_DBG("Queueing VCP Volume Change");
+            if (volume_direction) {
+                ble_cmd_vcp_volume_up(0, false);
+            } else {
+                ble_cmd_vcp_volume_down(0, false);
+            }
         }
     }
 

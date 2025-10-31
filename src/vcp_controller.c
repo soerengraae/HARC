@@ -1,56 +1,56 @@
 #include "vcp_controller.h"
 
-LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_INF);
+LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_DBG);
 
-static struct device_context *current_conn_ctx;
+static struct device_context *current_device_ctx;
 
 bool volume_direction = true;
 
 int vcp_cmd_discover(struct device_context *conn_ctx)
 {
-    current_conn_ctx = conn_ctx;
+    current_device_ctx = conn_ctx;
     return bt_vcp_vol_ctlr_discover(conn_ctx->conn, &conn_ctx->vol_ctlr);
 }
 
 int vcp_cmd_read_state(struct device_context *conn_ctx)
 {
-    current_conn_ctx = conn_ctx;
+    current_device_ctx = conn_ctx;
     return bt_vcp_vol_ctlr_read_state(conn_ctx->vol_ctlr);
 }
 
 int vcp_cmd_read_flags(struct device_context *conn_ctx)
 {
-    current_conn_ctx = conn_ctx;
+    current_device_ctx = conn_ctx;
     return bt_vcp_vol_ctlr_read_flags(conn_ctx->vol_ctlr);
 }
 
 int vcp_cmd_volume_up(struct device_context *conn_ctx)
 {
-    current_conn_ctx = conn_ctx;
+    current_device_ctx = conn_ctx;
     return bt_vcp_vol_ctlr_vol_up(conn_ctx->vol_ctlr);
 }
 
 int vcp_cmd_volume_down(struct device_context *conn_ctx)
 {
-    current_conn_ctx = conn_ctx;
+    current_device_ctx = conn_ctx;
     return bt_vcp_vol_ctlr_vol_down(conn_ctx->vol_ctlr);
 }
 
 int vcp_cmd_set_volume(struct device_context *conn_ctx, uint8_t volume)
 {
-    current_conn_ctx = conn_ctx;
+    current_device_ctx = conn_ctx;
     return bt_vcp_vol_ctlr_set_vol(conn_ctx->vol_ctlr, volume);
 }
 
 int vcp_cmd_mute(struct device_context *conn_ctx)
 {
-    current_conn_ctx = conn_ctx;
+    current_device_ctx = conn_ctx;
     return bt_vcp_vol_ctlr_mute(conn_ctx->vol_ctlr);
 }
 
 int vcp_cmd_unmute(struct device_context *conn_ctx)
 {
-    current_conn_ctx = conn_ctx;
+    current_device_ctx = conn_ctx;
     return bt_vcp_vol_ctlr_unmute(conn_ctx->vol_ctlr);
 }
 
@@ -109,12 +109,12 @@ static void vcp_discover_cb(struct bt_vcp_vol_ctlr *vcp_vol_ctlr, int err,
 
     LOG_INF("VCP discovery complete");
 
-    current_conn_ctx->vol_ctlr = vcp_vol_ctlr;
+    current_device_ctx->vol_ctlr = vcp_vol_ctlr;
 
-	current_conn_ctx->info.vcp_discovered = true;
+	current_device_ctx->info.vcp_discovered = true;
 
     // Initial flag read
-	ble_cmd_vcp_read_flags(current_conn_ctx->device_id, true);
+	ble_cmd_vcp_read_flags(current_device_ctx->device_id, true);
 
 	// Mark discovery command as complete
 	ble_cmd_complete(0);
@@ -200,7 +200,7 @@ static struct bt_vcp_vol_ctlr_cb vcp_callbacks = {
 };
 
 /* Initialize VCP controller */
-int vcp_controller_init(struct device_context *conn_ctx)
+int vcp_controller_init(struct device_context *device_ctx)
 {
     int err;
 
@@ -210,7 +210,7 @@ int vcp_controller_init(struct device_context *conn_ctx)
         return err;
     }
 
-    vcp_controller_reset(conn_ctx);
+    vcp_controller_reset(device_ctx);
 
     LOG_INF("VCP controller initialized");
 
