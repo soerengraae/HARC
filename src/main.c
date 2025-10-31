@@ -24,12 +24,6 @@ int main(void)
         }
     }
 
-    err = vcp_controller_init();
-	if (err) {
-		LOG_ERR("VCP controller init failed (err %d)", err);
-		return err;
-	}
-
     /* Initialize Bluetooth */
     err = bt_enable(bt_ready_cb);
     if (err) {
@@ -37,18 +31,16 @@ int main(void)
         return err;
     }
 
-    ble_cmd_bas_read_level(false);
+    ble_cmd_bas_read_level(0, false);
 
     while (1) {
         k_sleep(K_SECONDS(5));
 
-        if (vcp_discovered && vol_ctlr) {
-            LOG_DBG("Queueing VCP Volume Change");
-            if (volume_direction) {
-                ble_cmd_vcp_volume_up(false);
-            } else {
-                ble_cmd_vcp_volume_down(false);
-            }
+        LOG_DBG("Queueing VCP Volume Change");
+        if (volume_direction) {
+            ble_cmd_vcp_volume_up(0, false);
+        } else {
+            ble_cmd_vcp_volume_down(0, false);
         }
     }
 

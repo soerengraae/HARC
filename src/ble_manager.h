@@ -24,12 +24,15 @@
 #define BT_NAME_MAX_LEN 12
 #define BT_SECURITY_WANTED BT_SECURITY_L2
 
-struct deviceInfo
+struct device_info
 {
 	bt_addr_le_t addr;
 	char name[BT_NAME_MAX_LEN];
 	bool connect;
     bool is_new_device;  // True if not previously bonded
+    bool vcp_discovered;
+    bool bas_discovered;
+    bool csip_discovered;
 };
 
 enum connection_state {
@@ -39,17 +42,26 @@ enum connection_state {
     CONN_STATE_BONDED
 };
 
-struct connection_context {
+struct bt_bas_ctlr {
+    uint16_t battery_level_handle;
+    uint16_t battery_level_ccc_handle;
+    uint8_t battery_level;
+};
+
+struct device_context {
+    uint8_t device_id;
     struct bt_conn *conn;
     enum connection_state state;
-    struct deviceInfo info;
+    struct device_info info;
+    struct bt_vcp_vol_ctlr *vol_ctlr;
+    struct bt_bas_ctlr *bas_ctlr;
 };
 
 /* BLE command types */
 enum ble_cmd_type {
     BLE_CMD_REQUEST_SECURITY,
 
-    /* VCP commands */
+    /* Volume Control commands */
     BLE_CMD_VCP_DISCOVER,
     BLE_CMD_VCP_VOLUME_UP,
     BLE_CMD_VCP_VOLUME_DOWN,
@@ -62,11 +74,14 @@ enum ble_cmd_type {
     /* Battery Service commands */
     BLE_CMD_BAS_DISCOVER,
     BLE_CMD_BAS_READ_LEVEL,
+
+    /* Coordinated Sets Identification commands */
+    BLE_CMD_CSIP_DISCOVER,
 };
 
 /* BLE command structure */
 struct ble_cmd {
-    struct bt_conn *conn;
+    uint8_t device_id;
     enum ble_cmd_type type;
     uint8_t d0;  // Data parameter (e.g., volume level)
     uint8_t retry_count;
@@ -90,18 +105,18 @@ void disconnect(struct bt_conn *conn, void *data); // void *data ensures compati
 char *command_type_to_string(enum ble_cmd_type type);
 
 /* BLE command queue API */
-int ble_cmd_request_security(void);
-int ble_cmd_vcp_discover(bool high_priority);
-int ble_cmd_vcp_volume_up(bool high_priority);
-int ble_cmd_vcp_volume_down(bool high_priority);
-int ble_cmd_vcp_set_volume(uint8_t volume, bool high_priority);
-int ble_cmd_vcp_mute(bool high_priority);
-int ble_cmd_vcp_unmute(bool high_priority);
-int ble_cmd_vcp_read_state(bool high_priority);
-int ble_cmd_vcp_read_flags(bool high_priority);
+int ble_cmd_request_security(uint8_t select_device);
+int ble_cmd_vcp_discover(uint8_t select_device, bool high_priority);
+int ble_cmd_vcp_volume_up(uint8_t select_device, bool high_priority);
+int ble_cmd_vcp_volume_down(uint8_t select_device, bool high_priority);
+int ble_cmd_vcp_set_volume(uint8_t select_device, uint8_t volume, bool high_priority);
+int ble_cmd_vcp_mute(uint8_t select_device, bool high_priority);
+int ble_cmd_vcp_unmute(uint8_t select_device, bool high_priority);
+int ble_cmd_vcp_read_state(uint8_t select_device, bool high_priority);
+int ble_cmd_vcp_read_flags(uint8_t select_device, bool high_priority);
 
-int ble_cmd_bas_discover(bool high_priority);
-int ble_cmd_bas_read_level(bool high_priority);
+int ble_cmd_bas_discover(uint8_t select_device, bool high_priority);
+int ble_cmd_bas_read_level(uint8_t select_device, bool high_priority);
 
 void ble_cmd_queue_reset(void);
 
@@ -111,6 +126,6 @@ void ble_cmd_complete(int err);
 /* Connection management */
 extern struct bt_conn_cb conn_callbacks;
 extern struct bt_conn *auth_conn;
-extern struct connection_context *current_conn_ctx;
+// extern struct connection_context *current_conn_ctx;
 
 #endif /* BLE_MANAGER_H */

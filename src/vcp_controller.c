@@ -2,48 +2,56 @@
 
 LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_INF);
 
-struct bt_vcp_vol_ctlr *vol_ctlr;
-bool vcp_discovered = false;
+static struct device_context *current_conn_ctx;
+
 bool volume_direction = true;
 
-int vcp_cmd_discover(void)
+int vcp_cmd_discover(struct device_context *conn_ctx)
 {
-    return bt_vcp_vol_ctlr_discover(current_conn_ctx->conn, &vol_ctlr);
+    current_conn_ctx = conn_ctx;
+    return bt_vcp_vol_ctlr_discover(conn_ctx->conn, &conn_ctx->vol_ctlr);
 }
 
-int vcp_cmd_read_state(void)
+int vcp_cmd_read_state(struct device_context *conn_ctx)
 {
-    return bt_vcp_vol_ctlr_read_state(vol_ctlr);
+    current_conn_ctx = conn_ctx;
+    return bt_vcp_vol_ctlr_read_state(conn_ctx->vol_ctlr);
 }
 
-int vcp_cmd_read_flags(void)
+int vcp_cmd_read_flags(struct device_context *conn_ctx)
 {
-    return bt_vcp_vol_ctlr_read_flags(vol_ctlr);
+    current_conn_ctx = conn_ctx;
+    return bt_vcp_vol_ctlr_read_flags(conn_ctx->vol_ctlr);
 }
 
-int vcp_cmd_volume_up(void)
+int vcp_cmd_volume_up(struct device_context *conn_ctx)
 {
-    return bt_vcp_vol_ctlr_vol_up(vol_ctlr);
+    current_conn_ctx = conn_ctx;
+    return bt_vcp_vol_ctlr_vol_up(conn_ctx->vol_ctlr);
 }
 
-int vcp_cmd_volume_down(void)
+int vcp_cmd_volume_down(struct device_context *conn_ctx)
 {
-    return bt_vcp_vol_ctlr_vol_down(vol_ctlr);
+    current_conn_ctx = conn_ctx;
+    return bt_vcp_vol_ctlr_vol_down(conn_ctx->vol_ctlr);
 }
 
-int vcp_cmd_set_volume(uint8_t volume)
+int vcp_cmd_set_volume(struct device_context *conn_ctx, uint8_t volume)
 {
-    return bt_vcp_vol_ctlr_set_vol(vol_ctlr, volume);
+    current_conn_ctx = conn_ctx;
+    return bt_vcp_vol_ctlr_set_vol(conn_ctx->vol_ctlr, volume);
 }
 
-int vcp_cmd_mute(void)
+int vcp_cmd_mute(struct device_context *conn_ctx)
 {
-    return bt_vcp_vol_ctlr_mute(vol_ctlr);
+    current_conn_ctx = conn_ctx;
+    return bt_vcp_vol_ctlr_mute(conn_ctx->vol_ctlr);
 }
 
-int vcp_cmd_unmute(void)
+int vcp_cmd_unmute(struct device_context *conn_ctx)
 {
-    return bt_vcp_vol_ctlr_unmute(vol_ctlr);
+    current_conn_ctx = conn_ctx;
+    return bt_vcp_vol_ctlr_unmute(conn_ctx->vol_ctlr);
 }
 
 static void vcp_state_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err, uint8_t volume, uint8_t mute)
@@ -101,12 +109,12 @@ static void vcp_discover_cb(struct bt_vcp_vol_ctlr *vcp_vol_ctlr, int err,
 
     LOG_INF("VCP discovery complete");
 
-    vol_ctlr = vcp_vol_ctlr;
+    current_conn_ctx->vol_ctlr = vcp_vol_ctlr;
 
-	vcp_discovered = true;
+	current_conn_ctx->info.vcp_discovered = true;
 
     // Initial flag read
-	ble_cmd_vcp_read_flags(true);
+	ble_cmd_vcp_read_flags(current_conn_ctx->device_id, true);
 
 	// Mark discovery command as complete
 	ble_cmd_complete(0);
@@ -192,7 +200,7 @@ static struct bt_vcp_vol_ctlr_cb vcp_callbacks = {
 };
 
 /* Initialize VCP controller */
-int vcp_controller_init(void)
+int vcp_controller_init(struct device_context *conn_ctx)
 {
     int err;
 
@@ -202,7 +210,7 @@ int vcp_controller_init(void)
         return err;
     }
 
-    vcp_controller_reset();
+    vcp_controller_reset(conn_ctx);
 
     LOG_INF("VCP controller initialized");
 
@@ -210,8 +218,8 @@ int vcp_controller_init(void)
 }
 
 /* Reset VCP controller state */
-void vcp_controller_reset(void)
+void vcp_controller_reset(struct device_context *conn_ctx)
 {
-    vcp_discovered = false;
-    vol_ctlr = NULL;
+    conn_ctx->info.vcp_discovered = false;
+    conn_ctx->vol_ctlr = NULL;
 }

@@ -2,12 +2,9 @@
 
 LOG_MODULE_REGISTER(battery_reader, LOG_LEVEL_INF);
 
-/* Global state variables */
-bool battery_discovered = false;
-uint8_t battery_level = 0;
+static struct device_context *current_conn_ctx;
 
 /* GATT handles for Battery Service */
-static uint16_t battery_level_handle = 0;
 static uint16_t battery_level_ccc_handle = 0;
 
 /* Notification callback for battery level updates */
@@ -28,8 +25,8 @@ static uint8_t battery_notify_cb(struct bt_conn *conn,
 		return BT_GATT_ITER_CONTINUE;
 	}
 
-	battery_level = *(uint8_t *)data;
-	LOG_INF("Battery level notification: %u%%", battery_level);
+	current_conn_ctx->bas_ctlr->battery_level = *(uint8_t *)data;
+	LOG_INF("Battery level notification: %u%%", current_conn_ctx->bas_ctlr->battery_level);
 
 	return BT_GATT_ITER_CONTINUE;
 }
@@ -63,8 +60,8 @@ static uint8_t battery_read_cb(struct bt_conn *conn, uint8_t err,
 		return BT_GATT_ITER_STOP;
 	}
 
-	battery_level = *(uint8_t *)data;
-	LOG_INF("Battery level read: %u%%", battery_level);
+	current_conn_ctx->bas_ctlr->battery_level = *(uint8_t *)data;
+	LOG_INF("Battery level read: %u%%", current_conn_ctx->bas_ctlr->battery_level);
 
 	ble_cmd_complete(0);
 
@@ -94,12 +91,12 @@ static uint8_t discover_char_cb(struct bt_conn *conn,
 		}
 		
 		/* If we have the characteristic handle, mark discovery as complete */
-		if (battery_level_handle != 0) {
-			battery_discovered = true;
+		if (current_conn_ctx->bas_ctlr->battery_level_handle != 0) {
+			current_conn_ctx->info.bas_discovered = true;
 			// Complete the discovery command
 			ble_cmd_complete(0);
 			LOG_DBG("Battery Service discovery complete (handle: 0x%04x, CCC: 0x%04x)", 
-			        battery_level_handle, battery_level_ccc_handle);
+			        current_conn_ctx->bas_ctlr->battery_level_handle, current_conn_ctx->bas_ctlr->battery_level_ccc_handle);
 		} else {
 			LOG_ERR("Battery Service discovery completed but no characteristic found");
 		}
@@ -115,7 +112,7 @@ static uint8_t discover_char_cb(struct bt_conn *conn,
 		if (!bt_uuid_cmp(chrc->uuid, BT_UUID_BAS_BATTERY_LEVEL)) {
 			LOG_DBG("Found Battery Level characteristic at handle %u (properties 0x%02x)", 
 			        chrc->value_handle, chrc->properties);
-			battery_level_handle = chrc->value_handle;
+			current_conn_ctx->bas_ctlr->battery_level_handle = chrc->value_handle;
 			
 			/* Check if notifications are supported based on properties */
 			if (chrc->properties & BT_GATT_CHRC_NOTIFY) {
@@ -137,7 +134,7 @@ static uint8_t discover_char_cb(struct bt_conn *conn,
 				LOG_WRN("Characteristic does not support notifications");
 			}
 
-			battery_discovered = true;
+			current_conn_ctx->info.bas_discovered = true;
 			return BT_GATT_ITER_STOP;
 		}
 	} else if (params->type == BT_GATT_DISCOVER_DESCRIPTOR) {
@@ -145,8 +142,8 @@ static uint8_t discover_char_cb(struct bt_conn *conn,
 		
 		if (!bt_uuid_cmp(chrc->uuid, BT_UUID_GATT_CCC)) {
 			LOG_DBG("Found CCC descriptor at handle %u", attr->handle);
-			battery_level_ccc_handle = attr->handle;
-			battery_discovered = true;
+			current_conn_ctx->bas_ctlr->battery_level_ccc_handle = attr->handle;
+			current_conn_ctx->info.bas_discovered = true;
 			return BT_GATT_ITER_STOP;
 		}
 	}
@@ -190,8 +187,16 @@ static uint8_t discover_service_cb(struct bt_conn *conn,
 }
 
 /* Discover Battery Service on connected device */
-int battery_discover()
+int battery_discover(struct device_context *conn_ctx)
 {
+	if (!conn_ctx || !conn_ctx->conn)
+	{
+		LOG_ERR("Invalid connection context");
+		return -EINVAL;
+	}
+
+	current_conn_ctx = conn_ctx;
+
 	if (current_conn_ctx->state != CONN_STATE_BONDED)
 	{
 		LOG_WRN("Not starting Battery Service discovery - wrong state: %d", current_conn_ctx->state);
@@ -200,7 +205,7 @@ int battery_discover()
 
 	LOG_DBG("Starting Battery Service discovery");
 
-	if (!battery_discovered)
+	if (!current_conn_ctx->info.bas_discovered)
 	{
 		static struct bt_gatt_discover_params discover_params;
 		memset(&discover_params, 0, sizeof(discover_params));
@@ -222,26 +227,28 @@ int battery_discover()
 }
 
 /* Read battery level */
-int battery_read_level(struct connection_context *ctx)
+int battery_read_level(struct device_context *conn_ctx)
 {
-	if (!battery_discovered || battery_level_handle == 0)
-	{
-		LOG_WRN("Battery Service not discovered");
-		return -ENOENT;
-	}
-
-	if (!ctx->conn)
+	if (!conn_ctx->conn)
 	{
 		LOG_ERR("Invalid connection");
 		return -EINVAL;
 	}
 
-	LOG_DBG("Reading battery level from handle %u", battery_level_handle);
+	current_conn_ctx = conn_ctx;
 
-	battery_read_params.single.handle = battery_level_handle;
+	if (!current_conn_ctx->info.bas_discovered || current_conn_ctx->bas_ctlr->battery_level_handle == 0)
+	{
+		LOG_WRN("Battery Service not discovered");
+		return -ENOENT;
+	}
+
+	LOG_DBG("Reading battery level from handle %u", current_conn_ctx->bas_ctlr->battery_level_handle);
+
+	battery_read_params.single.handle = current_conn_ctx->bas_ctlr->battery_level_handle;
 	battery_read_params.single.offset = 0;
 
-	int err = bt_gatt_read(ctx->conn, &battery_read_params);
+	int err = bt_gatt_read(current_conn_ctx->conn, &battery_read_params);
 	if (err)
 	{
 		LOG_ERR("Battery level read failed (err %d)", err);
@@ -254,7 +261,7 @@ int battery_read_level(struct connection_context *ctx)
 /* Subscribe to battery level notifications */
 int battery_subscribe_notifications(struct bt_conn *conn)
 {
-	if (!battery_discovered || battery_level_handle == 0)
+	if (!current_conn_ctx->info.bas_discovered || current_conn_ctx->bas_ctlr->battery_level_handle == 0)
 	{
 		LOG_WRN("Battery Service not discovered");
 		return -ENOENT;
@@ -274,7 +281,7 @@ int battery_subscribe_notifications(struct bt_conn *conn)
 
 	LOG_INF("Subscribing to battery level notifications");
 
-	battery_subscribe_params.value_handle = battery_level_handle;
+	battery_subscribe_params.value_handle = current_conn_ctx->bas_ctlr->battery_level_handle;
 	battery_subscribe_params.ccc_handle = battery_level_ccc_handle;
 
 	int err = bt_gatt_subscribe(conn, &battery_subscribe_params);
@@ -289,11 +296,13 @@ int battery_subscribe_notifications(struct bt_conn *conn)
 }
 
 /* Reset battery reader state */
-void battery_reader_reset(void)
+void battery_reader_reset(struct device_context *conn_ctx)
 {
-	battery_discovered = false;
-	battery_level_handle = 0;
+	current_conn_ctx = conn_ctx;
+
+	current_conn_ctx->info.bas_discovered = false;
+	current_conn_ctx->bas_ctlr->battery_level_handle = 0;
 	battery_level_ccc_handle = 0;
-	battery_level = 0;
+	current_conn_ctx->bas_ctlr->battery_level = 0;
 	LOG_DBG("Battery reader state reset");
 }
