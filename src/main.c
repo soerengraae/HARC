@@ -5,6 +5,7 @@
 #include "ble_manager.h"
 #include "vcp_controller.h"
 #include "battery_reader.h"
+#include "display_manager.h"
 
 LOG_MODULE_REGISTER(main, LOG_LEVEL_INF);
 
@@ -29,6 +30,12 @@ int main(void)
 		LOG_ERR("VCP controller init failed (err %d)", err);
 		return err;
 	}
+
+    err = display_manager_init();
+    if (err) {
+        LOG_ERR("Display manager init failed (err %d)", err);
+        return err;
+    }
 
     /* Initialize Bluetooth */
     err = bt_enable(bt_ready_cb);
