@@ -7,10 +7,7 @@ LOG_MODULE_REGISTER(display_manager, LOG_LEVEL_INF);
 static const struct device *display_dev;
 
 static struct{
-    uint8_t battery_level;
-    uint8_t volume;
-    uint8_t mute;
-    bool connected;
+   bool connected;
 } device_state[2] = {0};
 
 
@@ -23,16 +20,10 @@ static void display_refresh(void)
     cfb_print(display_dev, "HARC Remote", 0, 0);
 
     if (device_state[0].connected){
-        cfb_print(display_dev, "D!: Connected",0, 16);
+        cfb_print(display_dev, "D1: Connected",0, 16);
 
-        snprintf(buf, sizeof(buf), "Vol: %d%% %s",
-                    device_state[0].volume,
-                    device_state0.mute ? "MUTE" : "");
+        snprintf(buf, sizeof(buf), "Bat: %d%%", battery_level);
         cfb_print(display_dev, buf, 0, 24);
-
-
-        snprintf(buf, sizeof(buf), "Bat: %d%%", device_state[0].battery_level);
-        cfb_print(display_dev, buf, 0, 32);
 
     } else {
         cfb_print(display_dev, "D1: Disconnected",0, 16);
@@ -72,33 +63,7 @@ int display_manager_init(void)
     return 0;
 }
 
-void display_update_battery(uint8_t battery_level, uint8_t device_id)
-{
-    if (device_id > 1) {
-        LOG_WRN("Invalid device ID: %d", device_id);
-        return;
-    }
-    
-    device_state[device_id].battery_level = battery_level;
-    LOG_DBG("Battery: %d%% [Device %d]", battery_level, device_id);
-    
-    display_refresh();
-}
 
-void display_update_volume(uint8_t volume, uint8_t mute, uint8_t device_id)
-{
-    if (device_id > 1) {
-        LOG_WRN("Invalid device ID: %d", device_id);
-        return;
-    }
-    
-    device_state[device_id].volume = volume;
-    device_state[device_id].mute = mute;
-    LOG_DBG("Volume: %d%% %s [Device %d]", 
-            volume, mute ? "MUTE" : "", device_id);
-    
-    display_refresh();
-}
 
 void display_update_connection(bool connected, uint8_t device_id)
 {
@@ -111,5 +76,10 @@ void display_update_connection(bool connected, uint8_t device_id)
     LOG_INF("Connection: %s [Device %d]", 
             connected ? "Connected" : "Disconnected", device_id);
     
+    display_refresh();
+}
+
+void display_refresh_periodic(void)
+{
     display_refresh();
 }

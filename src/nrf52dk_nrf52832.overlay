@@ -1,3 +1,9 @@
+{
+    chosen {
+        zephyr,display = &ssd1306;
+    };
+};
+
 &i2c0 {
     status = "okay";
     sda-pin = <26>;

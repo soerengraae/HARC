@@ -5,6 +5,7 @@
 #include <zephyr/sys/byteorder.h>
 #include <zephyr/bluetooth/uuid.h>
 #include <zephyr/bluetooth/hci.h>
+#include "display_manager.h"
 
 LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_DBG);
 
