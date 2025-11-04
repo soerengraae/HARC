@@ -719,6 +719,9 @@ void bt_ready_cb(int err)
 		}
 	}
 
+	// Initialize the connection state machine
+	connection_state_machine_init();
+
 	// Use connection strategy to determine how to proceed
 	struct connection_strategy_context strategy_ctx;
 	err = determine_connection_strategy(&strategy_ctx);

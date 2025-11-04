@@ -1,6 +1,7 @@
 #include "connection_strategy.h"
 #include "csip_coordinator.h"
 #include <zephyr/logging/log.h>
+#include <zephyr/bluetooth/audio/csip.h>
 #include <string.h>
 
 LOG_MODULE_REGISTER(connection_strategy, LOG_LEVEL_DBG);
@@ -163,6 +164,10 @@ int execute_connection_strategy(struct connection_strategy_context *ctx)
 
     LOG_INF("Executing connection strategy: %d", ctx->strategy);
 
+    // Save strategy context to state machine for later reference
+    memcpy(&g_conn_state_machine.strategy_ctx, ctx, sizeof(struct connection_strategy_context));
+    g_conn_state_machine.phase = PHASE_PRIMARY_CONNECTING;
+
     switch (ctx->strategy) {
         case STRATEGY_NO_BONDS:
             return execute_no_bonds_strategy(ctx);
@@ -234,9 +239,7 @@ static int execute_single_bond_strategy(struct connection_strategy_context *ctx)
     bt_addr_le_to_str(&entry->addr, addr_str, sizeof(addr_str));
     LOG_INF("Connecting to single bonded device: %s", addr_str);
     LOG_INF("  SIRK: %s, Rank: %d", entry->has_sirk ? "yes" : "no", entry->set_rank);
-    LOG_INF("  Will search for set pair after CSIP discovery");
-
-    // TODO (Step 5): After CSIP discovery callback, trigger scan for RSI with matching SIRK
+    LOG_INF("  Will search for set pair after CSIP discovery via RSI scanning");
 
     return schedule_auto_connect(0);
 }
@@ -337,5 +340,355 @@ static int execute_multiple_sets_strategy(struct connection_strategy_context *ct
         // No clear match, connect to first device only
         LOG_INF("Multiple bonds, no clear match - connecting to first device");
         return execute_single_bond_strategy(ctx);
+    }
+}
+
+/* ============================================================================
+ * Connection State Machine Implementation
+ * ============================================================================ */
+
+/* Global state machine instance */
+struct connection_state_machine g_conn_state_machine = {
+    .phase = PHASE_IDLE,
+    .primary_ready = false,
+    .secondary_ready = false,
+    .set_verified = false,
+};
+
+/**
+ * @brief Initialize the connection state machine
+ */
+void connection_state_machine_init(void)
+{
+    LOG_INF("Initializing connection state machine");
+    memset(&g_conn_state_machine, 0, sizeof(g_conn_state_machine));
+    g_conn_state_machine.phase = PHASE_IDLE;
+}
+
+/**
+ * @brief Connect to secondary device in verified/unverified set strategies
+ */
+int connection_state_machine_connect_secondary(void)
+{
+    struct connection_state_machine *sm = &g_conn_state_machine;
+    struct bonded_device_entry *secondary =
+        &sm->strategy_ctx.bonds.devices[sm->strategy_ctx.secondary_device_idx];
+
+    LOG_INF("Connecting to secondary device");
+
+    char addr_str[BT_ADDR_LE_STR_LEN];
+    bt_addr_le_to_str(&secondary->addr, addr_str, sizeof(addr_str));
+    LOG_INF("  Secondary device: %s (rank %d)", addr_str, secondary->set_rank);
+
+    // Set up device context for device 1
+    struct device_context *dev_ctx1 = &device_ctx[1];
+    memset(&dev_ctx1->info, 0, sizeof(dev_ctx1->info));
+    bt_addr_le_copy(&dev_ctx1->info.addr, &secondary->addr);
+    dev_ctx1->info.connect = true;
+    dev_ctx1->info.is_new_device = false;
+    strncpy(dev_ctx1->info.name, secondary->name, BT_NAME_MAX_LEN - 1);
+
+    // Update state machine phase
+    sm->phase = PHASE_SECONDARY_CONNECTING;
+
+    // Schedule auto-connect for secondary device
+    return schedule_auto_connect(1);
+}
+
+/**
+ * @brief Handle CSIP discovery completion on either device
+ *
+ * This is called from csip_coordinator after CSIP discovery completes.
+ * It progresses the state machine and triggers next actions based on strategy.
+ */
+void connection_state_machine_on_csip_discovered(uint8_t device_id)
+{
+    struct connection_state_machine *sm = &g_conn_state_machine;
+
+    LOG_INF("State machine: CSIP discovered on device %d (phase: %d)", device_id, sm->phase);
+
+    // Determine which device completed discovery
+    if (device_id == 0) {
+        sm->primary_ready = true;
+        sm->phase = PHASE_PRIMARY_DISCOVERING;
+    } else if (device_id == 1) {
+        sm->secondary_ready = true;
+        sm->phase = PHASE_SECONDARY_DISCOVERING;
+    }
+
+    // Handle next steps based on strategy
+    switch (sm->strategy_ctx.strategy) {
+        case STRATEGY_SINGLE_BOND:
+            if (sm->primary_ready && device_id == 0) {
+                LOG_INF("Single bond: Primary device discovered - starting RSI scanning for pair");
+                int err = start_rsi_scan_for_pair(device_id);
+                if (err) {
+                    LOG_ERR("Failed to start RSI scan (err %d)", err);
+                    sm->phase = PHASE_COMPLETED;
+                } else {
+                    sm->phase = PHASE_SECONDARY_CONNECTING;
+                }
+            }
+            break;
+
+        case STRATEGY_VERIFIED_SET:
+            if (sm->primary_ready && !sm->secondary_ready && device_id == 0) {
+                LOG_INF("Verified set: Primary ready - connecting to secondary device");
+                int err = connection_state_machine_connect_secondary();
+                if (err) {
+                    LOG_ERR("Failed to connect secondary device (err %d)", err);
+                }
+            } else if (sm->primary_ready && sm->secondary_ready) {
+                LOG_INF("Verified set: Both devices ready - verifying SIRK match");
+                sm->phase = PHASE_VERIFYING_SET;
+
+                // Verify that SIRKs actually match
+                bool verified = csip_verify_set_membership(0, 1);
+                if (verified) {
+                    LOG_INF("SIRK verification PASSED - set is valid");
+                    sm->set_verified = true;
+                    sm->phase = PHASE_COMPLETED;
+                } else {
+                    LOG_ERR("SIRK verification FAILED - stored SIRKs were incorrect!");
+                    sm->set_verified = false;
+                    // Could disconnect and retry, or handle error differently
+                }
+            }
+            break;
+
+        case STRATEGY_UNVERIFIED_SET:
+            if (sm->primary_ready && !sm->secondary_ready && device_id == 0) {
+                LOG_INF("Unverified set: Primary ready - connecting to secondary device");
+                int err = connection_state_machine_connect_secondary();
+                if (err) {
+                    LOG_ERR("Failed to connect secondary device (err %d)", err);
+                }
+            } else if (sm->primary_ready && sm->secondary_ready) {
+                LOG_INF("Unverified set: Both devices ready - verifying SIRK match");
+                sm->phase = PHASE_VERIFYING_SET;
+
+                // Verify if SIRKs match
+                bool verified = csip_verify_set_membership(0, 1);
+                if (verified) {
+                    LOG_INF("SIRK verification PASSED - devices are in same set");
+                    sm->set_verified = true;
+                    sm->phase = PHASE_COMPLETED;
+                } else {
+                    LOG_WRN("SIRK verification FAILED - devices are NOT in same set");
+                    LOG_WRN("TODO: Should disconnect second device and search for correct pair");
+                    sm->set_verified = false;
+                    // In the future: disconnect device 1 and start RSI scanning for correct pair
+                }
+            }
+            break;
+
+        case STRATEGY_MULTIPLE_SETS:
+            // Multiple sets follows either verified or single bond logic
+            if (sm->strategy_ctx.has_matching_set) {
+                // Same as STRATEGY_VERIFIED_SET
+                if (sm->primary_ready && !sm->secondary_ready && device_id == 0) {
+                    LOG_INF("Multiple sets (matched): Primary ready - connecting to secondary");
+                    int err = connection_state_machine_connect_secondary();
+                    if (err) {
+                        LOG_ERR("Failed to connect secondary device (err %d)", err);
+                    }
+                } else if (sm->primary_ready && sm->secondary_ready) {
+                    sm->phase = PHASE_VERIFYING_SET;
+                    bool verified = csip_verify_set_membership(0, 1);
+                    sm->set_verified = verified;
+                    sm->phase = verified ? PHASE_COMPLETED : PHASE_VERIFYING_SET;
+                }
+            } else {
+                // Same as STRATEGY_SINGLE_BOND
+                if (sm->primary_ready && device_id == 0) {
+                    LOG_INF("Multiple sets (unmatched): Starting RSI scanning");
+                    int err = start_rsi_scan_for_pair(device_id);
+                    if (err) {
+                        LOG_ERR("Failed to start RSI scan (err %d)", err);
+                        sm->phase = PHASE_COMPLETED;
+                    } else {
+                        sm->phase = PHASE_SECONDARY_CONNECTING;
+                    }
+                }
+            }
+            break;
+
+        case STRATEGY_NO_BONDS:
+            // No bonds strategy doesn't use state machine
+            LOG_DBG("No bonds strategy - state machine not used");
+            break;
+
+        default:
+            LOG_ERR("Unknown strategy in state machine: %d", sm->strategy_ctx.strategy);
+            break;
+    }
+}
+
+/* ============================================================================
+ * RSI Scanning for Pair Discovery
+ * ============================================================================ */
+
+/* State for RSI scanning */
+static struct {
+    bool active;
+    uint8_t searching_device_id;  // Device ID that's searching for its pair
+    uint8_t sirk[CSIP_SIRK_SIZE];
+    bool sirk_valid;
+} rsi_scan_state = {
+    .active = false,
+    .searching_device_id = 0,
+    .sirk_valid = false,
+};
+
+/**
+ * @brief Parse advertisement data for RSI and check if it matches our SIRK
+ *
+ * @param ad Advertisement data buffer
+ * @param sirk SIRK to check against
+ * @return true if RSI matches SIRK, false otherwise
+ */
+static bool check_adv_for_rsi_match(struct net_buf_simple *ad, const uint8_t *sirk)
+{
+    struct bt_data data;
+    uint8_t len;
+
+    while (ad->len > 0) {
+        len = net_buf_simple_pull_u8(ad);
+        if (len == 0) {
+            continue;
+        }
+
+        if (len > ad->len) {
+            LOG_WRN("Malformed advertisement data");
+            break;
+        }
+
+        data.type = net_buf_simple_pull_u8(ad);
+        len--; // Subtract type byte
+
+        data.data_len = len;
+        data.data = ad->data;
+
+        // Check if this is RSI data and if it matches our SIRK
+        if (bt_csip_set_coordinator_is_set_member(sirk, &data)) {
+            return true;
+        }
+
+        net_buf_simple_pull(ad, len);
+    }
+
+    return false;
+}
+
+/**
+ * @brief Scan callback for finding set pair via RSI
+ */
+static void rsi_scan_device_found(const bt_addr_le_t *addr, int8_t rssi, uint8_t type,
+                                   struct net_buf_simple *ad)
+{
+    if (!rsi_scan_state.active || !rsi_scan_state.sirk_valid) {
+        return;
+    }
+
+    char addr_str[BT_ADDR_LE_STR_LEN];
+    bt_addr_le_to_str(addr, addr_str, sizeof(addr_str));
+
+    // Check if advertisement contains RSI matching our SIRK
+    if (check_adv_for_rsi_match(ad, rsi_scan_state.sirk)) {
+        LOG_INF("Found set member with matching RSI: %s (RSSI: %d)", addr_str, rssi);
+
+        // Stop scanning
+        bt_le_scan_stop();
+        rsi_scan_state.active = false;
+
+        // Determine which device slot to use (opposite of searching device)
+        uint8_t target_device_id = (rsi_scan_state.searching_device_id == 0) ? 1 : 0;
+
+        // Set up device context for second device
+        struct device_context *dev_ctx = &device_ctx[target_device_id];
+        if (dev_ctx->conn != NULL) {
+            LOG_ERR("Device slot %d already occupied, cannot connect to pair", target_device_id);
+            return;
+        }
+
+        memset(&dev_ctx->info, 0, sizeof(dev_ctx->info));
+        bt_addr_le_copy(&dev_ctx->info.addr, addr);
+        dev_ctx->info.connect = true;
+        dev_ctx->info.is_new_device = true; // This is a new pairing
+        strncpy(dev_ctx->info.name, "HARC HI", BT_NAME_MAX_LEN - 1);
+
+        // Connect to the device
+        LOG_INF("Connecting to discovered set member [DEVICE ID %d]", target_device_id);
+        int err = bt_conn_le_create(addr, BT_CONN_LE_CREATE_CONN,
+                                     BT_LE_CONN_PARAM_DEFAULT, &dev_ctx->conn);
+        if (err) {
+            LOG_ERR("Failed to create connection to pair device (err %d)", err);
+            // Restart scanning on error
+            start_rsi_scan_for_pair(rsi_scan_state.searching_device_id);
+        }
+    }
+}
+
+/**
+ * @brief Start scanning for set pair using RSI
+ *
+ * @param device_id Device ID that has SIRK and is searching for its pair
+ * @return 0 on success, negative error code on failure
+ */
+int start_rsi_scan_for_pair(uint8_t device_id)
+{
+    if (device_id > 1) {
+        return -EINVAL;
+    }
+
+    LOG_INF("Starting RSI scan for set pair [DEVICE ID %d]", device_id);
+
+    // Get SIRK from the device
+    uint8_t sirk[CSIP_SIRK_SIZE];
+    uint8_t rank;
+    if (!csip_get_sirk(device_id, sirk, &rank)) {
+        LOG_ERR("Cannot start RSI scan - SIRK not available for device %d", device_id);
+        return -ENOENT;
+    }
+
+    LOG_INF("Using SIRK from device %d (rank %d) to search for pair", device_id, rank);
+    LOG_HEXDUMP_DBG(sirk, CSIP_SIRK_SIZE, "SIRK:");
+
+    // Save scan state
+    rsi_scan_state.active = true;
+    rsi_scan_state.searching_device_id = device_id;
+    memcpy(rsi_scan_state.sirk, sirk, CSIP_SIRK_SIZE);
+    rsi_scan_state.sirk_valid = true;
+
+    // Start active scanning
+    struct bt_le_scan_param scan_param = {
+        .type = BT_LE_SCAN_TYPE_ACTIVE,
+        .options = BT_LE_SCAN_OPT_FILTER_DUPLICATE,
+        .interval = BT_GAP_SCAN_FAST_INTERVAL,
+        .window = BT_GAP_SCAN_FAST_WINDOW,
+    };
+
+    int err = bt_le_scan_start(&scan_param, rsi_scan_device_found);
+    if (err) {
+        LOG_ERR("Failed to start RSI scan (err %d)", err);
+        rsi_scan_state.active = false;
+        rsi_scan_state.sirk_valid = false;
+        return err;
+    }
+
+    LOG_INF("RSI scan started successfully");
+    return 0;
+}
+
+/**
+ * @brief Stop RSI scanning for pair
+ */
+void stop_rsi_scan_for_pair(void)
+{
+    if (rsi_scan_state.active) {
+        LOG_INF("Stopping RSI scan");
+        bt_le_scan_stop();
+        rsi_scan_state.active = false;
+        rsi_scan_state.sirk_valid = false;
     }
 }

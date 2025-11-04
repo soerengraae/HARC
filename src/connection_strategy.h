@@ -27,28 +27,42 @@ struct connection_strategy_context {
 };
 
 /**
- * @brief Determine the connection strategy based on available bonds
- *
- * @param ctx Pointer to strategy context to fill
- * @return 0 on success, negative error code on failure
+ * @brief Connection state machine phases for progressive dual-device connection
  */
+enum connection_phase {
+    PHASE_IDLE,                    // No active connection sequence
+    PHASE_PRIMARY_CONNECTING,      // Connecting to first device
+    PHASE_PRIMARY_DISCOVERING,     // Discovering CSIP on first device
+    PHASE_SECONDARY_CONNECTING,    // Connecting to second device
+    PHASE_SECONDARY_DISCOVERING,   // Discovering CSIP on second device
+    PHASE_VERIFYING_SET,          // Verifying SIRK match between devices
+    PHASE_COMPLETED               // Both devices connected and verified
+};
+
+/**
+ * @brief Global connection state machine for dual-device coordination
+ */
+struct connection_state_machine {
+    enum connection_phase phase;
+    struct connection_strategy_context strategy_ctx;
+    bool primary_ready;           // Primary device fully discovered
+    bool secondary_ready;         // Secondary device fully discovered
+    bool set_verified;           // SIRK verification completed
+};
+
+/* Strategy API */
 int determine_connection_strategy(struct connection_strategy_context *ctx);
-
-/**
- * @brief Execute the determined connection strategy
- *
- * @param ctx Pointer to strategy context
- * @return 0 on success, negative error code on failure
- */
 int execute_connection_strategy(struct connection_strategy_context *ctx);
-
-/**
- * @brief Check if two SIRKs match (for set verification)
- *
- * @param sirk1 First SIRK (16 bytes)
- * @param sirk2 Second SIRK (16 bytes)
- * @return true if SIRKs match, false otherwise
- */
 bool sirk_match(const uint8_t *sirk1, const uint8_t *sirk2);
+
+/* State machine API */
+extern struct connection_state_machine g_conn_state_machine;
+void connection_state_machine_init(void);
+void connection_state_machine_on_csip_discovered(uint8_t device_id);
+int connection_state_machine_connect_secondary(void);
+
+/* RSI scanning for pair discovery */
+int start_rsi_scan_for_pair(uint8_t device_id);
+void stop_rsi_scan_for_pair(void);
 
 #endif /* CONNECTION_STRATEGY_H */

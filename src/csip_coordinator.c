@@ -1,5 +1,6 @@
 #include "csip_coordinator.h"
 #include "ble_manager.h"
+#include "connection_strategy.h"
 #include <zephyr/settings/settings.h>
 
 LOG_MODULE_REGISTER(csip_coordinator, LOG_LEVEL_DBG);
@@ -84,13 +85,9 @@ static void csip_discover_cb(struct bt_conn *conn, const struct bt_csip_set_coor
         }
     }
 
-    // Check if we need to search for the pair device
-    if (dev_ctx->info.searching_for_pair && ctx->sirk_discovered) {
-        LOG_INF("Searching for pair flag is set - will scan for matching RSI [DEVICE ID %d]",
-                dev_ctx->device_id);
-        // TODO (Step 5): Start scanning for RSI with matching SIRK
-        // For now, just log that we would start searching
-    }
+    // Notify state machine that CSIP discovery is complete
+    // The state machine will handle RSI scanning if needed
+    connection_state_machine_on_csip_discovered(dev_ctx->device_id);
 
     ble_cmd_complete(dev_ctx->device_id, 0);
 }
