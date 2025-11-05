@@ -54,8 +54,7 @@ int display_manager_init(void)
     }
 
     LOG_INF("Display init: Printing text");
-    cfb_print(display_dev, "HARC Remote", 0, 0);
-    cfb_print(display_dev, "Initializing...", 0, 16);
+    cfb_print(display_dev, "Resound", 0, 0);
 
     LOG_INF("Display init: Finalizing framebuffer");
     cfb_framebuffer_finalize(display_dev);
