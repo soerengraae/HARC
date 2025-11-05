@@ -5,6 +5,8 @@ LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_INF);
 struct bt_vcp_vol_ctlr *vol_ctlr;
 bool vcp_discovered = false;
 bool volume_direction = true;
+uint8_t current_volume = 0;
+uint8_t current_mute = 0;
 
 int vcp_cmd_discover(void)
 {
@@ -53,7 +55,11 @@ static void vcp_state_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err, uint8_t volu
         ble_cmd_complete(err);
         return;
     }
-    
+
+    // Store current volume and mute state
+    current_volume = volume;
+    current_mute = mute;
+
     float volume_percent = (float)volume * 100.0f / 255.0f;
     if (current_ble_cmd && current_ble_cmd->type == BLE_CMD_VCP_READ_STATE) {
         LOG_INF("VCP state read: Volume: %u%%, Mute: %u", (uint8_t)(volume_percent), mute);
@@ -214,4 +220,6 @@ void vcp_controller_reset(void)
 {
     vcp_discovered = false;
     vol_ctlr = NULL;
+    current_volume = 0;
+    current_mute = 0;
 }

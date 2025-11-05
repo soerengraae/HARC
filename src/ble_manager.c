@@ -18,7 +18,6 @@ static struct k_work_delayable security_request_work;
 /* BLE Command queue state */
 static sys_slist_t ble_cmd_queue;
 static struct k_mutex ble_queue_mutex;
-static struct k_sem ble_cmd_sem;
 static struct k_work_delayable ble_cmd_timeout_work;
 static bool ble_cmd_in_progress = false;
 static bool queue_is_active = false;
@@ -30,6 +29,10 @@ K_MEM_SLAB_DEFINE(ble_cmd_slab, sizeof(struct ble_cmd), BLE_CMD_QUEUE_SIZE, 4);
 /* Forward declarations */
 static void ble_process_next_command(void);
 static void ble_cmd_timeout_handler(struct k_work *work);
+static void ble_cmd_work_handler(struct k_work *work);
+
+/* Work item for processing BLE commands */
+static K_WORK_DEFINE(ble_cmd_work, ble_cmd_work_handler);
 
 static void select_ble_conn_ctx(uint8_t choice)
 {
@@ -42,8 +45,9 @@ static void activate_ble_cmd_queue(void)
 	if (!queue_is_active)
 	{
 		queue_is_active = true;
-		LOG_DBG("Activating BLE command queue");
-		k_sem_give(&ble_cmd_sem);
+		LOG_INF("Activating BLE command queue");
+		k_work_submit(&ble_cmd_work);
+		LOG_INF("Work submitted, queue activated");
 	}
 }
 
@@ -52,7 +56,6 @@ static int ble_queue_init(void)
 {
 	sys_slist_init(&ble_cmd_queue);
 	k_mutex_init(&ble_queue_mutex);
-	k_sem_init(&ble_cmd_sem, 0, 1);
 	k_work_init_delayable(&ble_cmd_timeout_work, ble_cmd_timeout_handler);
 	current_ble_cmd = NULL;
 
@@ -102,8 +105,8 @@ static int ble_cmd_enqueue(struct ble_cmd *cmd, bool high_priority)
 	}
 	k_mutex_unlock(&ble_queue_mutex);
 
-	// Signal the processing thread
-	k_sem_give(&ble_cmd_sem);
+	// Submit work to process command
+	k_work_submit(&ble_cmd_work);
 
 	LOG_DBG("%sBLE command enqueued, type: %s", high_priority ? "High priority " : "", command_type_to_string(cmd->type));
 	return 0;
@@ -134,6 +137,7 @@ static void security_request_handler(struct k_work *work)
 		LOG_ERR("Failed to set security (err %d)", err);
 	}
 	LOG_DBG("Security request initiated");
+	ble_cmd_complete(err);
 }
 
 /* Callback for iterating bonded devices to find the first one */
@@ -676,10 +680,10 @@ static int ble_cmd_execute(struct ble_cmd *cmd)
 
 	/* BAS */
 	case BLE_CMD_BAS_DISCOVER:
-		err = battery_discover(conn_ctx);
+		err = battery_discover();
 		break;
 	case BLE_CMD_BAS_READ_LEVEL:
-		err = battery_read_level(conn_ctx);
+		err = battery_read_level(current_conn_ctx);
 		break;
 
 	default:
@@ -997,28 +1001,21 @@ void ble_cmd_queue_reset(void)
 	LOG_DBG("BLE command queue reset");
 }
 
-/* Command processing thread */
-static void ble_cmd_thread(void)
+/* Work handler to process BLE commands */
+static void ble_cmd_work_handler(struct k_work *work)
 {
-	LOG_INF("BLE command thread started");
+	LOG_INF("BLE work: processing command");
 
-	while (1)
+	// Process the next command only if nothing is in progress
+	if (!ble_cmd_in_progress && queue_is_active)
 	{
-		// Wait for a command to be enqueued
-		k_sem_take(&ble_cmd_sem, K_FOREVER);
-
-		// Process the next command only if nothing is in progress
-		// If a command is already in progress, it will call ble_process_next_command()
-		// when it completes via ble_cmd_complete()
-		if (!ble_cmd_in_progress && queue_is_active)
-		{
-			ble_process_next_command();
-		}
+		ble_process_next_command();
+	}
+	else
+	{
+		LOG_WRN("BLE work: skipped (in_progress=%d, active=%d)", ble_cmd_in_progress, queue_is_active);
 	}
 }
-
-/* Command thread */
-K_THREAD_DEFINE(ble_cmd_thread_id, 1024, ble_cmd_thread, NULL, NULL, NULL, 7, 0, 0);
 
 char *command_type_to_string(enum ble_cmd_type type)
 {

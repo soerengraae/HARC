@@ -24,5 +24,7 @@ extern struct bt_vcp_vol_ctlr *vol_ctlr;
 extern struct k_work_delayable vcp_discovery_work;
 extern bool vcp_discovered;
 extern bool volume_direction;
+extern uint8_t current_volume;
+extern uint8_t current_mute;
 
 #endif // VCP_CONTROLLER_H

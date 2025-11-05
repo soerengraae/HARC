@@ -98,8 +98,11 @@ static uint8_t discover_char_cb(struct bt_conn *conn,
 			battery_discovered = true;
 			// Complete the discovery command
 			ble_cmd_complete(0);
-			LOG_DBG("Battery Service discovery complete (handle: 0x%04x, CCC: 0x%04x)", 
+			LOG_DBG("Battery Service discovery complete (handle: 0x%04x, CCC: 0x%04x)",
 			        battery_level_handle, battery_level_ccc_handle);
+
+			// Automatically read battery level after discovery
+			ble_cmd_bas_read_level(false);
 		} else {
 			LOG_ERR("Battery Service discovery completed but no characteristic found");
 		}

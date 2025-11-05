@@ -7,6 +7,7 @@
 #include <zephyr/display/cfb.h>
 #include <zephyr/logging/log.h>
 #include "battery_reader.h"
+#include "vcp_controller.h"
 
 int display_manager_init(void);
 
