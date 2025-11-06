@@ -3,6 +3,7 @@
 #include <zephyr/logging/log.h>
 #include <zephyr/bluetooth/audio/csip.h>
 #include <string.h>
+#include <zephyr/sys/byteorder.h>
 
 LOG_MODULE_REGISTER(connection_strategy, LOG_LEVEL_DBG);
 
@@ -570,46 +571,6 @@ static void rsi_scan_timeout_handler(struct k_work *work)
     // This could trigger fallback behavior or user notification
 }
 
-/**
- * @brief Parse advertisement data for RSI and check if it matches our SIRK
- *
- * @param ad Advertisement data buffer
- * @param sirk SIRK to check against
- * @return true if RSI matches SIRK, false otherwise
- */
-static bool check_adv_for_rsi_match(struct net_buf_simple *ad, const uint8_t *sirk)
-{
-    struct bt_data data;
-    uint8_t len;
-
-    while (ad->len > 0) {
-        len = net_buf_simple_pull_u8(ad);
-        if (len == 0) {
-            continue;
-        }
-
-        if (len > ad->len) {
-            LOG_WRN("Malformed advertisement data");
-            break;
-        }
-
-        data.type = net_buf_simple_pull_u8(ad);
-        len--; // Subtract type byte
-
-        data.data_len = len;
-        data.data = ad->data;
-
-        // Check if this is RSI data and if it matches our SIRK
-        if (bt_csip_set_coordinator_is_set_member(sirk, &data)) {
-            return true;
-        }
-
-        net_buf_simple_pull(ad, len);
-    }
-
-    return false;
-}
-
 static bool rsi_device_found(struct bt_data *data, void *user_data)
 {
     struct {
@@ -628,7 +589,7 @@ static bool rsi_device_found(struct bt_data *data, void *user_data)
     // Check if advertisement contains RSI matching our SIRK
     if (data->type == BT_DATA_CSIS_RSI) {
         LOG_DBG("Found RSI advertisement from %s, rssi: %d", addr_str, info->rssi);
-        LOG_HEXDUMP_DBG(data->data, data->data_len, "RSI advertisement:");
+        LOG_HEXDUMP_DBG(data->data, data->data_len, "RSI:");
         LOG_HEXDUMP_DBG(rsi_scan_state.sirk, CSIP_SIRK_SIZE, "Checking against SIRK:");
         if (bt_csip_set_coordinator_is_set_member(rsi_scan_state.sirk, data)) {
             LOG_INF("RSI matches SIRK from device %d! Address: %s, RSSI: %d",
@@ -741,7 +702,7 @@ int start_rsi_scan_for_pair(uint8_t device_id)
     }
 
     // Schedule 10-second timeout per CSIP specification
-    k_work_schedule(&rsi_scan_state.timeout_work, K_SECONDS(10));
+    k_work_schedule(&rsi_scan_state.timeout_work, BT_CSIP_SET_COORDINATOR_DISCOVER_TIMER_VALUE);
 
     LOG_INF("RSI scan started successfully (10 second timeout)");
     return 0;
