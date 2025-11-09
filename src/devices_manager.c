@@ -28,33 +28,20 @@ int devices_manager_get_bonded_devices_collection(struct bond_collection *collec
  * @note out_entry can be allocated by the caller; if the device is not found, it will be set to
  * NULL
  */
-void devices_manager_is_conn_in_bonded_devices_collection(struct bt_conn *conn,
-							  struct bonded_device_entry **out_entry)
+bool devices_manager_find_entry_by_conn(struct bt_conn *conn, struct bonded_device_entry *out_entry)
 {
-	if (*out_entry == NULL) {
-		*out_entry = (struct bonded_device_entry *)k_calloc(
-			1, sizeof(struct bonded_device_entry));
-	}
-
 	bt_addr_le_t addr;
 	bt_addr_le_copy(&addr, bt_conn_get_dst(conn));
 
-	for (uint8_t i = 0; i < bonded_devices->count; i++) {
-		struct bonded_device_entry *entry = &bonded_devices->devices[i];
-		if (bt_addr_le_cmp(&addr, &entry->addr) == 0) {
-			LOG_DBG("Connection address found in bonded devices collection");
-			if (*out_entry != NULL) {
-				memcpy(*out_entry, entry, sizeof(*entry));
-			} else {
-				LOG_ERR("Failed to allocate memory for bonded device entry");
-			}
-			return;
-		}
-	}
+  for (uint8_t i = 0; i < bonded_devices->count; i++) {
+    if (bt_addr_le_cmp(&addr, &bonded_devices->devices[i].addr) == 0) {
+        memcpy(out_entry, &bonded_devices->devices[i], sizeof(*out_entry));
+        return true;
+    }
+  }
 
 	LOG_DBG("Connection address not found in bonded devices collection");
-	*out_entry = NULL;
-	return; // Not found
+	return false; // Not found
 }
 
 /* Callback for comprehensive bond enumeration */

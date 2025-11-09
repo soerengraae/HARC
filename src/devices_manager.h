@@ -58,7 +58,7 @@ void devices_manager_clear_all_bonds(void);
 void devices_manager_update_bonded_devices_collection(void);
 int devices_manager_init(void);
 int devices_manager_get_bonded_devices_collection(struct bond_collection *collection);
-void devices_manager_is_conn_in_bonded_devices_collection(struct bt_conn *conn, struct bonded_device_entry **out_entry);
+bool devices_manager_find_entry_by_conn(struct bt_conn *conn, struct bonded_device_entry *out_entry);
 struct device_context *get_device_context_by_conn(struct bt_conn *conn);
 struct device_context *get_device_context_by_id(uint8_t device_id);
 

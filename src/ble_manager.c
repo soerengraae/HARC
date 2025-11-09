@@ -76,7 +76,8 @@ static void ble_cmd_free(struct ble_cmd *cmd)
 {
 	if (cmd)
 	{
-		k_mem_slab_free(&ble_cmd_slab_0, (void *)cmd);
+		struct k_mem_slab *slab = (cmd->device_id == 0) ? &ble_cmd_slab_0 : &ble_cmd_slab_1;
+		k_mem_slab_free(slab, (void *)cmd);
 	}
 }
 
@@ -588,7 +589,7 @@ int ble_manager_connect_to_bonded_device(struct bt_conn *conn)
 		}
 	}
 
-	struct bonded_device_entry *entry = NULL;
+	struct bonded_device_entry entry = {0};
 	if (!conn) {
 		LOG_DBG("No connection provided, checking if any bonded devices (still) exist");
 		switch (bonded_devices->count)
@@ -606,20 +607,23 @@ int ble_manager_connect_to_bonded_device(struct bt_conn *conn)
 			break;
 		}
 
-		entry = &bonded_devices->devices[0];
-		if (!entry) {
+		entry = bonded_devices->devices[0];
+		
+		// Check if first entry is empty
+		if (memcmp(&entry, &(struct bonded_device_entry){0}, sizeof(struct bonded_device_entry)) == 0) {
 			LOG_WRN("First bonded device entry is NULL, trying second entry");
-			entry = &bonded_devices->devices[1];
-			if (!entry) {
+			entry = bonded_devices->devices[1];
+			if (memcmp(&entry, &(struct bonded_device_entry){0}, sizeof(struct bonded_device_entry)) == 0) {
 				LOG_ERR("Second bonded device entry is also NULL");
 				return -EALREADY;
 			}
 			LOG_DBG("Using second bonded device entry");
-			entry = (struct bonded_device_entry *)k_calloc(1, sizeof(struct bonded_device_entry));
+			memset(&bonded_devices->devices[1], 0, sizeof(struct bonded_device_entry));
 		}
+		LOG_DBG("Using first bonded device entry");
+		memset(&bonded_devices->devices[0], 0, sizeof(struct bonded_device_entry));
 	} else {
-		devices_manager_is_conn_in_bonded_devices_collection(conn, &entry);
-		if (!entry) {
+		if (!devices_manager_find_entry_by_conn(conn, &entry)) {
 			LOG_ERR("No matching bonded device found for the provided connection");
 			return -EALREADY;
 		}
@@ -627,13 +631,13 @@ int ble_manager_connect_to_bonded_device(struct bt_conn *conn)
 
 	// Copy to device context
 	memset(&ctx->info, 0, sizeof(ctx->info));
-	bt_addr_le_copy(&ctx->info.addr, &entry->addr);
+	bt_addr_le_copy(&ctx->info.addr, &entry.addr);
 	ctx->info.connect = true;
 	ctx->info.is_new_device = false;
-	strncpy(ctx->info.name, entry->name, BT_NAME_MAX_LEN - 1);
+	strncpy(ctx->info.name, entry.name, BT_NAME_MAX_LEN - 1);
 
 	// Add to filter accept list for auto-connect
-	int err = bt_le_filter_accept_list_add(&entry->addr);
+	int err = bt_le_filter_accept_list_add(&entry.addr);
 	if (err && err != -EALREADY)
 	{
 		LOG_ERR("Failed to add device to filter accept list (err %d)", err);
@@ -646,17 +650,15 @@ int ble_manager_connect_to_bonded_device(struct bt_conn *conn)
 	}
 
 	char addr_str[BT_ADDR_LE_STR_LEN];
-	bt_addr_le_to_str(&entry->addr, addr_str, sizeof(addr_str));
+	bt_addr_le_to_str(&entry.addr, addr_str, sizeof(addr_str));
 	LOG_INF("Connecting to bonded device: %s (SIRK: %s, Rank: %d)",
 	        addr_str,
-	        entry->has_sirk ? "yes" : "no",
-	        entry->set_rank);
+	        entry.has_sirk ? "yes" : "no",
+	        entry.set_rank);
 
 	LOG_DBG("Scheduling auto-connect to bonded device [DEVICE ID %d]", ctx->device_id);
 	k_work_schedule(&auto_connect_work[ctx->device_id], K_MSEC(0));
 
-	// Remove the used entry by setting the entry to zero
-	memset(entry, 0, sizeof(struct bonded_device_entry));
 	bonded_devices->count--;
 
 	return 0;
