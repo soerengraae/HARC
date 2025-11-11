@@ -177,10 +177,10 @@ void pairing_complete(struct bt_conn *conn, bool bonded)
 }
 
 void pairing_failed(struct bt_conn *conn, enum bt_security_err reason)
-{	
+{
 	struct device_context *ctx = devices_manager_get_device_context_by_conn(conn);
 	LOG_ERR("Pairing failed: %d [DEVICE ID %d]", reason, ctx->device_id);
-	disconnect(conn, NULL);
+	ble_manager_disconnect_device(conn, NULL);
 }
 
 struct bt_conn_auth_info_cb auth_info_callbacks = {
@@ -211,7 +211,9 @@ void security_changed_cb(struct bt_conn *conn, bt_security_t level, enum bt_secu
 			else if (ctx->state == CONN_STATE_PAIRING)
 			{
 				LOG_DBG("New device - waiting for pairing completion [DEVICE ID %d]", ctx->device_id);
-			} else {
+			}
+			else
+			{
 				LOG_ERR("Unexpected security change state %d [DEVICE ID %d]", ctx->state, ctx->device_id);
 			}
 		}
@@ -224,7 +226,14 @@ void security_changed_cb(struct bt_conn *conn, bt_security_t level, enum bt_secu
 	ble_cmd_complete(ctx->device_id, err);
 }
 
-void disconnect(struct bt_conn *conn, void *data)
+void ble_manager_establish_trusted_bond(uint8_t device_id)
+{
+	struct device_context *ctx = &device_ctx[device_id];
+
+	LOG_INF("Establishing trusted bond with device [DEVICE ID %d]", device_id);
+}
+
+void ble_manager_disconnect_device(struct bt_conn *conn, void *data)
 {
 	struct device_context *ctx = devices_manager_get_device_context_by_conn(conn);
 	queue_is_active[ctx->device_id] = false;
@@ -306,26 +315,48 @@ static void disconnected_cb(struct bt_conn *conn, uint8_t reason)
 		LOG_WRN("Disconnected during pairing process [DEVICE ID %d]", ctx->device_id);
 		LOG_DBG("Scheduling reconnection to complete pairing [DEVICE ID %d]", ctx->device_id);
 		struct scanned_device_entry *scanned_device = devices_manager_get_scanned_device(0);
-		if (!scanned_device) {
+		if (!scanned_device)
+		{
 			LOG_ERR("Device not found in scanned devices list, cannot reconnect [DEVICE ID %d]", ctx->device_id);
 			return;
 		}
 
-		if (bt_addr_le_cmp(&ctx->info.addr, &scanned_device->addrs[0]) == 0) {
-			LOG_DBG("Compared %s to %s",
-				bt_addr_le_str(&ctx->info.addr),
-				bt_addr_le_str(&scanned_device->addrs[0]));
-			LOG_DBG("Same address, switching to second address for reconnection [DEVICE ID %d]", ctx->device_id);
-			bt_addr_le_copy(&ctx->info.addr, &scanned_device->addrs[1]);
-		} else if (bt_addr_le_cmp(&ctx->info.addr, &scanned_device->addrs[1]) == 0) {
-			LOG_DBG("Comparing %s to %s",
-				bt_addr_le_str(&ctx->info.addr),
-				bt_addr_le_str(&scanned_device->addrs[1]));
-			LOG_DBG("Same address, switching to first address for reconnection [DEVICE ID %d]", ctx->device_id);
-			bt_addr_le_copy(&ctx->info.addr, &scanned_device->addrs[0]);
-		} else {
-			LOG_ERR("Current address not found in scanned device addresses, cannot switch [DEVICE ID %d]", ctx->device_id);
-			return;
+		if (scanned_device->addr_count < 2)
+		{
+			LOG_WRN("Not enough addresses in scanned device entry to switch address for reconnection [DEVICE ID %d]", ctx->device_id);
+			LOG_DBG("Scheduling reconnection with same address [DEVICE ID %d]", ctx->device_id);
+		}
+		else
+		{
+			LOG_DBG("Scanned device has %d addresses", scanned_device->addr_count);
+			char addr_str0[BT_ADDR_LE_STR_LEN];
+			char addr_str1[BT_ADDR_LE_STR_LEN];
+			if (bt_addr_le_cmp(&ctx->info.addr, &scanned_device->addrs[0]) == 0)
+			{
+				bt_addr_le_to_str(&ctx->info.addr, addr_str0, sizeof(addr_str0));
+				bt_addr_le_to_str(&scanned_device->addrs[0], addr_str1, sizeof(addr_str1));
+
+				LOG_DBG("Compared %s to %s",
+						addr_str0,
+						addr_str1);
+				LOG_DBG("Same address, switching to second address for reconnection [DEVICE ID %d]", ctx->device_id);
+				bt_addr_le_copy(&ctx->info.addr, &scanned_device->addrs[1]);
+			}
+			else if (bt_addr_le_cmp(&ctx->info.addr, &scanned_device->addrs[1]) == 0)
+			{
+				bt_addr_le_to_str(&ctx->info.addr, addr_str0, sizeof(addr_str0));
+				bt_addr_le_to_str(&scanned_device->addrs[1], addr_str1, sizeof(addr_str1));
+				LOG_DBG("Comparing %s to %s",
+						addr_str0,
+						addr_str1);
+				LOG_DBG("Same address, switching to first address for reconnection [DEVICE ID %d]", ctx->device_id);
+				bt_addr_le_copy(&ctx->info.addr, &scanned_device->addrs[0]);
+			}
+			else
+			{
+				LOG_ERR("Current address not found in scanned device addresses, cannot switch [DEVICE ID %d]", ctx->device_id);
+				return;
+			}
 		}
 
 		connect(ctx);
@@ -429,7 +460,7 @@ static uint8_t connect(struct device_context *ctx)
 		LOG_ERR("Create conn to %s failed (err %d) [DEVICE ID %d]", ctx->info.name, err, ctx->device_id);
 		if (err == -ENOMEM)
 		{
-			bt_conn_foreach(BT_CONN_TYPE_LE, disconnect, NULL);
+			bt_conn_foreach(BT_CONN_TYPE_LE, ble_manager_disconnect_device, NULL);
 		}
 
 		return err; // Will restart scan
@@ -880,7 +911,7 @@ void ble_cmd_complete(uint8_t device_id, int err)
 			{
 				queue_is_active[ctx->device_id] = false;
 				LOG_ERR("VCP command failed due to insufficient authentication - reconnecting [DEVICE ID %d]", ctx->device_id);
-				disconnect(device_ctx[ctx->device_id].conn, NULL);
+				ble_manager_disconnect_device(device_ctx[ctx->device_id].conn, NULL);
 				switch (ctx->current_ble_cmd->type)
 				{
 				case BLE_CMD_VCP_VOLUME_UP:

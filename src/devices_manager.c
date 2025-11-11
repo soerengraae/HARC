@@ -109,12 +109,12 @@ void devices_manager_clear_all_bonds(void)
 	// Clear connections if any exist
 	if (device_ctx[0].conn) {
 		LOG_INF("Disconnecting before clearing bonds...");
-		disconnect(device_ctx[0].conn, NULL);
+		ble_manager_disconnect_device(device_ctx[0].conn, NULL);
 	}
 
 	if (device_ctx[1].conn) {
 		LOG_INF("Disconnecting before clearing bonds...");
-		disconnect(device_ctx[1].conn, NULL);
+		ble_manager_disconnect_device(device_ctx[1].conn, NULL);
 	}
 
 	memset(bonded_devices, 0, sizeof(struct bond_collection));

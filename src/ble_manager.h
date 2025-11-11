@@ -2,6 +2,7 @@
 #define BLE_MANAGER_H
 
 #include <zephyr/kernel.h>
+#include <zephyr/bluetooth/addr.h>
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/bluetooth/conn.h>
 #include <zephyr/settings/settings.h>
@@ -28,8 +29,8 @@
 #define MAX_DISCOVERED_DEVICES_MEMORY_SIZE 1024 // 1 KB
 #define BT_NAME_MAX_LEN 12
 #define BT_SECURITY_WANTED BT_SECURITY_L2
-#define BT_CONNECTION_TIMEOUT_MS 30000
-#define BT_SCAN_TIMEOUT_MS 20000
+#define BT_DEVICE_READY_TIMEOUT_MS 30000
+#define BT_SCAN_TIMEOUT_MS 60000
 
 /* CSIP Set Information */
 #define CSIP_SIRK_SIZE 16
@@ -85,6 +86,8 @@ void ble_manager_start_scan_for_HIs(void);
 void ble_manager_stop_scan_for_HIs(void);
 int ble_manager_autoconnect_to_device_by_addr(const bt_addr_le_t *addr);
 int ble_manager_connect_to_scanned_device(uint8_t device_id, uint8_t idx);
+void ble_manager_establish_trusted_bond(uint8_t device_id);
+
 
 /* BLE command queue API */
 int ble_cmd_request_security(uint8_t device_id);
@@ -109,7 +112,7 @@ void ble_cmd_complete(uint8_t device_id, int err);
 /* Connection management */
 extern struct bt_conn_cb conn_callbacks;
 extern struct bt_conn *auth_conn;
-void disconnect(struct bt_conn *conn, void *data);
+void ble_manager_disconnect_device(struct bt_conn *conn, void *data);
 
 /* Connection initiation */
 int schedule_auto_connect(uint8_t device_id);

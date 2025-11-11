@@ -101,9 +101,8 @@ static void csip_discover_cb(struct bt_conn *conn, const struct bt_csip_set_coor
     }
 
     // Notify state machine that CSIP discovery is complete
-    // The state machine will handle RSI scanning if needed
-
-    ble_cmd_complete(dev_ctx->device_id, 0);
+	app_controller_notify_csip_discovered(dev_ctx->device_id, err);
+    ble_cmd_complete(dev_ctx->device_id, err);
 }
 
 static void csip_sirk_changed_cb(struct bt_csip_set_coordinator_csis_inst *inst)
@@ -421,17 +420,11 @@ void rsi_scan_cb(const bt_addr_le_t *addr, int8_t rssi, uint8_t type,
 	bt_data_parse(ad, rsi_scan_adv_parse, &info);
 
 	// If RSI matched, stop scanning and connect to the device
-	// if (info.connect && rsi_scan_context.rsi_found) {
-	// 	LOG_INF("Stopping RSI scan - matched device found");
-	// 	rsi_scan_stop();
-
-	// 	// Connect to the matched device (it's a new device that needs pairing)
-	// 	int err = ble_manager_connect_to_device(&info.addr, "HARC HI", true);
-	// 	if (err) {
-	// 		LOG_ERR("Failed to connect to RSI-matched device (err %d)", err);
-	// 		// Could restart RSI scan here if needed
-	// 	}
-	// }
+	if (info.connect && rsi_scan_context.rsi_found) {
+		LOG_INF("Stopping RSI scan - matched device found");
+		rsi_scan_stop();
+		app_controller_notify_csip_member_match(rsi_scan_context.device_id, 0);
+	}
 }
 
 void csip_coordinator_rsi_scan_start(uint8_t device_id) {
@@ -485,6 +478,7 @@ static void rsi_scan_timeout_handler(struct k_work *work)
 
 		if (!rsi_scan_context.rsi_found) {
 			LOG_WRN("No matching RSI advertisements found during scan");
+			app_controller_notify_csip_member_match(rsi_scan_context.device_id, -ENOENT);
 		}
 	}
 }
