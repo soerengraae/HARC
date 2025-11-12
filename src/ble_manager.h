@@ -84,6 +84,7 @@ void bt_ready_cb(int err);
 void ble_manager_set_device_ctx_battery_level(struct bt_conn *conn, uint8_t level);
 void ble_manager_start_scan_for_HIs(void);
 void ble_manager_stop_scan_for_HIs(void);
+int ble_manager_autoconnect_to_bonded_device(uint8_t device_id);
 int ble_manager_autoconnect_to_device_by_addr(const bt_addr_le_t *addr);
 int ble_manager_connect_to_scanned_device(uint8_t device_id, uint8_t idx);
 void ble_manager_establish_trusted_bond(uint8_t device_id);
@@ -112,7 +113,7 @@ void ble_cmd_complete(uint8_t device_id, int err);
 /* Connection management */
 extern struct bt_conn_cb conn_callbacks;
 extern struct bt_conn *auth_conn;
-void ble_manager_disconnect_device(struct bt_conn *conn, void *data);
+int ble_manager_disconnect_device(struct bt_conn *conn);
 
 /* Connection initiation */
 int schedule_auto_connect(uint8_t device_id);

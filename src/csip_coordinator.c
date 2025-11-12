@@ -396,7 +396,6 @@ static bool rsi_scan_adv_parse(struct bt_data *data, void *user_data)
 		
 		if (bt_csip_set_coordinator_is_set_member(csip_ctx[rsi_scan_context.device_id].sirk, data)) {
 			LOG_INF("RSI matches SIRK - will attempt to connect to %s", addr_str);
-			info->connect = true;
 			rsi_scan_context.rsi_found = true;
 			return false;  // Stop parsing
 		} else {
@@ -415,12 +414,11 @@ void rsi_scan_cb(const bt_addr_le_t *addr, int8_t rssi, uint8_t type,
 
 	struct device_info info = {0};
 	info.addr = *addr;
-	info.connect = false;
 
 	bt_data_parse(ad, rsi_scan_adv_parse, &info);
 
 	// If RSI matched, stop scanning and connect to the device
-	if (info.connect && rsi_scan_context.rsi_found) {
+	if (rsi_scan_context.rsi_found) {
 		LOG_INF("Stopping RSI scan - matched device found");
 		rsi_scan_stop();
 		app_controller_notify_csip_member_match(rsi_scan_context.device_id, 0);

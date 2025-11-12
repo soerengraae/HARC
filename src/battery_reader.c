@@ -1,5 +1,6 @@
 #include "battery_reader.h"
 #include "devices_manager.h"
+#include "app_controller.h"
 
 LOG_MODULE_REGISTER(battery_reader, LOG_LEVEL_DBG);
 
@@ -62,10 +63,13 @@ static uint8_t discover_char_cb(struct bt_conn *conn,
 			// Complete the discovery command
 			LOG_DBG("Battery Service discovery complete (handle: 0x%04x, CCC: 0x%04x) [DEVICE ID %d]", 
 			        ctx->bas_ctlr.battery_level_handle, ctx->bas_ctlr.battery_level_ccc_handle, ctx->device_id);
-							
+
+			app_controller_notify_bas_discovered(ctx->device_id, 0);
 			ble_cmd_complete(ctx->device_id, 0);
 		} else {
 			LOG_ERR("Battery Service discovery completed but no characteristic found [DEVICE ID %d]", ctx->device_id);
+			app_controller_notify_bas_discovered(ctx->device_id, -EINVAL);
+			ble_cmd_complete(ctx->device_id, -EINVAL);
 		}
 		
 		return BT_GATT_ITER_STOP;

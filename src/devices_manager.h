@@ -12,7 +12,6 @@
 struct bonded_device_entry
 {
     bt_addr_le_t addr;
-    char name[BT_NAME_MAX_LEN];
     uint8_t sirk[CSIP_SIRK_SIZE];
     bool has_sirk;
     uint8_t set_rank;
@@ -41,13 +40,13 @@ struct scanned_device_entry
 struct device_info
 {
     bt_addr_le_t addr;
-    char name[BT_NAME_MAX_LEN];
-    bool connect;
+    // char name[BT_NAME_MAX_LEN];
+    // bool connect;
     bool is_new_device; // True if not previously bonded
     bool vcp_discovered;
     bool bas_discovered;
     bool csip_discovered;
-    bool searching_for_pair; // True when actively searching for set pair
+    // bool searching_for_pair; // True when actively searching for set pair
 };
 
 enum connection_state
@@ -56,7 +55,6 @@ enum connection_state
     CONN_STATE_CONNECTING,
     CONN_STATE_PAIRING,
     CONN_STATE_PAIRED,
-    CONN_STATE_BONDING,
     CONN_STATE_BONDED,
     CONN_STATE_CONNECTED,
 };

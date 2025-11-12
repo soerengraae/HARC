@@ -31,10 +31,10 @@ int devices_manager_get_bonded_devices_collection(struct bond_collection *collec
 bool devices_manager_find_bonded_entry_by_addr(const bt_addr_le_t *addr, struct bonded_device_entry *out_entry)
 {
   for (uint8_t i = 0; i < bonded_devices->count; i++) {
-	if (bt_addr_le_cmp(addr, &bonded_devices->devices[i].addr) == 0) {
-		memcpy(out_entry, &bonded_devices->devices[i], sizeof(*out_entry));
-		return true;
-	}
+		if (bt_addr_le_cmp(addr, &bonded_devices->devices[i].addr) == 0) {
+			memcpy(out_entry, &bonded_devices->devices[i], sizeof(*out_entry));
+			return true;
+		}
   }
 
 	LOG_DBG("Address not found in bonded devices collection");
@@ -61,7 +61,6 @@ static void enumerate_bonds_cb(const struct bt_bond_info *info, void *user_data)
 	entry->is_set_member = false;
 	entry->set_rank = 0;
 	memset(entry->sirk, 0, CSIP_SIRK_SIZE);
-	memset(entry->name, 0, BT_NAME_MAX_LEN);
 
 	// Load SIRK and rank from settings if available
 	uint8_t rank = 0;
@@ -109,12 +108,12 @@ void devices_manager_clear_all_bonds(void)
 	// Clear connections if any exist
 	if (device_ctx[0].conn) {
 		LOG_INF("Disconnecting before clearing bonds...");
-		ble_manager_disconnect_device(device_ctx[0].conn, NULL);
+		ble_manager_disconnect_device(device_ctx[0].conn);
 	}
 
 	if (device_ctx[1].conn) {
 		LOG_INF("Disconnecting before clearing bonds...");
-		ble_manager_disconnect_device(device_ctx[1].conn, NULL);
+		ble_manager_disconnect_device(device_ctx[1].conn);
 	}
 
 	memset(bonded_devices, 0, sizeof(struct bond_collection));
@@ -406,9 +405,6 @@ int devices_manager_select_scanned_device(uint8_t idx, struct device_info *out_i
 	// Fill out_info with selected device (use first address)
 	memset(out_info, 0, sizeof(struct device_info));
 	bt_addr_le_copy(&out_info->addr, &entry->addrs[0]);
-	strncpy(out_info->name, entry->name, BT_NAME_MAX_LEN - 1);
-	out_info->name[BT_NAME_MAX_LEN - 1] = '\0';
-	out_info->connect = true;
 
 	// Check if any of the addresses were previously bonded
 	struct bonded_device_entry bonded_entry;

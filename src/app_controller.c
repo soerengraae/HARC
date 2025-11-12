@@ -17,6 +17,8 @@ enum app_event_type
     EVENT_SCAN_TIMEOUT,
     EVENT_PAIRING_FAILED,
     EVENT_SCAN_COMPLETE,
+    EVENT_BAS_DISCOVERED,
+    EVENT_VCP_DISCOVERED,
 };
 
 struct app_event
@@ -58,8 +60,7 @@ void app_controller_thread(void)
         {
         case SM_IDLE:
             // Wait for an event to trigger action
-            while (k_msgq_get(&app_event_queue, &evt, K_FOREVER))
-                ;
+            while (k_msgq_get(&app_event_queue, &evt, K_FOREVER));
             switch (evt.type)
             {
             default:
@@ -180,23 +181,58 @@ void app_controller_thread(void)
                 if (evt.error_code != 0)
                 {
                     LOG_WRN("No CSIP member match found for device %d", evt.device_id);
-                    LOG_INF("Reconnecting to establish trusted bond, then proceeding to single device operation");
-                    state = SM_SINGLE_DEVICE_OPERATION;
+                    LOG_INF("Proceeding to single device operation");
+                    state = SM_SINGLE_BONDED_DEVICE;
                 } else {
                     LOG_INF("CSIP member match found for device %d, repeating proceduer for second device", evt.device_id);
                     state = SM_IDLE;
                 }
             }
 
+            break;
+
+        case SM_SINGLE_BONDED_DEVICE:
+            LOG_DBG("SM_SINGLE_BONDED_DEVICE: Establishing trusted bond with single device");
+            /**
+             * Establish trusted bond with the connected device
+             */
             ble_manager_establish_trusted_bond(evt.device_id);
 
             while(k_msgq_get(&app_event_queue, &evt, K_FOREVER));
+            if (evt.type != EVENT_DEVICE_READY)
+            {
+                LOG_ERR("Unexpected event %d in SM_FIRST_TIME_USE", evt.type);
+                state = SM_IDLE;
+                break;
+            }
+            else
+            {
+                LOG_INF("[DEVICE ID %d] ready after trusted bond, discovering services", evt.device_id);
+            }
 
-            break;
+            ble_cmd_bas_discover(evt.device_id, false);
 
-        case SM_SINGLE_DEVICE_OPERATION:
-            LOG_DBG("SM_SINGLE_DEVICE_OPERATION: Managing single device operation");
-            // Handle single device operation
+            while(k_msgq_get(&app_event_queue, &evt, K_FOREVER));
+            if (evt.type != EVENT_BAS_DISCOVERED)
+            {
+                LOG_ERR("Unexpected event %d in SM_SINGLE_BONDED_DEVICE", evt.type);
+                state = SM_IDLE;
+            } else {
+                LOG_INF("BAS discovered for device %d, reading level", evt.device_id);
+                ble_cmd_bas_read_level(evt.device_id, false);
+            }
+
+            ble_cmd_vcp_discover(evt.device_id, false);
+
+            while(k_msgq_get(&app_event_queue, &evt, K_FOREVER));
+            if (evt.type != EVENT_VCP_DISCOVERED)
+            {
+                LOG_ERR("Unexpected event %d in SM_SINGLE_BONDED_DEVICE", evt.type);
+            } else {
+                LOG_INF("VCP discovered for device %d, entering idle state", evt.device_id);
+            }
+
+            state = SM_IDLE;
             break;
 
         default:
@@ -220,7 +256,7 @@ static void determine_state(void)
         break;
     case 1:
         LOG_INF("One bonded device found, connecting and verifying set membership");
-        state = SM_SINGLE_DEVICE_OPERATION; // One bonded device
+        state = SM_SINGLE_BONDED_DEVICE; // One bonded device
         break;
     case 2:
         LOG_INF("Two bonded devices found, connecting to both and verifying set membership");
@@ -290,6 +326,28 @@ int8_t app_controller_notify_csip_member_match(uint8_t device_id, int8_t err)
     LOG_INF("Notifying CSIP member match: device_id=%d", device_id);
     struct app_event evt = {
         .type = EVENT_CSIP_MEMBER_MATCH,
+        .device_id = device_id,
+        .error_code = err,
+    };
+    return k_msgq_put(&app_event_queue, &evt, K_NO_WAIT);
+}
+
+int8_t app_controller_notify_bas_discovered(uint8_t device_id, int err)
+{
+    LOG_INF("Notifying BAS discovered: device_id=%d", device_id);
+    struct app_event evt = {
+        .type = EVENT_BAS_DISCOVERED,
+        .device_id = device_id,
+        .error_code = err,
+    };
+    return k_msgq_put(&app_event_queue, &evt, K_NO_WAIT);
+}
+
+int8_t app_controller_notify_vcp_discovered(uint8_t device_id, int err)
+{
+    LOG_INF("Notifying VCP discovered: device_id=%d", device_id);
+    struct app_event evt = {
+        .type = EVENT_VCP_DISCOVERED,
         .device_id = device_id,
         .error_code = err,
     };

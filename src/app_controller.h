@@ -13,7 +13,7 @@ enum sm_state {
     SM_IDLE, /* No active connection process */
     SM_WAKE, /* Wake up and determine state */
     SM_FIRST_TIME_USE, /* First device bonding/discovering */
-    SM_SINGLE_DEVICE_OPERATION, /* Managing single bonded device */
+    SM_SINGLE_BONDED_DEVICE, /* Managing single bonded device */
     SM_DUAL_DEVICE_OPERATION, /* Managing two bonded devices */
 };
 

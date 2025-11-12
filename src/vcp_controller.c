@@ -109,6 +109,7 @@ static void vcp_discover_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err,
 
     if (err) {
         LOG_ERR("VCP discovery failed (err %d) [DEVICE ID %d]", err, ctx->device_id);
+        app_controller_notify_vcp_discovered(ctx->device_id, err);
         ble_cmd_complete(ctx->device_id, err);
         return;
     }
@@ -122,6 +123,7 @@ static void vcp_discover_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err,
     // ble_cmd_vcp_read_flags(ctx->device_id, true);
 
 	// Mark discovery command as complete
+    app_controller_notify_vcp_discovered(ctx->device_id, err);
 	ble_cmd_complete(ctx->device_id, 0);
 }
 

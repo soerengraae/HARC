@@ -138,7 +138,9 @@ static void security_request_handler(struct k_work *work)
 		return;
 	}
 	LOG_DBG("Security request initiated [DEVICE ID %d]", device_id);
-	ctx->state = CONN_STATE_PAIRING;
+	
+	if (ctx->state == CONN_STATE_CONNECTED)
+		ctx->state = CONN_STATE_PAIRING;
 }
 
 void pairing_complete(struct bt_conn *conn, bool bonded)
@@ -166,6 +168,7 @@ void pairing_complete(struct bt_conn *conn, bool bonded)
 		}
 
 		devices_manager_update_bonded_devices_collection();
+		devices_manager_get_bonded_devices_collection(bonded_devices);
 	}
 	else
 	{
@@ -180,7 +183,7 @@ void pairing_failed(struct bt_conn *conn, enum bt_security_err reason)
 {
 	struct device_context *ctx = devices_manager_get_device_context_by_conn(conn);
 	LOG_ERR("Pairing failed: %d [DEVICE ID %d]", reason, ctx->device_id);
-	ble_manager_disconnect_device(conn, NULL);
+	ble_manager_disconnect_device(conn);
 }
 
 struct bt_conn_auth_info_cb auth_info_callbacks = {
@@ -203,10 +206,10 @@ void security_changed_cb(struct bt_conn *conn, bt_security_t level, enum bt_secu
 		{
 			LOG_DBG("Encryption established at level %u [DEVICE ID %d]", level, ctx->device_id);
 
-			if (ctx->state == CONN_STATE_BONDING)
+			if (ctx->state == CONN_STATE_BONDED)
 			{
-				ctx->state = CONN_STATE_BONDED;
 				LOG_DBG("Bonded device - encryption established [DEVICE ID %d]", ctx->device_id);
+				app_controller_notify_device_ready(ctx->device_id);
 			}
 			else if (ctx->state == CONN_STATE_PAIRING)
 			{
@@ -229,17 +232,44 @@ void security_changed_cb(struct bt_conn *conn, bt_security_t level, enum bt_secu
 void ble_manager_establish_trusted_bond(uint8_t device_id)
 {
 	struct device_context *ctx = &device_ctx[device_id];
-
 	LOG_INF("Establishing trusted bond with device [DEVICE ID %d]", device_id);
-}
+	ctx->state = CONN_STATE_BONDED;
 
-void ble_manager_disconnect_device(struct bt_conn *conn, void *data)
+	int err = ble_manager_disconnect_device(ctx->conn);
+	if (err)
+	{
+		LOG_WRN("Failed to disconnect for bonding (err %d) [DEVICE ID %d]", err, device_id);
+
+		if (err == 1) {
+			LOG_DBG("Scheduling connection to establish bond [DEVICE ID %d]", ctx->device_id);
+			ble_manager_autoconnect_to_bonded_device(ctx->device_id);
+		}
+	}
+}
+	
+
+int ble_manager_disconnect_device(struct bt_conn *conn)
 {
 	struct device_context *ctx = devices_manager_get_device_context_by_conn(conn);
-	queue_is_active[ctx->device_id] = false;
+	if (!ctx)
+	{
+		LOG_ERR("Cannot disconnect - device context not found");
+		return -EINVAL;
+	}
+
 	LOG_INF("Disconnecting connection [DEVICE ID %d]", ctx->device_id);
-	bt_conn_disconnect(conn, BT_HCI_ERR_REMOTE_USER_TERM_CONN);
+	int err = bt_conn_disconnect(conn, BT_HCI_ERR_REMOTE_USER_TERM_CONN);
+	if (err != 0) {
+		LOG_WRN("Failed to initiate disconnection [DEVICE ID %d]", ctx->device_id);
+		if (err == -ENOTCONN) {
+			LOG_DBG("Device already disconnected [DEVICE ID %d]", ctx->device_id);
+			return 1;
+		}
+		return err;
+	}
+
 	bt_conn_unref(conn);
+	return 0;
 }
 
 static void connected_cb(struct bt_conn *conn, uint8_t err)
@@ -259,12 +289,6 @@ static void connected_cb(struct bt_conn *conn, uint8_t err)
 		// Cancel auto-connect if it was active
 		bt_conn_create_auto_stop();
 		k_work_cancel_delayable(&auto_connect_timeout_work[ctx->device_id]);
-
-		if (err == BT_HCI_ERR_UNKNOWN_CONN_ID)
-		{
-			// Connection failed, retry
-			ble_manager_start_scan_for_HIs();
-		}
 		return;
 	}
 
@@ -275,19 +299,17 @@ static void connected_cb(struct bt_conn *conn, uint8_t err)
 	char addr_str[BT_ADDR_LE_STR_LEN];
 	bt_addr_le_to_str(addr, addr_str, sizeof(addr_str));
 
-	// Here with empty slot
 	ctx->conn = bt_conn_ref(conn);
 	bt_addr_le_copy(&ctx->info.addr, addr);
 
-	if (ctx->info.is_new_device)
+	if (ctx->state == CONN_STATE_CONNECTING)
 	{
 		LOG_DBG("Connected to new device %s - expecting pairing [DEVICE ID %d]", addr_str, ctx->device_id);
 		ctx->state = CONN_STATE_CONNECTED;
 	}
 	else
 	{
-		LOG_INF("Connected to bonded device %s [DEVICE ID %d]", addr_str, ctx->device_id);
-		ctx->state = CONN_STATE_BONDED;
+		LOG_INF("Connected to bonded (or bonding) device %s [DEVICE ID %d]", addr_str, ctx->device_id);
 	}
 
 	queue_is_active[ctx->device_id] = true;
@@ -297,7 +319,9 @@ static void connected_cb(struct bt_conn *conn, uint8_t err)
 static void disconnected_cb(struct bt_conn *conn, uint8_t reason)
 {
 	struct device_context *ctx = devices_manager_get_device_context_by_conn(conn);
-	LOG_INF("Disconnected (reason 0x%02X) [DEVICE ID %d]", reason, ctx->device_id);
+	char addr_str0[BT_ADDR_LE_STR_LEN];
+	bt_addr_le_to_str(bt_conn_get_dst(conn), addr_str0, sizeof(addr_str0));
+	LOG_INF("Disconnected from %s with (reason 0x%02X) [DEVICE ID %d]", addr_str0, reason, ctx->device_id);
 
 	bt_conn_unref(ctx->conn);
 	ctx->conn = NULL;
@@ -309,6 +333,17 @@ static void disconnected_cb(struct bt_conn *conn, uint8_t reason)
 		vcp_controller_reset(ctx->device_id);
 	if (ctx->info.bas_discovered)
 		battery_reader_reset(ctx->device_id);
+
+	/**
+	 * If the disconnection was intentional (local host terminated),
+	 * we will decide whether to attempt to reconnect.
+	 * If the disconnection was unintentional, we simply set the state
+	 * to DISCONNECTED and wait for further instructions.
+	 */
+	if (reason != BT_HCI_ERR_LOCALHOST_TERM_CONN && reason != BT_HCI_ERR_CONN_FAIL_TO_ESTAB) {
+		ctx->state = CONN_STATE_DISCONNECTED;
+		return;
+	}
 
 	if (ctx->state == CONN_STATE_PAIRING)
 	{
@@ -329,7 +364,7 @@ static void disconnected_cb(struct bt_conn *conn, uint8_t reason)
 		else
 		{
 			LOG_DBG("Scanned device has %d addresses", scanned_device->addr_count);
-			char addr_str0[BT_ADDR_LE_STR_LEN];
+			
 			char addr_str1[BT_ADDR_LE_STR_LEN];
 			if (bt_addr_le_cmp(&ctx->info.addr, &scanned_device->addrs[0]) == 0)
 			{
@@ -359,7 +394,16 @@ static void disconnected_cb(struct bt_conn *conn, uint8_t reason)
 			}
 		}
 
-		connect(ctx);
+		ble_manager_autoconnect_to_device_by_addr(&ctx->info.addr);
+		return;
+	} else if (ctx->state == CONN_STATE_BONDED) {
+		LOG_INF("Disconnected to establish trusted bond [DEVICE ID %d]", ctx->device_id);
+		LOG_DBG("Scheduling reconnection to establish bond [DEVICE ID %d]", ctx->device_id);
+		ble_manager_autoconnect_to_bonded_device(ctx->device_id);
+		return;
+	} else {
+		LOG_WRN("Disconnected unexpectedly, state = %d [DEVICE ID %d]", ctx->state, ctx->device_id);
+		ctx->state = CONN_STATE_DISCONNECTED;
 	}
 }
 
@@ -429,18 +473,6 @@ static bool device_found(struct bt_data *data, void *user_data)
 
 static uint8_t connect(struct device_context *ctx)
 {
-	// struct device_context *ctx = &device_ctx[0];
-	// if (ctx->conn != NULL)
-	// {
-	// 	LOG_WRN("Connection already exists in first slot, moving to second slot");
-	// 	ctx = &device_ctx[1];
-	// 	if (ctx->conn != NULL)
-	// 	{
-	// 		LOG_ERR("Connection already exists in second slot as well");
-	// 		return EALREADY;
-	// 	}
-	// }
-
 	if (ctx->conn != NULL)
 	{
 		LOG_ERR("Connection already exists [DEVICE ID %d]", ctx->device_id);
@@ -449,7 +481,7 @@ static uint8_t connect(struct device_context *ctx)
 
 	char addr_str[BT_ADDR_LE_STR_LEN];
 	bt_addr_le_to_str(&ctx->info.addr, addr_str, sizeof(addr_str));
-	LOG_INF("Connecting to %s (with address %s) [DEVICE ID %d]", ctx->info.name, addr_str, ctx->device_id);
+	LOG_INF("Connecting to %s [DEVICE ID %d]", addr_str, ctx->device_id);
 
 	ctx->state = CONN_STATE_CONNECTING;
 
@@ -457,13 +489,9 @@ static uint8_t connect(struct device_context *ctx)
 	int err = bt_conn_le_create(&ctx->info.addr, BT_CONN_LE_CREATE_CONN, BT_LE_CONN_PARAM_DEFAULT, &ctx->conn);
 	if (err)
 	{
-		LOG_ERR("Create conn to %s failed (err %d) [DEVICE ID %d]", ctx->info.name, err, ctx->device_id);
-		if (err == -ENOMEM)
-		{
-			bt_conn_foreach(BT_CONN_TYPE_LE, ble_manager_disconnect_device, NULL);
-		}
+		LOG_ERR("Create conn to %s failed (err %d) [DEVICE ID %d]", addr_str, err, ctx->device_id);
 
-		return err; // Will restart scan
+		return err;
 	}
 
 	return 0;
@@ -496,14 +524,8 @@ int ble_manager_connect_to_scanned_device(uint8_t device_id, uint8_t idx)
 
 	// Populate device info (use first address)
 	bt_addr_le_copy(&ctx->info.addr, &scanned_device->addrs[0]);
-	if (scanned_device->name[0] != '\0')
-	{
-		strncpy(ctx->info.name, scanned_device->name, BT_NAME_MAX_LEN - 1);
-		ctx->info.name[BT_NAME_MAX_LEN - 1] = '\0';
-	}
-
 	ctx->info.is_new_device = true; // Assuming new device for scanned devices
-
+	ctx->state = CONN_STATE_DISCONNECTED;
 	return ble_manager_autoconnect_to_device_by_addr(&ctx->info.addr);
 }
 
@@ -606,14 +628,6 @@ int schedule_auto_connect(uint8_t device_id)
 		return -EINVAL;
 	}
 
-	struct device_context *ctx = &device_ctx[device_id];
-
-	if (!ctx->info.connect)
-	{
-		LOG_ERR("Cannot schedule auto-connect - no device info set [DEVICE ID %d]", device_id);
-		return -EINVAL;
-	}
-
 	LOG_DBG("Scheduling auto-connect [DEVICE ID %d]", device_id);
 	k_work_schedule(&auto_connect_work[device_id], K_MSEC(0));
 	return 0;
@@ -711,14 +725,72 @@ int ble_manager_autoconnect_to_device_by_addr(const bt_addr_le_t *addr)
 		LOG_ERR("Failed to add device to filter accept list (err %d)", err);
 	}
 
+	// err = bt_le_set_rpa_timeout(900); // Set RPA timeout
+	// if (err)
+	// {
+	// 	LOG_WRN("Failed to set RPA timeout (err %d)", err);
+	// }
+
+	char addr_str[BT_ADDR_LE_STR_LEN];
+	bt_addr_le_to_str(&ctx->info.addr, addr_str, sizeof(addr_str));
+	LOG_INF("Attempting to connect to device: %s", addr_str);
+	if (ctx->state == CONN_STATE_DISCONNECTED)
+		ctx->state = CONN_STATE_CONNECTING;
+
+	k_work_schedule(&auto_connect_work[ctx->device_id], K_MSEC(0));
+	return 0;
+}
+
+/**
+ * @brief Auto-connect to a bonded device by address.
+ * @param addr Address of the device to connect to
+ * @return 0 on success, negative error code on failure
+ */
+int ble_manager_autoconnect_to_bonded_device(uint8_t device_id)
+{
+	struct device_context *ctx = &device_ctx[device_id];
+
+	char addr_str[BT_ADDR_LE_STR_LEN];
+
+	if (!ctx)
+	{
+		LOG_ERR("Invalid device context for auto-connect");
+		return -EINVAL;
+	}
+
+	struct bonded_device_entry entry = bonded_devices->devices[device_id];
+	if (bt_addr_le_cmp(&entry.addr, &bt_addr_le_none) == 0)
+	{
+		LOG_ERR("No bonded device found for auto-connect [DEVICE ID %d]", device_id);
+		return -EINVAL;
+	}
+
+	bt_addr_le_to_str(&entry.addr, addr_str, sizeof(addr_str));
+	LOG_DBG("Found entry in bonded devices for auto-connect, addr=%s [DEVICE ID %d]", addr_str, device_id);
+	memset(ctx, 0, sizeof(struct device_context));
+	bt_addr_le_copy(&ctx->info.addr, &entry.addr);
+	ctx->device_id = device_id;
+	ctx->state = CONN_STATE_BONDED;
+	bt_addr_le_to_str(&ctx->info.addr, addr_str, sizeof(addr_str));
+	LOG_DBG("Set device context for auto-connect, addr=%s [DEVICE ID %d]", addr_str, device_id);
+
+	// Clear and add to filter accept list for auto-connect
+	bt_le_filter_accept_list_clear();
+	int err = bt_le_filter_accept_list_add(&ctx->info.addr);
+	if (err && err != -EALREADY)
+	{
+		LOG_ERR("Failed to add device to filter accept list (err %d)", err);
+	} else {
+		bt_addr_le_to_str(&ctx->info.addr, addr_str, sizeof(addr_str));
+		LOG_DBG("Added address to filter accept list for auto-connect (addr=%s) [DEVICE ID %d]", addr_str, device_id);
+	}
+
 	err = bt_le_set_rpa_timeout(900); // Set RPA timeout
 	if (err)
 	{
 		LOG_WRN("Failed to set RPA timeout (err %d)", err);
 	}
 
-	char addr_str[BT_ADDR_LE_STR_LEN];
-	bt_addr_le_to_str(&ctx->info.addr, addr_str, sizeof(addr_str));
 	LOG_INF("Attempting to connect to device: %s", addr_str);
 	k_work_schedule(&auto_connect_work[ctx->device_id], K_MSEC(0));
 
@@ -911,7 +983,7 @@ void ble_cmd_complete(uint8_t device_id, int err)
 			{
 				queue_is_active[ctx->device_id] = false;
 				LOG_ERR("VCP command failed due to insufficient authentication - reconnecting [DEVICE ID %d]", ctx->device_id);
-				ble_manager_disconnect_device(device_ctx[ctx->device_id].conn, NULL);
+				ble_manager_disconnect_device(device_ctx[ctx->device_id].conn);
 				switch (ctx->current_ble_cmd->type)
 				{
 				case BLE_CMD_VCP_VOLUME_UP:
