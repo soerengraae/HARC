@@ -1,103 +1,127 @@
 #include <zephyr/kernel.h>
 #include <zephyr/bluetooth/bluetooth.h>
 #include <zephyr/logging/log.h>
+#include <zephyr/drivers/gpio.h>
 
 #include "ble_manager.h"
 #include "vcp_controller.h"
 #include "devices_manager.h"
 #include "battery_reader.h"
-#include "oled_display.h"
-#include "button_handler.h"
+#include "display_manager.h"
 
 LOG_MODULE_REGISTER(main, LOG_LEVEL_INF);
 
-/* Button test tracking */
-static uint32_t button_up_count = 0;
-static uint32_t button_down_count = 0;
+/* Button definitions from device tree */
+static const struct gpio_dt_spec button1 = GPIO_DT_SPEC_GET(DT_ALIAS(sw0), gpios);
+static const struct gpio_dt_spec button2 = GPIO_DT_SPEC_GET(DT_ALIAS(sw1), gpios);
+static const struct gpio_dt_spec button3 = GPIO_DT_SPEC_GET(DT_ALIAS(sw2), gpios);
+static struct gpio_callback button1_cb_data;
+static struct gpio_callback button2_cb_data;
+static struct gpio_callback button3_cb_data;
 
-/* VCP state for display */
-static uint8_t current_volume = 0;
-static bool current_mute = false;
-
-/* Work queue for display updates from interrupt context */
-static struct k_work display_update_work;
-
-/* Work handler for display updates (runs in thread context) */
-static void display_update_work_handler(struct k_work *work)
+/* Work handler for clearing bonds (deferred from interrupt context) */
+static void clear_bonds_work_handler(struct k_work *work)
 {
-    char buf[32];
+    LOG_WRN("Clearing all bonds...");
 
-    if (vcp_discovered && vol_ctlr) {
-        /* Connected to VCP - show volume display */
-        LOG_INF("Updating volume display: %u%%, mute:%d",
-                (uint16_t)current_volume * 100 / 255, current_mute);
-        oled_display_volume(current_volume, current_mute, true);
-    } else {
-        /* Not connected - show button test screen */
-        LOG_INF("Updating button test display - UP:%u DN:%u",
-                button_up_count, button_down_count);
-
-        oled_clear();
-        oled_draw_string(5, 0, "BUTTON TEST OK");
-
-        /* Draw a box around the counters */
-        oled_draw_rect(0, 14, 127, 28);
-
-        oled_draw_string(4, 18, "UP:");
-        snprintk(buf, sizeof(buf), "%u", button_up_count);
-        oled_draw_string(35, 18, buf);
-
-        oled_draw_string(4, 30, "DN:");
-        snprintk(buf, sizeof(buf), "%u", button_down_count);
-        oled_draw_string(35, 30, buf);
-
-        oled_draw_string(10, 52, "PRESS BTNs!");
-        oled_display();
+    // Disconnect first if connected
+    if (current_conn_ctx && current_conn_ctx->conn) {
+        LOG_INF("Disconnecting before clearing bonds...");
+        bt_conn_disconnect(current_conn_ctx->conn, BT_HCI_ERR_REMOTE_USER_TERM_CONN);
+        k_sleep(K_MSEC(500));  // Give time for disconnect to complete
     }
+
+    bt_unpair(BT_ID_DEFAULT, BT_ADDR_LE_ANY);
+    LOG_INF("All bonds cleared - please reset the device");
 }
 
-/* Helper function to show button test feedback */
-static void show_button_test_feedback(void)
+static K_WORK_DEFINE(clear_bonds_work, clear_bonds_work_handler);
+
+/* Button callbacks */
+void button1_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-    /* Just submit work to update display in thread context */
-    k_work_submit(&display_update_work);
+    LOG_INF("Button 1 pressed - Volume Up");
+    ble_cmd_vcp_volume_up(true);
 }
 
-/* Public function to update volume display (called from vcp_controller) */
-void main_update_volume_display(uint8_t volume, bool mute)
+void button2_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-    current_volume = volume;
-    current_mute = mute;
-    k_work_submit(&display_update_work);
+    LOG_INF("Button 2 pressed - Volume Down");
+    ble_cmd_vcp_volume_down(true);
 }
 
-/* Button callback handlers */
-static void on_volume_up_button(void)
+void button3_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-    button_up_count++;
-    LOG_INF("Volume Up button pressed (count: %u)", button_up_count);
+    LOG_WRN("Button 3 pressed - CLEARING ALL BONDS!");
+    k_work_submit(&clear_bonds_work);
+}
 
-    if (vcp_discovered && vol_ctlr) {
-        /* Send volume up command - display will update when VCP responds */
-        ble_cmd_vcp_volume_up(false);
-    } else {
-        /* Show button test feedback when not connected */
-        show_button_test_feedback();
+static int init_buttons(void)
+{
+    int ret;
+
+    if (!gpio_is_ready_dt(&button1)) {
+        LOG_ERR("Button 1 device not ready");
+        return -ENODEV;
     }
-}
 
-static void on_volume_down_button(void)
-{
-    button_down_count++;
-    LOG_INF("Volume Down button pressed (count: %u)", button_down_count);
-
-    if (vcp_discovered && vol_ctlr) {
-        /* Send volume down command - display will update when VCP responds */
-        ble_cmd_vcp_volume_down(false);
-    } else {
-        /* Show button test feedback when not connected */
-        show_button_test_feedback();
+    if (!gpio_is_ready_dt(&button2)) {
+        LOG_ERR("Button 2 device not ready");
+        return -ENODEV;
     }
+
+    if (!gpio_is_ready_dt(&button3)) {
+        LOG_ERR("Button 3 device not ready");
+        return -ENODEV;
+    }
+
+    ret = gpio_pin_configure_dt(&button1, GPIO_INPUT);
+    if (ret != 0) {
+        LOG_ERR("Failed to configure button 1 (err %d)", ret);
+        return ret;
+    }
+
+    ret = gpio_pin_configure_dt(&button2, GPIO_INPUT);
+    if (ret != 0) {
+        LOG_ERR("Failed to configure button 2 (err %d)", ret);
+        return ret;
+    }
+
+    ret = gpio_pin_configure_dt(&button3, GPIO_INPUT);
+    if (ret != 0) {
+        LOG_ERR("Failed to configure button 3 (err %d)", ret);
+        return ret;
+    }
+
+    ret = gpio_pin_interrupt_configure_dt(&button1, GPIO_INT_EDGE_TO_ACTIVE);
+    if (ret != 0) {
+        LOG_ERR("Failed to configure button 1 interrupt (err %d)", ret);
+        return ret;
+    }
+
+    ret = gpio_pin_interrupt_configure_dt(&button2, GPIO_INT_EDGE_TO_ACTIVE);
+    if (ret != 0) {
+        LOG_ERR("Failed to configure button 2 interrupt (err %d)", ret);
+        return ret;
+    }
+
+    ret = gpio_pin_interrupt_configure_dt(&button3, GPIO_INT_EDGE_TO_ACTIVE);
+    if (ret != 0) {
+        LOG_ERR("Failed to configure button 3 interrupt (err %d)", ret);
+        return ret;
+    }
+
+    gpio_init_callback(&button1_cb_data, button1_pressed, BIT(button1.pin));
+    gpio_add_callback(button1.port, &button1_cb_data);
+
+    gpio_init_callback(&button2_cb_data, button2_pressed, BIT(button2.pin));
+    gpio_add_callback(button2.port, &button2_cb_data);
+
+    gpio_init_callback(&button3_cb_data, button3_pressed, BIT(button3.pin));
+    gpio_add_callback(button3.port, &button3_cb_data);
+
+    LOG_INF("Buttons initialized: Button 1 = Vol Up, Button 2 = Vol Down, Button 3 = Clear Bonds");
+    return 0;
 }
 
 int main(void)
@@ -121,6 +145,26 @@ int main(void)
         }
     }
 
+    err = vcp_controller_init();
+	if (err) {
+		LOG_ERR("VCP controller init failed (err %d)", err);
+		return err;
+	}
+
+    LOG_INF("Starting display initialization...");
+    err = display_manager_init();
+    if (err) {
+        LOG_WRN("Display manager init failed (err %d) - continuing without display", err);
+    }
+    LOG_INF("Display initialization completed");
+
+    /* Initialize buttons */
+    err = init_buttons();
+    if (err) {
+        LOG_ERR("Button init failed (err %d)", err);
+        return err;
+    }
+
     /* Initialize Bluetooth */
     err = bt_enable(bt_ready_cb);
     /* Initialize OLED display */
@@ -138,51 +182,11 @@ int main(void)
         return err;
     }
 
-    // ble_cmd_bas_read_level(0, false);
-    /* Register button callbacks */
-    button_register_volume_up_callback(on_volume_up_button);
-    button_register_volume_down_callback(on_volume_down_button);
-
-    err = vcp_controller_init();
-    if (err) {
-        LOG_ERR("VCP controller init failed (err %d)", err);
-        oled_display_status("VCP INIT FAIL");
-        return err;
-    }
-
-    /* Initialize Bluetooth */
-    oled_display_status("BT STARTING");
-    err = bt_enable(bt_ready_cb);
-    if (err) {
-        LOG_ERR("Bluetooth init failed (err %d)", err);
-        oled_display_status("BT INIT FAIL");
-        return err;
-    }
-
-    /* Show initial button test screen */
-    k_sleep(K_MSEC(500));
-    show_button_test_feedback();
-
-    LOG_INF("========================================");
-    LOG_INF("Button system ready!");
-    LOG_INF("Press Button 1 (SW1) for Volume Up");
-    LOG_INF("Press Button 2 (SW2) for Volume Down");
-    LOG_INF("========================================");
-
-    /* Main loop - interrupt-based buttons working! */
     while (1) {
-        k_sleep(K_SECONDS(5));
+        k_sleep(K_SECONDS(1));
 
-        /* Periodically read battery level if connected */
-        if (battery_discovered) {
-            ble_cmd_bas_read_level(false);
-        }
-
-        /* Refresh display if not connected (but don't overwrite too frequently) */
-        if (!vcp_discovered) {
-            /* Display already updated by button callbacks, just refresh periodically */
-            show_button_test_feedback();
-        }
+        // Update display every second
+        display_refresh_periodic();
     }
 
     return 0;

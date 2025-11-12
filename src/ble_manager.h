@@ -48,7 +48,7 @@ struct bt_bas_ctlr {
 enum ble_cmd_type {
     BLE_CMD_REQUEST_SECURITY,
 
-    /* Volume Control commands */
+    /* VCP commands */
     BLE_CMD_VCP_DISCOVER,
     BLE_CMD_VCP_VOLUME_UP,
     BLE_CMD_VCP_VOLUME_DOWN,
@@ -61,14 +61,11 @@ enum ble_cmd_type {
     /* Battery Service commands */
     BLE_CMD_BAS_DISCOVER,
     BLE_CMD_BAS_READ_LEVEL,
-
-    /* Coordinated Sets Identification commands */
-    BLE_CMD_CSIP_DISCOVER,
 };
 
 /* BLE command structure */
 struct ble_cmd {
-    uint8_t device_id;
+    struct bt_conn *conn;
     enum ble_cmd_type type;
     uint8_t d0;  // Data parameter (e.g., volume level)
     uint8_t retry_count;

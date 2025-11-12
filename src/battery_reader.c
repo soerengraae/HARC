@@ -4,7 +4,43 @@
 
 LOG_MODULE_REGISTER(battery_reader, LOG_LEVEL_DBG);
 
-uint8_t bas_settings_save_ctlr(struct device_context *ctx, struct bt_bas_ctlr *bas_ctlr);
+/* Global state variables */
+bool battery_discovered = false;
+uint8_t battery_level = 0;
+
+/* GATT handles for Battery Service */
+static uint16_t battery_level_handle = 0;
+static uint16_t battery_level_ccc_handle = 0;
+
+/* Notification callback for battery level updates */
+static uint8_t battery_notify_cb(struct bt_conn *conn,
+								 struct bt_gatt_subscribe_params *params,
+								 const void *data, uint16_t length)
+{
+	if (!data)
+	{
+		LOG_INF("Battery level notifications unsubscribed");
+		params->value_handle = 0;
+		return BT_GATT_ITER_STOP;
+	}
+
+	if (length != 1)
+	{
+		LOG_WRN("Unexpected battery level length: %u", length);
+		return BT_GATT_ITER_CONTINUE;
+	}
+
+	battery_level = *(uint8_t *)data;
+	LOG_INF("Battery level notification: %u%%", battery_level);
+
+	return BT_GATT_ITER_CONTINUE;
+}
+
+/* Subscription parameters for battery level notifications */
+static struct bt_gatt_subscribe_params battery_subscribe_params = {
+	.notify = battery_notify_cb,
+	.value = BT_GATT_CCC_NOTIFY,
+};
 
 /* Read callback for battery level characteristic */
 static uint8_t battery_read_cb(struct bt_conn *conn, uint8_t err,
