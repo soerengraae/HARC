@@ -64,13 +64,16 @@ static void vcp_state_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err, uint8_t volu
         ble_cmd_complete(ctx->device_id, err);
         return;
     }
-    
+
     float volume_percent = (float)volume * 100.0f / 255.0f;
     if (ctx->current_ble_cmd && ctx->current_ble_cmd->type == BLE_CMD_VCP_READ_STATE) {
         LOG_INF("VCP state read: Volume: %u%%, Mute: %u [DEVICE ID %d]", (uint8_t)(volume_percent), mute, ctx->device_id);
     } else {
         LOG_DBG("VCP state notification: Volume: %u%%, Mute: %u [DEVICE ID %d]", (uint8_t)(volume_percent), mute, ctx->device_id);
     }
+
+    /* Update OLED display with current volume state (via work queue) */
+    main_update_volume_display(volume, mute);
 
     if (volume >= 255) {
         volume_direction = false;
