@@ -23,6 +23,7 @@ enum app_event_type
     EVENT_VOLUME_DOWN_BUTTON_PRESSED,
     EVENT_PAIR_BUTTON_PRESSED,
     EVENT_PRESET_BUTTON_PRESSED,
+    EVENT_CLEAR_BONDS_BUTTON_PRESSED
 };
 
 struct app_event
@@ -80,28 +81,28 @@ void app_controller_thread(void)
                     LOG_DBG("SM_IDLE: Volume up button pressed");
                     if (connected_flag == 1)
                     {
-                        ble_cmd_vcp_volume_up(0, true); // Device ID 0 for single device operation
+                        ble_cmd_vcp_volume_up(0, false); // Device ID 0 for single device operation
                     }
                     else if (connected_flag == 2)
                     {
-                        ble_cmd_vcp_volume_up(0, true); // Device ID 0 for dual device operation
-                        ble_cmd_vcp_volume_up(1, true); // Device ID 1 for dual device operation
+                        ble_cmd_vcp_volume_up(0, false); // Device ID 0 for dual device operation
+                        ble_cmd_vcp_volume_up(1, false); // Device ID 1 for dual device operation
                     }
                     else
                     {
-                        LOG_WRN("No connected device to send volume up command");
+                        LOG_WRN("No connected device to send volume up command, connected_flag=%d", connected_flag);
                     }
                     break;
                 case EVENT_VOLUME_DOWN_BUTTON_PRESSED:
                     LOG_DBG("SM_IDLE: Volume down button pressed");
                     if (connected_flag == 1)
                     {
-                        ble_cmd_vcp_volume_down(0, true); // Device ID 0 for single device operation
+                        ble_cmd_vcp_volume_down(0, false); // Device ID 0 for single device operation
                     }
                     else if (connected_flag == 2)
                     {
-                        ble_cmd_vcp_volume_down(0, true); // Device ID 0 for dual device operation
-                        ble_cmd_vcp_volume_down(1, true); // Device ID 1 for dual device operation
+                        ble_cmd_vcp_volume_down(0, false); // Device ID 0 for dual device operation
+                        ble_cmd_vcp_volume_down(1, false); // Device ID 1 for dual device operation
                     }
                     else
                     {
@@ -227,7 +228,6 @@ void app_controller_thread(void)
                 {
                     LOG_WRN("No CSIP member match found for device %d", evt.device_id);
                     LOG_INF("Proceeding to single device operation");
-                    connected_flag = 1;
                     state = SM_SINGLE_BONDED_DEVICE;
                 } else {
                     LOG_INF("CSIP member match found for device %d, repeating procedure for second device", evt.device_id);
@@ -239,6 +239,7 @@ void app_controller_thread(void)
 
         case SM_SINGLE_BONDED_DEVICE:
             LOG_DBG("SM_SINGLE_BONDED_DEVICE: Establishing trusted bond with single device");
+            connected_flag = 1;
             /**
              * Establish trusted bond with the connected device
              */
@@ -435,6 +436,16 @@ int8_t app_controller_notify_preset_button_pressed()
     LOG_DBG("Notifying preset button pressed");
     struct app_event evt = {
         .type = EVENT_PRESET_BUTTON_PRESSED,
+        .device_id = 0,
+    };
+    return k_msgq_put(&app_event_queue, &evt, K_NO_WAIT);
+}
+
+int8_t app_controller_notify_clear_bonds_button_pressed()
+{
+    LOG_DBG("Notifying clear bonds button pressed");
+    struct app_event evt = {
+        .type = EVENT_CLEAR_BONDS_BUTTON_PRESSED,
         .device_id = 0,
     };
     return k_msgq_put(&app_event_queue, &evt, K_NO_WAIT);

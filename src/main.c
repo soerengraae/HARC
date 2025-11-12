@@ -8,6 +8,9 @@
 #include "devices_manager.h"
 #include "battery_reader.h"
 #include "display_manager.h"
+#include "app_controller.h"
+#include "oled_display.h"
+#include "button_handler.h"
 
 LOG_MODULE_REGISTER(main, LOG_LEVEL_INF);
 
@@ -19,41 +22,23 @@ static struct gpio_callback button1_cb_data;
 static struct gpio_callback button2_cb_data;
 static struct gpio_callback button3_cb_data;
 
-/* Work handler for clearing bonds (deferred from interrupt context) */
-static void clear_bonds_work_handler(struct k_work *work)
-{
-    LOG_WRN("Clearing all bonds...");
-
-    // Disconnect first if connected
-    if (current_conn_ctx && current_conn_ctx->conn) {
-        LOG_INF("Disconnecting before clearing bonds...");
-        bt_conn_disconnect(current_conn_ctx->conn, BT_HCI_ERR_REMOTE_USER_TERM_CONN);
-        k_sleep(K_MSEC(500));  // Give time for disconnect to complete
-    }
-
-    bt_unpair(BT_ID_DEFAULT, BT_ADDR_LE_ANY);
-    LOG_INF("All bonds cleared - please reset the device");
-}
-
-static K_WORK_DEFINE(clear_bonds_work, clear_bonds_work_handler);
-
 /* Button callbacks */
 void button1_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
     LOG_INF("Button 1 pressed - Volume Up");
-    ble_cmd_vcp_volume_up(true);
+    app_controller_notify_volume_up_button_pressed();
 }
 
 void button2_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
     LOG_INF("Button 2 pressed - Volume Down");
-    ble_cmd_vcp_volume_down(true);
+    app_controller_notify_volume_down_button_pressed();
 }
 
 void button3_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
     LOG_WRN("Button 3 pressed - CLEARING ALL BONDS!");
-    k_work_submit(&clear_bonds_work);
+    app_controller_notify_clear_bonds_button_pressed();
 }
 
 static int init_buttons(void)
@@ -128,10 +113,8 @@ int main(void)
 {
     int err;
 
-    LOG_INF("HARC Audio Controller Starting...");
-
-    /* Initialize work queue for display updates */
-    k_work_init(&display_update_work, display_update_work_handler);
+    // /* Initialize work queue for display updates */
+    // k_work_init(&display_update_work, display_update_work_handler);
 
     if (IS_ENABLED(CONFIG_SETTINGS)) {
         err = settings_subsys_init();
@@ -151,12 +134,26 @@ int main(void)
 		return err;
 	}
 
-    LOG_INF("Starting display initialization...");
-    err = display_manager_init();
-    if (err) {
-        LOG_WRN("Display manager init failed (err %d) - continuing without display", err);
-    }
-    LOG_INF("Display initialization completed");
+    err = battery_reader_init();
+	if (err)
+	{
+		LOG_ERR("Battery reader init failed (err %d)", err);
+		return err;
+	}
+
+	err = csip_coordinator_init();
+	if (err)
+	{
+		LOG_ERR("CSIP coordinator init failed (err %d)", err);
+		return err;
+	}
+
+    // LOG_INF("Starting display initialization...");
+    // err = display_manager_init();
+    // if (err) {
+    //     LOG_WRN("Display manager init failed (err %d) - continuing without display", err);
+    // }
+    // LOG_INF("Display initialization completed");
 
     /* Initialize buttons */
     err = init_buttons();
@@ -167,26 +164,26 @@ int main(void)
 
     /* Initialize Bluetooth */
     err = bt_enable(bt_ready_cb);
-    /* Initialize OLED display */
-    err = oled_display_init();
-    if (err) {
-        LOG_ERR("OLED init failed (err %d)", err);
-        return err;
-    }
-    oled_display_status("INITIALIZING");
+    // /* Initialize OLED display */
+    // err = oled_display_init();
+    // if (err) {
+    //     LOG_ERR("OLED init failed (err %d)", err);
+    //     return err;
+    // }
+    // oled_display_status("INITIALIZING");
 
-    /* Initialize button handlers */
-    err = button_handler_init();
-    if (err) {
-        LOG_ERR("Button handler init failed (err %d)", err);
-        return err;
-    }
+    // /* Initialize button handlers */
+    // err = button_handler_init();
+    // if (err) {
+    //     LOG_ERR("Button handler init failed (err %d)", err);
+    //     return err;
+    // }
 
     while (1) {
         k_sleep(K_SECONDS(1));
 
         // Update display every second
-        display_refresh_periodic();
+        // display_refresh_periodic();
     }
 
     return 0;

@@ -1,5 +1,6 @@
 #include "vcp_controller.h"
 #include "devices_manager.h"
+#include "app_controller.h"
 #include "ble_manager.h"
 
 LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_DBG);
@@ -72,8 +73,8 @@ static void vcp_state_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err, uint8_t volu
         LOG_DBG("VCP state notification: Volume: %u%%, Mute: %u [DEVICE ID %d]", (uint8_t)(volume_percent), mute, ctx->device_id);
     }
 
-    /* Update OLED display with current volume state (via work queue) */
-    main_update_volume_display(volume, mute);
+    // /* Update OLED display with current volume state (via work queue) */
+    // main_update_volume_display(volume, mute);
 
     if (volume >= 255) {
         volume_direction = false;

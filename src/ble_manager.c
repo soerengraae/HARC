@@ -646,27 +646,6 @@ int ble_manager_init(void)
 		return err;
 	}
 
-	err = vcp_controller_init();
-	if (err)
-	{
-		LOG_ERR("VCP controller init failed (err %d)", err);
-		return err;
-	}
-
-	err = battery_reader_init();
-	if (err)
-	{
-		LOG_ERR("Battery reader init failed (err %d)", err);
-		return err;
-	}
-
-	err = csip_coordinator_init();
-	if (err)
-	{
-		LOG_ERR("CSIP coordinator init failed (err %d)", err);
-		return err;
-	}
-
 	LOG_DBG("Initializing connection works");
 	for (ssize_t i = 0; i < 2; i++)
 	{
@@ -1093,8 +1072,15 @@ int ble_cmd_vcp_discover(uint8_t device_id, bool high_priority)
 	return ble_cmd_enqueue(cmd, high_priority);
 }
 
+/**
+ * @brief Enqueue a VCP volume up command
+ * @param device_id Device ID
+ * @param high_priority Not used for this command
+ * @return 0 on success, negative error code on failure
+ */
 int ble_cmd_vcp_volume_up(uint8_t device_id, bool high_priority)
 {
+	(void) high_priority;
 	struct device_context *ctx = &device_ctx[device_id];
 	ble_cmd_vcp_read_state(ctx->device_id, false);
 
@@ -1106,11 +1092,18 @@ int ble_cmd_vcp_volume_up(uint8_t device_id, bool high_priority)
 
 	cmd->device_id = ctx->device_id;
 	cmd->type = BLE_CMD_VCP_VOLUME_UP;
-	return ble_cmd_enqueue(cmd, high_priority);
+	return ble_cmd_enqueue(cmd, 0);
 }
 
+/**
+ * @brief Enqueue a VCP volume down command
+ * @param device_id Device ID
+ * @param high_priority Not used for this command
+ * @return 0 on success, negative error code on failure
+ */
 int ble_cmd_vcp_volume_down(uint8_t device_id, bool high_priority)
 {
+	(void) high_priority;
 	struct device_context *ctx = &device_ctx[device_id];
 	ble_cmd_vcp_read_state(ctx->device_id, false);
 
@@ -1122,7 +1115,7 @@ int ble_cmd_vcp_volume_down(uint8_t device_id, bool high_priority)
 
 	cmd->device_id = ctx->device_id;
 	cmd->type = BLE_CMD_VCP_VOLUME_DOWN;
-	return ble_cmd_enqueue(cmd, high_priority);
+	return ble_cmd_enqueue(cmd, 0);
 }
 
 int ble_cmd_vcp_set_volume(uint8_t device_id, uint8_t volume, bool high_priority)

@@ -61,11 +61,14 @@ enum ble_cmd_type {
     /* Battery Service commands */
     BLE_CMD_BAS_DISCOVER,
     BLE_CMD_BAS_READ_LEVEL,
+
+    /* CSIP commands */
+    BLE_CMD_CSIP_DISCOVER,
 };
 
 /* BLE command structure */
 struct ble_cmd {
-    struct bt_conn *conn;
+    uint8_t device_id;
     enum ble_cmd_type type;
     uint8_t d0;  // Data parameter (e.g., volume level)
     uint8_t retry_count;
