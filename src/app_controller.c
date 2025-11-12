@@ -2,6 +2,7 @@
 #include "ble_manager.h"
 #include "devices_manager.h"
 #include "csip_coordinator.h"
+#include "has_controller.h"
 
 LOG_MODULE_REGISTER(app_controller, LOG_LEVEL_DBG);
 
@@ -19,6 +20,7 @@ enum app_event_type
     EVENT_SCAN_COMPLETE,
     EVENT_BAS_DISCOVERED,
     EVENT_VCP_DISCOVERED,
+    EVENT_HAS_DISCOVERED,
     EVENT_VOLUME_UP_BUTTON_PRESSED,
     EVENT_VOLUME_DOWN_BUTTON_PRESSED,
     EVENT_PAIR_BUTTON_PRESSED,
@@ -276,7 +278,17 @@ void app_controller_thread(void)
             {
                 LOG_ERR("Unexpected event %d in SM_SINGLE_BONDED_DEVICE", evt.type);
             } else {
-                LOG_INF("VCP discovered for device %d, entering idle state", evt.device_id);
+                LOG_INF("VCP discovered for device %d", evt.device_id);
+            }
+
+            has_controller_reset(evt.device_id);
+            ble_cmd_has_discover(evt.device_id, false);
+            while (k_msgq_get(&app_event_queue, &evt, K_FOREVER));
+            if (evt.type != EVENT_HAS_DISCOVERED)
+            {
+                LOG_ERR("Unexpected event %d in SM_SINGLE_BONDED_DEVICE", evt.type);
+            } else {
+                LOG_INF("HAS discovered for device %d, entering idle state", evt.device_id);
             }
 
             state = SM_IDLE;
@@ -447,6 +459,17 @@ int8_t app_controller_notify_clear_bonds_button_pressed()
     struct app_event evt = {
         .type = EVENT_CLEAR_BONDS_BUTTON_PRESSED,
         .device_id = 0,
+    };
+    return k_msgq_put(&app_event_queue, &evt, K_NO_WAIT);
+}
+
+int8_t app_controller_notify_has_discovered(uint8_t device_id, int err)
+{
+    LOG_DBG("Notifying HAS discovered: device_id=%d", device_id);
+    struct app_event evt = {
+        .type = EVENT_HAS_DISCOVERED,
+        .device_id = device_id,
+        .error_code = err,
     };
     return k_msgq_put(&app_event_queue, &evt, K_NO_WAIT);
 }

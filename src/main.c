@@ -5,6 +5,7 @@
 
 #include "ble_manager.h"
 #include "vcp_controller.h"
+#include "csip_coordinator.h"
 #include "devices_manager.h"
 #include "battery_reader.h"
 #include "display_manager.h"
@@ -41,15 +42,14 @@ void button2_pressed(const struct device *dev, struct gpio_callback *cb, uint32_
 void button3_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
     LOG_WRN("Button 3 pressed - CLEARING ALL BONDS!");
-    app_controller_notify_clear_bonds_button_pressed();
+    // app_controller_notify_clear_bonds_button_pressed();
 }
 
 void button4_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
     LOG_INF("Button 4 pressed - Next Preset");
-    ble_cmd_has_next_preset(true);
+    app_controller_notify_preset_button_pressed();
 }
-
 
 static int init_buttons(void)
 {

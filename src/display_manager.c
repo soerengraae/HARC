@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "has_controller.h"
+#include "devices_manager.h"
 
 LOG_MODULE_REGISTER(display_manager, LOG_LEVEL_INF);
 
@@ -46,8 +47,16 @@ static void draw_volume_bar(uint16_t x, uint16_t y, uint16_t width, uint16_t hei
     }
 }
 
-static void display_refresh(void)
+static void display_refresh(uint8_t device_id)
 {
+    struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
+    if (!ctx) {
+        LOG_ERR("Display refresh for unknown device ID %d", device_id);
+        return;
+    }
+    
+    uint8_t current_volume = ctx->info.vcp_discovered ? ctx->vcp_ctlr.state.volume : 0;
+    uint8_t battery_level = ctx->bas_ctlr.battery_level;
     char buf[32];
 
 //     cfb_framebuffer_clear(display_dev, false);
@@ -66,10 +75,10 @@ static void display_refresh(void)
 
 
     // Active Preset
-    int active_idx = has_get_active_preset();
+    int active_idx = has_get_active_preset(device_id);
     if (active_idx >= 0) {
         struct has_preset_info preset_info;
-        if (has_get_preset_info(active_idx, &preset_info) == 0) {
+        if (has_get_preset_info(device_id, active_idx, &preset_info) == 0) {
             // Truncate preset name if too long
             char short_name[13];  // Max 12 chars + null terminator
             strncpy(short_name, preset_info.name, 12);
@@ -81,49 +90,45 @@ static void display_refresh(void)
             snprintf(buf, sizeof(buf), "%d", active_idx);
             cfb_print(display_dev, buf, 0, 38);
         }
-    } else if (has_discovered) {
+    } else if (ctx->info.has_discovered) {
         cfb_print(display_dev, "Preset: None", 0, 54);
     }
+}
 
-// int display_manager_init(void)
-// {
-//     int err;
-
-//     LOG_INF("Display init: Getting device");
-//     display_dev = DEVICE_DT_GET(DT_CHOSEN(zephyr_display));
-//     if (!device_is_ready(display_dev)) {
-//         LOG_ERR("Display device not ready");
-//         return -ENODEV;
-//     }
-
-//     LOG_INF("Display init: Device ready, initializing framebuffer");
-//     err = cfb_framebuffer_init(display_dev);
-//     if (err) {
-//         LOG_ERR("Failed to init framebuffer (err %d)", err);
-//         return err;
-//     }
-
-//     LOG_INF("Display init: Clearing framebuffer");
-//     cfb_framebuffer_clear(display_dev, true);
-
-//     LOG_INF("Display init: Setting font");
-//     err = cfb_framebuffer_set_font(display_dev,0);
-//     if (err) {
-//         LOG_ERR("Failed to set font (err %d)", err);
-//         return err;
-//     }
-
-//     LOG_INF("Display init: Printing text");
-//     cfb_print(display_dev, "Resound", 0, 0);
-
-//     LOG_INF("Display init: Finalizing framebuffer");
-//     cfb_framebuffer_finalize(display_dev);
-
-//     LOG_INF("Display initialized successfully");
-//     return 0;
-// }
-
-void display_refresh_periodic(void)
+int display_manager_init(void)
 {
-    display_refresh();
+    int err;
+
+    LOG_INF("Display init: Getting device");
+    display_dev = DEVICE_DT_GET(DT_CHOSEN(zephyr_display));
+    if (!device_is_ready(display_dev)) {
+        LOG_ERR("Display device not ready");
+        return -ENODEV;
+    }
+
+    LOG_INF("Display init: Device ready, initializing framebuffer");
+    err = cfb_framebuffer_init(display_dev);
+    if (err) {
+        LOG_ERR("Failed to init framebuffer (err %d)", err);
+        return err;
+    }
+
+    LOG_INF("Display init: Clearing framebuffer");
+    cfb_framebuffer_clear(display_dev, true);
+
+    LOG_INF("Display init: Setting font");
+    err = cfb_framebuffer_set_font(display_dev,0);
+    if (err) {
+        LOG_ERR("Failed to set font (err %d)", err);
+        return err;
+    }
+
+    LOG_INF("Display init: Printing text");
+    cfb_print(display_dev, "Resound", 0, 0);
+
+    LOG_INF("Display init: Finalizing framebuffer");
+    cfb_framebuffer_finalize(display_dev);
+
+    LOG_INF("Display initialized successfully");
+    return 0;
 }

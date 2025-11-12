@@ -1,12 +1,9 @@
 #include "has_controller.h"
+#include "devices_manager.h"
+#include "ble_manager.h"
+#include "app_controller.h"
 
-LOG_MODULE_REGISTER(has_controller, LOG_LEVEL_INF);
-
-struct bt_has *has_client = NULL;
-bool has_discovered = false;
-uint8_t active_preset_index = BT_HAS_PRESET_INDEX_NONE;
-uint8_t preset_count = 0;
-struct has_preset_info presets[HAS_MAX_PRESETS];
+LOG_MODULE_REGISTER(has_controller, LOG_LEVEL_DBG);
 
 /* Forward declarations */
 static void has_discover_cb(struct bt_conn *conn, int err, struct bt_has *has,
@@ -16,6 +13,7 @@ static void has_preset_read_rsp_cb(struct bt_has *has, int err,
                                    const struct bt_has_preset_record *record,
                                    bool is_last);
 static void has_preset_switch_cb(struct bt_has *has, int err, uint8_t index);
+static struct device_context *get_device_context_by_has(struct bt_has *has);
 
 /* HAS client callbacks */
 static struct bt_has_client_cb has_callbacks = {
@@ -31,9 +29,16 @@ static void has_discover_cb(struct bt_conn *conn, int err, struct bt_has *has,
                            enum bt_has_hearing_aid_type type,
                            enum bt_has_capabilities caps)
 {
+    struct device_context *ctx = devices_manager_get_device_context_by_conn(conn);
+    if (!ctx) {
+        LOG_ERR("HAS discovery callback from unknown connection");
+        return;
+    }
+
     if (err || !has) {
         LOG_ERR("HAS discovery failed (err %d)", err);
-        ble_cmd_complete(err ? err : -ENOENT);
+        app_controller_notify_has_discovered(ctx->device_id, err ? err : -ENOENT);
+        ble_cmd_complete(ctx->device_id, err ? err : -ENOENT);
         return;
     }
 
@@ -41,13 +46,14 @@ static void has_discover_cb(struct bt_conn *conn, int err, struct bt_has *has,
     LOG_INF("Hearing aid type: %d", type);
     LOG_INF("Hearing aid capabilities: 0x%02X", caps);
 
-    has_client = has;
-    has_discovered = true;
+    ctx->info.has_discovered = true;
+    ctx->has_ctlr.has = has;
 
-    // After discovery, automatically read all presets
-    ble_cmd_has_read_presets(true);
+    // // After discovery, automatically read all presets
+    ble_cmd_has_read_presets(ctx->device_id, true);
 
-    ble_cmd_complete(0);
+    app_controller_notify_has_discovered(ctx->device_id, 0);
+    ble_cmd_complete(ctx->device_id, 0);
 }
 
 /**
@@ -57,21 +63,28 @@ static void has_preset_read_rsp_cb(struct bt_has *has, int err,
                                    const struct bt_has_preset_record *record,
                                    bool is_last)
 {
+    struct device_context *ctx = get_device_context_by_has(has);
+
+    if (!ctx) {
+        LOG_ERR("Preset read callback from unknown connection");
+        return;
+    }
+
     if (err) {
         LOG_ERR("Preset read failed (err %d)", err);
-        ble_cmd_complete(err);
+        ble_cmd_complete(ctx->device_id, err);
         return;
     }
 
     if (!record) {
         LOG_DBG("No more presets");
-        ble_cmd_complete(0);
+        ble_cmd_complete(ctx->device_id, err);
         return;
     }
 
     // Store preset information
-    if (preset_count < HAS_MAX_PRESETS) {
-        struct has_preset_info *preset = &presets[preset_count];
+    if (ctx->has_ctlr.preset_count < HAS_MAX_PRESETS) {
+        struct has_preset_info *preset = &ctx->has_ctlr.presets[ctx->has_ctlr.preset_count];
         preset->index = record->index;
         preset->available = (record->properties & BT_HAS_PROP_AVAILABLE) != 0;
         preset->writable = (record->properties & BT_HAS_PROP_WRITABLE) != 0;
@@ -86,15 +99,15 @@ static void has_preset_read_rsp_cb(struct bt_has *has, int err,
         LOG_INF("Preset %u: '%s' (available: %d, writable: %d)",
                 record->index, preset->name, preset->available, preset->writable);
 
-        preset_count++;
+        ctx->has_ctlr.preset_count++;
     } else {
         LOG_WRN("Maximum preset count reached, ignoring preset %u", record->index);
     }
 
     // If this is the last preset, complete the command
     if (is_last) {
-        LOG_DBG("Preset read complete, total: %u", preset_count);
-        ble_cmd_complete(0);
+        LOG_DBG("Preset read complete, total: %u", ctx->has_ctlr.preset_count);
+        ble_cmd_complete(ctx->device_id, 0);
     }
 }
 
@@ -103,64 +116,83 @@ static void has_preset_read_rsp_cb(struct bt_has *has, int err,
  */
 static void has_preset_switch_cb(struct bt_has *has, int err, uint8_t index)
 {
-    if (err) {
-        LOG_ERR("Preset switch failed (err %d)", err);
-        ble_cmd_complete(err);
+    struct device_context *ctx = get_device_context_by_has(has);
+
+    if (!ctx) {
+        LOG_ERR("Preset switch callback from unknown connection");
         return;
     }
 
-    active_preset_index = index;
-
-    // Find preset name for better logging
-    const char *preset_name = "Unknown";
-    for (int i = 0; i < preset_count; i++) {
-        if (presets[i].index == index) {
-            preset_name = presets[i].name;
-            break;
-        }
+    if (err) {
+        LOG_ERR("Preset switch failed (err %d)", err);
+        ble_cmd_complete(ctx->device_id, err);
+        return;
     }
 
+    // ctx->has_ctlr.active_preset_index = index;
+
+    // Find preset name for better logging
+    char *preset_name = "Unknown";
+    // for (int i = 0; i < ctx->has_ctlr.preset_count; i++) {
+    //     if (ctx->has_ctlr.presets[i].index == index) {
+    //         preset_name = ctx->has_ctlr.presets[i].name;
+    //         break;
+    //     }
+    // }
+
+    if (ctx->current_ble_cmd && ctx->current_ble_cmd->type) {
+        LOG_DBG("ctx->current_ble_cmd->type=%d", ctx->current_ble_cmd->type);
+            if (ctx->current_ble_cmd->type == BLE_CMD_HAS_NEXT_PRESET ||
+                ctx->current_ble_cmd->type == BLE_CMD_HAS_PREV_PRESET ||
+                ctx->current_ble_cmd->type == BLE_CMD_HAS_SET_PRESET)
+                ble_cmd_complete(ctx->device_id, 0);
+    } else {
+        LOG_DBG("ctx->current_ble_cmd->type is NULL");
+    }
     LOG_INF("Active preset changed to %u: '%s'", index, preset_name);
-    ble_cmd_complete(0);
 }
 
 /**
  * @brief Command: Discover HAS on connected device
  */
-int has_cmd_discover(void)
+int has_cmd_discover(uint8_t device_id)
 {
-    if (!current_conn_ctx || !current_conn_ctx->conn) {
+    struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
+
+    if (!ctx || !ctx->conn) {
         LOG_ERR("No active connection");
         return -ENOTCONN;
     }
 
-    if (has_discovered) {
+    if (ctx->info.has_discovered) {
         LOG_WRN("HAS already discovered");
         return -EALREADY;
     }
 
     LOG_DBG("Starting HAS discovery");
-    return bt_has_client_discover(current_conn_ctx->conn);
+    return bt_has_client_discover(ctx->conn);
 }
 
 /**
  * @brief Command: Read all presets
  */
-int has_cmd_read_presets(void)
+int has_cmd_read_presets(uint8_t device_id)
 {
-    if (!has_discovered || !has_client) {
+    struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
+
+    if (!ctx || !ctx->info.has_discovered) {
         LOG_ERR("HAS not discovered");
         return -ENOENT;
     }
 
-    LOG_DBG("Reading presets from index 1");
+    LOG_DBG("Reading presets [DEVICE ID %d]", ctx->device_id);
 
     // Reset preset storage
-    preset_count = 0;
-    memset(presets, 0, sizeof(presets));
+    ctx->has_ctlr.preset_count = 0;
+    memset(ctx->has_ctlr.presets, 0, sizeof(ctx->has_ctlr.presets));
 
     // Read starting from first preset - callback will be called for each
-    return bt_has_client_presets_read(has_client,
+    return bt_has_client_presets_read(ctx->has_ctlr.has,
                                       BT_HAS_PRESET_INDEX_FIRST,
                                       HAS_MAX_PRESETS);
 }
@@ -168,17 +200,22 @@ int has_cmd_read_presets(void)
 /**
  * @brief Command: Set active preset
  */
-int has_cmd_set_active_preset(uint8_t index)
+int has_cmd_set_active_preset(uint8_t device_id, uint8_t index)
 {
-    if (!has_discovered || !has_client) {
+    struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
+    if (!ctx) {
+        return -ENOENT;
+    }
+
+    if (!ctx->info.has_discovered || !ctx->has_ctlr.has) {
         LOG_ERR("HAS not discovered");
         return -ENOENT;
     }
 
     // Validate preset index
     bool found = false;
-    for (int i = 0; i < preset_count; i++) {
-        if (presets[i].index == index && presets[i].available) {
+    for (int i = 0; i < ctx->has_ctlr.preset_count; i++) {
+        if (ctx->has_ctlr.presets[i].index == index && ctx->has_ctlr.presets[i].available) {
             found = true;
             break;
         }
@@ -190,59 +227,71 @@ int has_cmd_set_active_preset(uint8_t index)
     }
 
     LOG_DBG("Setting active preset to %u", index);
-    return bt_has_client_preset_set(has_client, index, true);
+    return bt_has_client_preset_set(ctx->has_ctlr.has, index, true);
 }
 
 /**
  * @brief Command: Activate next preset
  */
-int has_cmd_next_preset(void)
+int has_cmd_next_preset(uint8_t device_id)
 {
-    if (!has_discovered || !has_client) {
+    struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
+    if (!ctx) {
+        return -ENOENT;
+    }
+
+    if (!ctx->info.has_discovered || !ctx->has_ctlr.has) {
         LOG_ERR("HAS not discovered");
         return -ENOENT;
     }
 
-    if (preset_count == 0) {
+    if (ctx->has_ctlr.preset_count == 0) {
         LOG_ERR("No presets available");
         return -ENOENT;
     }
 
     LOG_DBG("Activating next preset");
-    return bt_has_client_preset_next(has_client, true);
+    return bt_has_client_preset_next(ctx->has_ctlr.has, true);
 }
 
 /**
  * @brief Command: Activate previous preset
  */
-int has_cmd_prev_preset(void)
+int has_cmd_prev_preset(uint8_t device_id)
 {
-    if (!has_discovered || !has_client) {
+    struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
+    
+    if (!ctx || !ctx->info.has_discovered) {
         LOG_ERR("HAS not discovered");
         return -ENOENT;
     }
 
-    if (preset_count == 0) {
+    if (ctx->has_ctlr.preset_count == 0) {
         LOG_ERR("No presets available");
         return -ENOENT;
     }
 
     LOG_DBG("Activating previous preset");
-    return bt_has_client_preset_prev(has_client, true);
+    return bt_has_client_preset_prev(ctx->has_ctlr.has, true);
 }
 
 /**
  * @brief Get information about a specific preset
  */
-int has_get_preset_info(uint8_t index, struct has_preset_info *preset_out)
+int has_get_preset_info(uint8_t device_id, uint8_t index, struct has_preset_info *preset_out)
 {
+    struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
+    if (!ctx) {
+        return -ENOENT;
+    }
+
     if (!preset_out) {
         return -EINVAL;
     }
 
-    for (int i = 0; i < preset_count; i++) {
-        if (presets[i].index == index) {
-            memcpy(preset_out, &presets[i], sizeof(struct has_preset_info));
+    for (int i = 0; i < ctx->has_ctlr.preset_count; i++) {
+        if (ctx->has_ctlr.presets[i].index == index) {
+            memcpy(preset_out, &ctx->has_ctlr.presets[i], sizeof(struct has_preset_info));
             return 0;
         }
     }
@@ -253,12 +302,18 @@ int has_get_preset_info(uint8_t index, struct has_preset_info *preset_out)
 /**
  * @brief Get active preset index
  */
-int has_get_active_preset(void)
+int has_get_active_preset(uint8_t device_id)
 {
-    if (active_preset_index == BT_HAS_PRESET_INDEX_NONE) {
+    struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
+    if (!ctx) {
+        return -ENOENT;
+    }
+
+    if (ctx->has_ctlr.active_preset_index == BT_HAS_PRESET_INDEX_NONE) {
         return -1;
     }
-    return active_preset_index;
+
+    return ctx->has_ctlr.active_preset_index;
 }
 
 /**
@@ -274,8 +329,6 @@ int has_controller_init(void)
         return err;
     }
 
-    has_controller_reset();
-
     LOG_INF("HAS controller initialized");
     return 0;
 }
@@ -283,12 +336,33 @@ int has_controller_init(void)
 /**
  * @brief Reset HAS controller state
  */
-void has_controller_reset(void)
+void has_controller_reset(uint8_t device_id)
 {
-    has_discovered = false;
-    has_client = NULL;
-    active_preset_index = BT_HAS_PRESET_INDEX_NONE;
-    preset_count = 0;
-    memset(presets, 0, sizeof(presets));
-    LOG_DBG("HAS controller state reset");
+    struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
+    if (!ctx) {
+        LOG_ERR("Cannot reset HAS controller - invalid device ID %d", device_id);
+        return;
+    }
+
+    ctx->info.has_discovered = false;
+    memset(&ctx->has_ctlr, 0, sizeof(struct bt_has_ctlr));
+    ctx->has_ctlr.active_preset_index = BT_HAS_PRESET_INDEX_NONE;
+    ctx->has_ctlr.preset_count = 0;
+    ctx->has_ctlr.has = NULL;
+    LOG_DBG("HAS controller state reset [DEVICE ID %d]", ctx->device_id);
+}
+
+struct device_context *get_device_context_by_has(struct bt_has *has)
+{
+    struct device_context *ctx = &device_ctx[0];
+    
+    if (ctx->has_ctlr.has == has) {
+        return ctx;
+    }
+    ctx = &device_ctx[1];
+    if (ctx->has_ctlr.has == has) {
+        return ctx;
+    }
+
+    return NULL;
 }

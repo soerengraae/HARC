@@ -10,9 +10,9 @@
 #include <zephyr/bluetooth/uuid.h>
 #include <zephyr/bluetooth/hci.h>
 #include <zephyr/sys/byteorder.h>
+#include <zephyr/bluetooth/audio/has.h>
 #include <stdint.h>
 #include <string.h>
-
 
 /**
  * @brief Helper macro for fulfilling scanning parameters
@@ -36,12 +36,38 @@
 /* CSIP Set Information */
 #define CSIP_SIRK_SIZE 16
 
+/* Maximum number of presets to support */
+#define HAS_MAX_PRESETS 10
+
 struct bt_bas_ctlr {
     uint16_t battery_service_handle;
     uint16_t battery_service_handle_end;
     uint16_t battery_level_handle;
     uint16_t battery_level_ccc_handle;
     uint8_t battery_level;
+};
+
+/* Preset information structure */
+struct has_preset_info {
+    uint8_t index;
+    bool available;
+    bool writable;
+    char name[BT_HAS_PRESET_NAME_MAX];
+};
+
+struct bt_has_ctlr {
+    struct bt_has *has;
+    uint8_t preset_count;
+    uint8_t active_preset_index;
+    struct has_preset_info presets[HAS_MAX_PRESETS];
+};
+
+struct bt_vcp_ctlr {
+    struct bt_vcp_vol_ctlr *vol_ctlr;
+    struct {
+        uint8_t mute : 1;
+        uint8_t volume;
+    } state;
 };
 
 /* BLE command types */
@@ -64,7 +90,7 @@ enum ble_cmd_type {
 
     /* CSIP commands */
     BLE_CMD_CSIP_DISCOVER,
-    
+
     /* Hearing Access Service commands */
     BLE_CMD_HAS_DISCOVER,
     BLE_CMD_HAS_READ_PRESETS,
@@ -84,7 +110,7 @@ struct ble_cmd {
 
 /* Command queue configuration */
 #define BLE_CMD_QUEUE_SIZE 5
-#define BLE_CMD_TIMEOUT_MS 5000
+#define BLE_CMD_TIMEOUT_MS 15000
 
 /* BLE manager public functions */
 int ble_manager_init(void);
@@ -127,10 +153,9 @@ int ble_manager_disconnect_device(struct bt_conn *conn);
 int schedule_auto_connect(uint8_t device_id);
 
 /* HAS command queue API */
-int ble_cmd_has_discover(bool high_priority);
-int ble_cmd_has_read_presets(bool high_priority);
-int ble_cmd_has_set_preset(uint8_t preset_index, bool high_priority);
-int ble_cmd_has_next_preset(bool high_priority);
-int ble_cmd_has_prev_preset(bool high_priority);
-
+int ble_cmd_has_discover(uint8_t device_id, bool high_priority);
+int ble_cmd_has_read_presets(uint8_t device_id, bool high_priority);
+int ble_cmd_has_set_preset(uint8_t device_id, uint8_t preset_index, bool high_priority);
+int ble_cmd_has_next_preset(uint8_t device_id, bool high_priority);
+int ble_cmd_has_prev_preset(uint8_t device_id, bool high_priority);
 #endif /* BLE_MANAGER_H */

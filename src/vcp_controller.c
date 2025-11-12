@@ -7,54 +7,53 @@ LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_DBG);
 
 static struct device_context *get_device_context_by_vol_ctlr(struct bt_vcp_vol_ctlr *vol_ctlr);
 
-bool volume_direction = true;
-
 int vcp_cmd_discover(uint8_t device_id)
 {
     struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
-    return bt_vcp_vol_ctlr_discover(ctx->conn, &ctx->vol_ctlr);
+    vcp_controller_reset(device_id);
+    return bt_vcp_vol_ctlr_discover(ctx->conn, &ctx->vcp_ctlr.vol_ctlr);
 }
 
 int vcp_cmd_read_state(uint8_t device_id)
 {
     struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
-    return bt_vcp_vol_ctlr_read_state(ctx->vol_ctlr);
+    return bt_vcp_vol_ctlr_read_state(ctx->vcp_ctlr.vol_ctlr);
 }
 
 int vcp_cmd_read_flags(uint8_t device_id)
 {
     struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
-    return bt_vcp_vol_ctlr_read_flags(ctx->vol_ctlr);
+    return bt_vcp_vol_ctlr_read_flags(ctx->vcp_ctlr.vol_ctlr);
 }
 
 int vcp_cmd_volume_up(uint8_t device_id)
 {
     struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
-    return bt_vcp_vol_ctlr_vol_up(ctx->vol_ctlr);
+    return bt_vcp_vol_ctlr_vol_up(ctx->vcp_ctlr.vol_ctlr);
 }
 
 int vcp_cmd_volume_down(uint8_t device_id)
 {
     struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
-    return bt_vcp_vol_ctlr_vol_down(ctx->vol_ctlr);
+    return bt_vcp_vol_ctlr_vol_down(ctx->vcp_ctlr.vol_ctlr);
 }
 
 int vcp_cmd_set_volume(uint8_t device_id, uint8_t volume)
 {
     struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
-    return bt_vcp_vol_ctlr_set_vol(ctx->vol_ctlr, volume);
+    return bt_vcp_vol_ctlr_set_vol(ctx->vcp_ctlr.vol_ctlr, volume);
 }
 
 int vcp_cmd_mute(uint8_t device_id)
 {
     struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
-    return bt_vcp_vol_ctlr_mute(ctx->vol_ctlr);
+    return bt_vcp_vol_ctlr_mute(ctx->vcp_ctlr.vol_ctlr);
 }
 
 int vcp_cmd_unmute(uint8_t device_id)
 {
     struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
-    return bt_vcp_vol_ctlr_unmute(ctx->vol_ctlr);
+    return bt_vcp_vol_ctlr_unmute(ctx->vcp_ctlr.vol_ctlr);
 }
 
 static void vcp_state_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err, uint8_t volume, uint8_t mute)
@@ -66,21 +65,18 @@ static void vcp_state_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err, uint8_t volu
         return;
     }
 
-    float volume_percent = (float)volume * 100.0f / 255.0f;
+    ctx->vcp_ctlr.state.volume = volume;
+    ctx->vcp_ctlr.state.mute = mute;
+
+    float volume_percent = (float)ctx->vcp_ctlr.state.volume * 100.0f / 255.0f;
     if (ctx->current_ble_cmd && ctx->current_ble_cmd->type == BLE_CMD_VCP_READ_STATE) {
-        LOG_INF("VCP state read: Volume: %u%%, Mute: %u [DEVICE ID %d]", (uint8_t)(volume_percent), mute, ctx->device_id);
+        LOG_INF("VCP state read: Volume: %u%%, Mute: %u [DEVICE ID %d]", (uint8_t)(volume_percent), ctx->vcp_ctlr.state.mute, ctx->device_id);
     } else {
-        LOG_DBG("VCP state notification: Volume: %u%%, Mute: %u [DEVICE ID %d]", (uint8_t)(volume_percent), mute, ctx->device_id);
+        LOG_DBG("VCP state notification: Volume: %u%%, Mute: %u [DEVICE ID %d]", (uint8_t)(volume_percent), ctx->vcp_ctlr.state.mute, ctx->device_id);
     }
 
     // /* Update OLED display with current volume state (via work queue) */
     // main_update_volume_display(volume, mute);
-
-    if (volume >= 255) {
-        volume_direction = false;
-    } else if (volume <= 0) {
-        volume_direction = true;
-    }
 
     // Mark as complete only if this was a READ_STATE command
     if (ctx->current_ble_cmd && ctx->current_ble_cmd->type == BLE_CMD_VCP_READ_STATE) {
@@ -120,7 +116,7 @@ static void vcp_discover_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err,
 
     LOG_INF("VCP discovery complete [DEVICE ID %d]", ctx->device_id);
 
-    ctx->vol_ctlr = vol_ctlr;
+    ctx->vcp_ctlr.vol_ctlr = vol_ctlr;
     ctx->info.vcp_discovered = true;
 
     // Initial flag read
@@ -244,7 +240,7 @@ void vcp_controller_reset(uint8_t device_id)
     struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
 
     ctx->info.vcp_discovered = false;
-    ctx->vol_ctlr = NULL;
+    ctx->vcp_ctlr.vol_ctlr = NULL;
 
     LOG_DBG("VCP controller state reset [DEVICE ID %d]", ctx->device_id);
 }

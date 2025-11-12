@@ -46,6 +46,7 @@ struct device_info
     bool vcp_discovered;
     bool bas_discovered;
     bool csip_discovered;
+    bool has_discovered;
     // bool searching_for_pair; // True when actively searching for set pair
 };
 
@@ -65,7 +66,8 @@ struct device_context
     struct bt_conn *conn;
     enum connection_state state;
     struct device_info info;
-    struct bt_vcp_vol_ctlr *vol_ctlr;
+    struct bt_vcp_ctlr vcp_ctlr;
+    struct bt_has_ctlr has_ctlr;
     struct bt_bas_ctlr bas_ctlr;
     struct ble_cmd *current_ble_cmd;
 };

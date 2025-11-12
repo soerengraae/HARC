@@ -34,5 +34,6 @@ int8_t app_controller_notify_volume_down_button_pressed();
 int8_t app_controller_notify_pair_button_pressed();
 int8_t app_controller_notify_preset_button_pressed();
 int8_t app_controller_notify_clear_bonds_button_pressed();
+int8_t app_controller_notify_has_discovered(uint8_t device_id, int err);
 
 #endif /* CONNECTION_MANAGER_H */
