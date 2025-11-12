@@ -49,7 +49,7 @@ static void has_discover_cb(struct bt_conn *conn, int err, struct bt_has *has,
     ctx->info.has_discovered = true;
     ctx->has_ctlr.has = has;
 
-    // // After discovery, automatically read all presets
+    // After discovery, automatically read all presets
     ble_cmd_has_read_presets(ctx->device_id, true);
 
     app_controller_notify_has_discovered(ctx->device_id, 0);
