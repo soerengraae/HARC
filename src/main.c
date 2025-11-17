@@ -190,12 +190,12 @@ int main(void)
         return err;
     }
 
-    LOG_INF("Starting display initialization...");
-    err = display_manager_init();
-    if (err) {
-        LOG_WRN("Display manager init failed (err %d) - continuing without display", err);
-    }
-    LOG_INF("Display initialization completed");
+    // LOG_INF("Starting display initialization...");
+    // err = display_manager_init();
+    // if (err) {
+    //     LOG_WRN("Display manager init failed (err %d) - continuing without display", err);
+    // }
+    // LOG_INF("Display initialization completed");
 
     /* Initialize buttons */
     err = init_buttons();

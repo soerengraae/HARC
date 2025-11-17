@@ -30,7 +30,7 @@
 #define BT_NAME_MAX_LEN 12
 #define BT_SECURITY_WANTED BT_SECURITY_L2
 #define BT_DEVICE_READY_TIMEOUT_MS 30000
-#define BT_SCAN_TIMEOUT_MS 60000
+#define BT_SCAN_TIMEOUT_MS 10000
 #define BT_AUTO_CONNECT_TIMEOUT_MS 4000
 
 /* CSIP Set Information */
@@ -38,6 +38,14 @@
 
 /* Maximum number of presets to support */
 #define HAS_MAX_PRESETS 10
+
+/* Struct to hold scan callback user data */
+struct scan_callback_data {
+	bt_addr_le_t addr;
+	int8_t rssi;
+	bool is_GN_HI; // Set to true if GN Hearing HI service UUID found (0xFEFE)
+	char name[BT_NAME_MAX_LEN];
+};
 
 struct bt_bas_ctlr {
     uint16_t battery_service_handle;

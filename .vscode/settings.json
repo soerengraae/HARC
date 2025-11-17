@@ -7,6 +7,7 @@
     "csip.h": "c",
     "app_controller.h": "c",
     "csip_coordinator.h": "c",
-    "conn.h": "c"
+    "conn.h": "c",
+    "typeinfo": "c"
   }
 }

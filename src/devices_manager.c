@@ -205,16 +205,50 @@ int devices_manager_add_scanned_device(const bt_addr_le_t *addr, int8_t rssi)
 
 	// Check if address already exists in any entry
 	sys_snode_t *node;
+	sys_snode_t *prev_node = NULL;
 	SYS_SLIST_FOR_EACH_NODE(&scanned_devices_list, node) {
 		struct scanned_device_entry *entry = CONTAINER_OF(node, struct scanned_device_entry, node);
 		for (uint8_t i = 0; i < entry->addr_count; i++) {
 			if (bt_addr_le_cmp(&entry->addrs[i], addr) == 0) {
-				// Address already in list, update RSSI
-				entry->rssi = rssi;
+				// Address already in list, update RSSI and re-sort if needed
+				if (entry->rssi != rssi) {
+					entry->rssi = rssi;
+
+					// Remove from current position
+					if (prev_node == NULL) {
+						sys_slist_get(&scanned_devices_list);
+					} else {
+						sys_slist_remove(&scanned_devices_list, prev_node, node);
+					}
+
+					// Re-insert in sorted order
+					sys_snode_t *insert_prev = NULL;
+					sys_snode_t *insert_curr;
+					bool inserted = false;
+
+					SYS_SLIST_FOR_EACH_NODE(&scanned_devices_list, insert_curr) {
+						struct scanned_device_entry *curr_entry = CONTAINER_OF(insert_curr, struct scanned_device_entry, node);
+						if (rssi > curr_entry->rssi) {
+							if (insert_prev == NULL) {
+								sys_slist_prepend(&scanned_devices_list, &entry->node);
+							} else {
+								sys_slist_insert(&scanned_devices_list, insert_prev, &entry->node);
+							}
+							inserted = true;
+							break;
+						}
+						insert_prev = insert_curr;
+					}
+
+					if (!inserted) {
+						sys_slist_append(&scanned_devices_list, &entry->node);
+					}
+				}
 				k_mutex_unlock(&scanned_list_mutex);
 				return scanned_device_count;
 			}
 		}
+		prev_node = node;
 	}
 
 	// Check if we've reached max devices
@@ -237,7 +271,33 @@ int devices_manager_add_scanned_device(const bt_addr_le_t *addr, int8_t rssi)
 	new_entry->addr_count = 1;
 	new_entry->rssi = rssi;
 
-	sys_slist_append(&scanned_devices_list, &new_entry->node);
+	// Insert device in sorted order by RSSI (highest first)
+	prev_node = NULL;
+	sys_snode_t *curr_node;
+	bool inserted = false;
+
+	SYS_SLIST_FOR_EACH_NODE(&scanned_devices_list, curr_node) {
+		struct scanned_device_entry *curr_entry = CONTAINER_OF(curr_node, struct scanned_device_entry, node);
+		if (rssi > curr_entry->rssi) {
+			// Insert before this node
+			if (prev_node == NULL) {
+				// Insert at head
+				sys_slist_prepend(&scanned_devices_list, &new_entry->node);
+			} else {
+				// Insert after prev_node
+				sys_slist_insert(&scanned_devices_list, prev_node, &new_entry->node);
+			}
+			inserted = true;
+			break;
+		}
+		prev_node = curr_node;
+	}
+
+	// If not inserted yet, append to the end (weakest RSSI)
+	if (!inserted) {
+		sys_slist_append(&scanned_devices_list, &new_entry->node);
+	}
+
 	scanned_device_count++;
 
 	char addr_str[BT_ADDR_LE_STR_LEN];
@@ -283,8 +343,11 @@ int devices_manager_update_scanned_device_name(const bt_addr_le_t *addr, const c
 			}
 		}
 
+		LOG_DBG("Comparing names: '%s' and '%s'", entry->name, name);
+		int ret = strncmp(entry->name, name, BT_NAME_MAX_LEN);
+		LOG_DBG("Name comparison result: %d", ret);
 		// Check if this entry has the same name
-		if (entry->name[0] != '\0' && strncmp(entry->name, name, BT_NAME_MAX_LEN) == 0) {
+		if (entry->name[0] != '\0' && ret == 0) {
 			name_match = entry;
 		}
 	}
