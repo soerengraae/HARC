@@ -50,12 +50,19 @@ struct device_info
 
 enum connection_state
 {
-    CONN_STATE_DISCONNECTED,
-    CONN_STATE_CONNECTING,
-    CONN_STATE_PAIRING,
-    CONN_STATE_PAIRED,
-    CONN_STATE_BONDED,
-    CONN_STATE_CONNECTED,
+    CONN_STATE_DISCONNECTED, // Default state, the device is not connected
+    /**
+     * @brief The device is in the process of disconnecting.
+     * This state must be set before calling the ble_manager_disconnect_device() function.
+     * After disconnection is complete, the state will be set to DISCONNECTED and no immediate reconnection will happen
+     */
+    CONN_STATE_DISCONNECTING,
+    CONN_STATE_CONNECTED, // The device is connected but not paired
+    CONN_STATE_PAIRING, // The device is in the process of pairing
+    CONN_STATE_PAIRED, // The device has paired but not yet bonded
+    CONN_STATE_BONDED, // Device is bonded but not fully ready
+    CONN_STATE_READY, // Device is now ready for normal operation
+    CONN_STATE_TRUSTING,
 };
 
 struct device_context
@@ -80,6 +87,8 @@ bool devices_manager_find_bonded_entry_by_addr(const bt_addr_le_t *addr, struct 
 struct device_context *devices_manager_get_device_context_by_conn(struct bt_conn *conn);
 struct device_context *devices_manager_get_device_context_by_addr(const bt_addr_le_t *addr);
 struct device_context *devices_manager_get_device_context_by_id(uint8_t device_id);
+
+void devices_manager_set_device_state(struct device_context *ctx, enum connection_state state);
 
 /**
  * @brief Add a scanned device by address

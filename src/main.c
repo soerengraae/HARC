@@ -41,8 +41,8 @@ void button2_pressed(const struct device *dev, struct gpio_callback *cb, uint32_
 
 void button3_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
-    LOG_WRN("Button 3 pressed - CLEARING ALL BONDS!");
-    app_controller_notify_clear_bonds_button_pressed();
+    LOG_WRN("Button 3 pressed - Pairing!");
+    app_controller_notify_pair_button_pressed();
 }
 
 void button4_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
@@ -123,9 +123,6 @@ static int init_buttons(void)
         return ret;
     }
 
-    gpio_init_callback(&button4_cb_data, button4_pressed, BIT(button4.pin));
-    gpio_add_callback(button4.port, &button4_cb_data);
-
     gpio_init_callback(&button1_cb_data, button1_pressed, BIT(button1.pin));
     gpio_add_callback(button1.port, &button1_cb_data);
 
@@ -135,7 +132,10 @@ static int init_buttons(void)
     gpio_init_callback(&button3_cb_data, button3_pressed, BIT(button3.pin));
     gpio_add_callback(button3.port, &button3_cb_data);
 
-    LOG_INF("Buttons initialized: Button 1 = Vol Up, Button 2 = Vol Down, Button 3 = Clear Bonds, Button 4 = Next Preset");
+    gpio_init_callback(&button4_cb_data, button4_pressed, BIT(button4.pin));
+    gpio_add_callback(button4.port, &button4_cb_data);
+
+    LOG_INF("Buttons initialized: Button 1 = Vol Up, Button 2 = Vol Down, Button 3 = Pair new HIs, Button 4 = Next Preset");
     return 0;
 }
 

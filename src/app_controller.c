@@ -24,7 +24,8 @@ enum app_event_type {
 	EVENT_VOLUME_DOWN_BUTTON_PRESSED,
 	EVENT_PAIR_BUTTON_PRESSED,
 	EVENT_PRESET_BUTTON_PRESSED,
-	EVENT_CLEAR_BONDS_BUTTON_PRESSED
+	EVENT_CLEAR_BONDS_BUTTON_PRESSED,
+	EVENT_BONDS_CLEARED,
 };
 
 struct app_event {
@@ -121,15 +122,62 @@ void app_controller_thread(void)
 					LOG_WRN("No connected device to send volume down command");
 				}
 				break;
+			
+			case EVENT_PRESET_BUTTON_PRESSED:
+				LOG_DBG("SM_IDLE: Preset button pressed, going to next preset");
+				if (bonded_devices_count == 0) {
+					LOG_WRN("No connected device to send preset command");
+					break;
+				}
+
+				ble_cmd_has_next_preset(0, false); // HI uses synced presets, so only send to one device
+				break;
 
             case EVENT_PAIR_BUTTON_PRESSED:
                 LOG_DBG("SM_IDLE: Pair button pressed, clearing bonds and starting first time use procedure");
-                state = SM_IDLE;
+				devices_manager_clear_all_bonds();
+				while(k_msgq_get(&app_event_queue, &evt, K_FOREVER));
+				if (evt.type != EVENT_BONDS_CLEARED) {
+					LOG_ERR("Expected EVENT_BONDS_CLEARED after clearing bonds, got %d", evt.type);
+					break;
+				}
+				
+				devices_manager_set_device_state(&device_ctx[0], CONN_STATE_DISCONNECTING);
+				ble_manager_disconnect_device(device_ctx[0].conn);
+				while(k_msgq_get(&app_event_queue, &evt, K_FOREVER));
+				if (evt.type != EVENT_DEVICE_DISCONNECTED) {
+					LOG_ERR("Expected EVENT_DEVICE_DISCONNECTED after disconnecting, got %d", evt.type);
+					break;
+				}
+
+				if (device_ctx[0].state != CONN_STATE_DISCONNECTED) {
+					LOG_ERR("Device 0 not disconnected before clearing bonds as expected, current state: %d", device_ctx[0].state);
+				}
+
+				devices_manager_set_device_state(&device_ctx[1], CONN_STATE_DISCONNECTING);
+				ble_manager_disconnect_device(device_ctx[1].conn);
+				while(k_msgq_get(&app_event_queue, &evt, K_FOREVER));
+				if (evt.type != EVENT_DEVICE_DISCONNECTED) {
+					LOG_ERR("Expected EVENT_DEVICE_DISCONNECTED after disconnecting, got %d", evt.type);
+					break;
+				}
+
+				if (device_ctx[1].state != CONN_STATE_DISCONNECTED) {
+					LOG_ERR("Device 1 not disconnected before clearing bonds as expected, current state: %d", device_ctx[1].state);
+				}
+
+                state = SM_FIRST_TIME_USE;
                 break;
             
             case EVENT_CLEAR_BONDS_BUTTON_PRESSED:
                 LOG_DBG("SM_IDLE: Clear bonds button pressed, clearing all bonds");
                 devices_manager_clear_all_bonds();
+				while(k_msgq_get(&app_event_queue, &evt, K_FOREVER));
+				if (evt.type != EVENT_BONDS_CLEARED) {
+					LOG_ERR("Expected EVENT_BONDS_CLEARED after clearing bonds, got %d", evt.type);
+					break;
+				}
+
                 break;
 
 			default:
@@ -396,8 +444,17 @@ int8_t app_controller_notify_device_connected(uint8_t device_id)
 	return k_msgq_put(&app_event_queue, &evt, K_NO_WAIT);
 }
 
+int8_t app_controller_notify_device_disconnected(uint8_t device_id)
+{
+	LOG_DBG("Notifying device disconnected: device_id=%d", device_id);
+	struct app_event evt = {.type = EVENT_DEVICE_DISCONNECTED, .device_id = device_id};
+	return k_msgq_put(&app_event_queue, &evt, K_NO_WAIT);
+}
+
 int8_t app_controller_notify_device_ready(uint8_t device_id)
 {
+	struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
+	devices_manager_set_device_state(ctx, CONN_STATE_READY);
 	LOG_DBG("Notifying device ready: device_id=%d", device_id);
 	struct app_event evt = {.type = EVENT_DEVICE_READY, .device_id = device_id};
 	return k_msgq_put(&app_event_queue, &evt, K_NO_WAIT);
@@ -503,6 +560,16 @@ int8_t app_controller_notify_clear_bonds_button_pressed()
 	LOG_DBG("Notifying clear bonds button pressed");
 	struct app_event evt = {
 		.type = EVENT_CLEAR_BONDS_BUTTON_PRESSED,
+		.device_id = 0,
+	};
+	return k_msgq_put(&app_event_queue, &evt, K_NO_WAIT);
+}
+
+int8_t app_controller_notify_bonds_cleared()
+{
+	LOG_DBG("Notifying bonds cleared");
+	struct app_event evt = {
+		.type = EVENT_BONDS_CLEARED,
 		.device_id = 0,
 	};
 	return k_msgq_put(&app_event_queue, &evt, K_NO_WAIT);

@@ -23,6 +23,8 @@ extern uint8_t strategy;
 int8_t app_controller_notify_system_ready();
 int8_t app_controller_notify_ble_cmd_complete(uint8_t device_id, enum ble_cmd_type type, int8_t err_code);
 int8_t app_controller_notify_device_connected(uint8_t device_id);
+int8_t app_controller_notify_device_disconnected(uint8_t device_id);
+int8_t app_controller_notify_bonds_cleared();
 int8_t app_controller_notify_device_ready(uint8_t device_id);
 int8_t app_controller_notify_scan_complete();
 int8_t app_controller_notify_csip_discovered(uint8_t device_id, int8_t err);

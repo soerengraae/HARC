@@ -141,7 +141,7 @@ int battery_discover(uint8_t device_id)
 		return -EINVAL;
 	}
 
-	if (ctx->state != CONN_STATE_BONDED)
+	if (ctx->state != CONN_STATE_READY)
 	{
 		LOG_WRN("Not starting Battery Service discovery - wrong state: %d [DEVICE ID %d]", ctx->state, ctx->device_id);
 		return -EINVAL;

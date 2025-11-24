@@ -477,6 +477,8 @@ static void rsi_scan_stop() {
 	rsi_scan_context.active = false;
 	rsi_scan_context.device_id = 0;
 	rsi_scan_context.rsi_found = false;
+
+	k_work_cancel_delayable(&rsi_scan_timeout_work);
 }
 
 static void rsi_scan_timeout_handler(struct k_work *work)

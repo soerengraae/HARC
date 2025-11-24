@@ -1,622 +1,1023 @@
+[00:01:34.576,385] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:34.576,873] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:34.577,117] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:34.594,238] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -35 dBm, EXT_AD len 61
+[00:01:34.594,757] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:34.594,970] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:34.752,990] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -36 dBm, EXT_AD len 61
+[00:01:34.753,509] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:34.753,753] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:34.894,866] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:34.895,355] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:34.895,599] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:35.055,236] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -39 dBm, EXT_AD len 61
+[00:01:35.055,755] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:35.055,999] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:35.204,223] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:35.204,711] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:35.204,956] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:35.363,555] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:01:35.364,044] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:35.364,257] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:35.522,521] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:01:35.523,040] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:35.523,254] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:35.679,687] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -34 dBm, EXT_AD len 61
+[00:01:35.680,175] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:35.680,419] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:35.825,744] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:01:35.826,232] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:35.826,477] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:35.977,020] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:35.977,508] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:35.977,752] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:36.435,882] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:36.436,370] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:36.436,614] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:36.754,119] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:01:36.754,608] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:36.754,852] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:36.907,287] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -39 dBm, EXT_AD len 61
+[00:01:36.907,775] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:36.908,020] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:37.382,202] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:01:37.382,690] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:37.382,934] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:37.533,233] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:01:37.533,721] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:37.533,966] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:37.689,025] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:01:37.689,514] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:37.689,758] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:37.840,942] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -35 dBm, EXT_AD len 61
+[00:01:37.841,430] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:37.841,735] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:38.300,933] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -34 dBm, EXT_AD len 61
+[00:01:38.301,422] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:38.301,666] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:38.456,268] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:01:38.456,756] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:38.457,000] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:38.614,959] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:01:38.615,447] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:38.615,692] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:38.765,686] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -35 dBm, EXT_AD len 61
+[00:01:38.766,174] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:38.766,418] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:38.928,100] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:38.928,558] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:38.928,802] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:39.071,960] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:01:39.072,448] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:39.072,692] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:39.083,312] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:39.083,801] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:39.084,045] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:39.234,436] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:39.234,924] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:39.235,168] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:39.374,816] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -34 dBm, EXT_AD len 61
+[00:01:39.375,305] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:39.375,549] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:39.539,825] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:01:39.540,283] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:39.540,527] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:39.686,126] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -38 dBm, EXT_AD len 61
+[00:01:39.686,614] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:39.686,859] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:39.845,428] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -36 dBm, EXT_AD len 61
+[00:01:39.845,947] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:39.846,191] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:39.999,084] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -36 dBm, EXT_AD len 61
+[00:01:39.999,572] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:39.999,816] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:40.154,571] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -35 dBm, EXT_AD len 61
+[00:01:40.155,059] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:40.155,303] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:40.167,327] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:40.167,816] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:40.168,060] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:40.323,303] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:01:40.323,791] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:40.324,035] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:40.476,684] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:01:40.477,172] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:40.477,416] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:40.622,131] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -34 dBm, EXT_AD len 61
+[00:01:40.622,619] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:40.622,863] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:40.773,376] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -35 dBm, EXT_AD len 61
+[00:01:40.773,864] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:40.774,108] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:40.927,246] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -36 dBm, EXT_AD len 61
+[00:01:40.927,734] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:40.927,978] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:41.077,453] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -36 dBm, EXT_AD len 61
+[00:01:41.077,941] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:41.078,186] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:41.089,050] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:01:41.089,538] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:41.089,782] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:41.234,283] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -35 dBm, EXT_AD len 61
+[00:01:41.234,771] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:41.235,015] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:41.403,686] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:01:41.404,174] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:41.404,418] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:41.555,755] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:01:41.556,243] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:41.556,488] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:41.861,694] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:41.862,182] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:41.862,426] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:42.001,586] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:01:42.002,105] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:42.002,349] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:42.159,759] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:01:42.160,278] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:42.160,522] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:42.177,246] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:01:42.177,703] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:42.177,947] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:42.310,333] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -35 dBm, EXT_AD len 61
+[00:01:42.310,821] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:42.311,065] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:42.461,700] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:01:42.462,188] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:42.462,432] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:42.490,997] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:42.491,485] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:42.491,729] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:42.808,532] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:01:42.809,051] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:42.809,265] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:42.968,444] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:42.968,933] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:42.969,177] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:43.219,360] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -36 dBm, EXT_AD len 61
+[00:01:43.219,848] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:43.220,092] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:43.375,366] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:01:43.375,885] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:43.376,129] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:43.430,175] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:01:43.430,664] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:43.430,877] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:43.526,947] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -36 dBm, EXT_AD len 61
+[00:01:43.527,435] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:43.527,679] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:43.586,486] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:01:43.586,975] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:43.587,188] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:43.682,830] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -35 dBm, EXT_AD len 61
+[00:01:43.683,319] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:43.683,563] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:43.741,333] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:43.741,821] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:43.742,034] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:43.990,325] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -38 dBm, EXT_AD len 61
+[00:01:43.990,814] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:43.991,058] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:44.049,987] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:44.050,476] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:44.050,720] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:44.145,751] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:01:44.146,240] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:44.146,484] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:44.203,552] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:01:44.204,040] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:44.204,345] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:44.304,351] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -36 dBm, EXT_AD len 61
+[00:01:44.304,870] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:44.305,084] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:44.362,518] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:01:44.363,006] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:44.363,220] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:44.515,075] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:44.515,563] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:44.515,808] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:44.609,191] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:01:44.609,680] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:44.609,924] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:44.673,919] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:01:44.674,407] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:44.674,652] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:44.831,756] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:01:44.832,244] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:44.832,489] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:44.917,480] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -34 dBm, EXT_AD len 61
+[00:01:44.917,968] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:44.918,243] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:44.983,215] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:44.983,703] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:44.983,917] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:45.140,258] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:45.140,777] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:45.140,991] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:45.227,661] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -35 dBm, EXT_AD len 61
+[00:01:45.228,179] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:45.228,393] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:45.295,562] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:45.296,051] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:45.296,295] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:45.379,547] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -34 dBm, EXT_AD len 61
+[00:01:45.380,065] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:45.380,310] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:45.446,166] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:01:45.446,655] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:45.446,899] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:45.751,495] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:01:45.751,983] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:45.752,227] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:45.842,498] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -38 dBm, EXT_AD len 61
+[00:01:45.842,987] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:45.843,231] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:45.906,372] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -39 dBm, EXT_AD len 61
+[00:01:45.906,860] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:01:45.907,104] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:01:46.000,183] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -44 dBm, EXT_AD len 61
+[00:01:46.000,671] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:01:46.000,915] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:01:46.060,333] <dbg> ble_manager: advertisement_found_cb: Received extended adv �[00:00:00.757,232] <err> ssd1306: Failed to initialize device!
 *** Booting Zephyr OS build v4.2.0-3326-g8e6077e3e507 ***
-[00:00:00.265,899] <inf> fs_nvs: 6 Sectors of 4096 bytes
-[00:00:00.265,899] <inf> fs_nvs: alloc wra: 0, f88
-[00:00:00.265,930] <inf> fs_nvs: data wra: 0, e0
-[00:00:00.268,218] <inf> bt_hci_core: HW Platform: Nordic Semiconductor (0x0002)
-[00:00:00.268,249] <inf> bt_hci_core: HW Variant: nRF52x (0x0002)
-[00:00:00.268,280] <inf> bt_hci_core: Firmware: Standard Bluetooth controller (0x00) Version 4.2 Build 99
-[00:00:00.268,493] <inf> bt_hci_core: No ID address. App must call settings_load()
-[00:00:00.268,493] <inf> ble_manager: Bluetooth initialized
-[00:00:00.268,554] <inf> vcp_controller: VCP controller initialized
-[00:00:00.268,554] <inf> battery_reader: Battery reader initialized
-[00:00:00.268,554] <inf> csip_coordinator: CSIP Coordinator initialized
-[00:00:00.268,585] <dbg> ble_manager: ble_manager_init: Initializing connection works
-[00:00:00.268,615] <inf> ble_manager: BLE manager initialized
-[00:00:00.269,317] <inf> bt_hci_core: HCI transport: Controller
-[00:00:00.269,409] <inf> bt_hci_core: Identity: D0:26:7A:4D:45:9E (random)
-[00:00:00.269,439] <inf> bt_hci_core: HCI: version 5.4 (0x0d) revision 0x0000, manufacturer 0x05f1
-[00:00:00.269,470] <inf> bt_hci_core: LMP: version 5.4 (0x0d) subver 0xffff
-[00:00:00.269,500] <inf> connection_strategy: Initializing connection state machine
-[00:00:00.270,080] <dbg> csip_coordinator: csip_settings_load_sirk: Loaded CSIP info for CC:89:6C:EE:40:F3 (public): rank=1
-[00:00:00.270,202] <dbg> ble_manager: enumerate_bonds_cb: Enumerated bonded device 0: CC:89:6C:EE:40:F3 (public) (SIRK: yes, Rank: 1)
-[00:00:00.270,233] <inf> ble_manager: Enumerated 1 bonded device
-[00:00:00.270,294] <inf> connection_strategy: Determining connection strategy for 1 bonded device
-[00:00:00.270,294] <inf> connection_strategy: Strategy: SINGLE_BOND - will search for pair
-[00:00:00.270,294] <inf> connection_strategy: Executing connection strategy: 1
-[00:00:00.270,477] <inf> connection_strategy: Connecting to single bonded device: CC:89:6C:EE:40:F3 (public)
-[00:00:00.270,507] <inf> connection_strategy:   SIRK: yes, Rank: 1
-[00:00:00.270,538] <inf> connection_strategy:   Will search for set pair after CSIP discovery via RSI scanning
-[00:00:00.270,538] <dbg> ble_manager: schedule_auto_connect: Scheduling auto-connect [DEVICE ID 0]
-[00:00:00.270,874] <inf> ble_manager: Connecting to previously bonded device [DEVICE ID 0]
-[00:00:00.271,118] <inf> ble_manager: BLE command thread 0 started
-[00:00:00.271,209] <inf> ble_manager: BLE command thread 1 started
-[00:00:00.493,621] <wrn> ble_manager: Connection does not match any known device context
-[00:00:00.493,652] <dbg> ble_manager: connected_cb: Using first slot for new connection
-[00:00:00.493,743] <inf> ble_manager: Connected to bonded device CC:89:6C:EE:40:F3 (public) [DEVICE ID 0]
-[00:00:00.493,804] <dbg> ble_manager: ble_cmd_enqueue: High priority BLE command enqueued, type: BLE_CMD_REQUEST_SECURITY [DEVICE ID 0]
-[00:00:00.493,835] <dbg> ble_manager: activate_ble_cmd_queue: Activating BLE command queue [DEVICE ID 0]
-[00:00:00.494,415] <dbg> ble_manager: ble_cmd_execute: Executing BLE command type BLE_CMD_REQUEST_SECURITY [DEVICE ID 0]
-[00:00:00.494,476] <dbg> ble_manager: ble_cmd_execute: BLE command initiated successfully: type=BLE_CMD_REQUEST_SECURITY [DEVICE ID 0]
-[00:00:00.494,506] <dbg> ble_manager: ble_process_next_command: Command waiting for completion: type=BLE_CMD_REQUEST_SECURITY [DEVICE ID 0]
-[00:00:00.494,537] <dbg> ble_manager: security_request_handler: Requesting security level 2 [DEVICE ID 0]
-[00:00:00.494,659] <dbg> ble_manager: security_request_handler: Security request initiated [DEVICE ID 0]
-[00:00:01.444,580] <dbg> ble_manager: security_changed_cb: Security changed: CC:89:6C:EE:40:F3 (public) level 2 [DEVICE ID 0]
-[00:00:01.444,610] <dbg> ble_manager: security_changed_cb: Encryption established at level 2 [DEVICE ID 0]
-[00:00:01.444,641] <dbg> ble_manager: security_changed_cb: Bonded device encrypted - starting csip service discovery [DEVICE ID 0]
-[00:00:01.444,702] <dbg> ble_manager: ble_cmd_enqueue: High priority BLE command enqueued, type: BLE_CMD_CSIP_DISCOVER [DEVICE ID 0]
-[00:00:01.444,732] <dbg> ble_manager: ble_cmd_complete: BLE command completed successfully: type=BLE_CMD_REQUEST_SECURITY [DEVICE ID 0]
-[00:00:01.444,824] <dbg> ble_manager: ble_cmd_execute: Executing BLE command type BLE_CMD_CSIP_DISCOVER [DEVICE ID 0]
-[00:00:01.444,946] <dbg> ble_manager: ble_cmd_execute: BLE command initiated successfully: type=BLE_CMD_CSIP_DISCOVER [DEVICE ID 0]
-[00:00:01.445,007] <dbg> ble_manager: ble_process_next_command: Command waiting for completion: type=BLE_CMD_CSIP_DISCOVER [DEVICE ID 0]
-[00:00:01.445,404] <wrn> bt_l2cap: Ignoring data for unknown channel ID 0x002a
-[00:00:01.544,555] <dbg> bt_csip_set_coordinator: primary_discover_func: [ATTRIBUTE] handle 0x00EC
-[00:00:01.644,653] <dbg> bt_csip_set_coordinator: primary_discover_func: Discover complete, found 1 instances
-[00:00:01.744,720] <dbg> bt_csip_set_coordinator: discover_func: [ATTRIBUTE] handle 0x00ED
-[00:00:01.744,750] <dbg> bt_csip_set_coordinator: discover_func: SIRK
-[00:00:01.744,781] <dbg> bt_csip_set_coordinator: discover_func: Subscribing to handle 0x00ED
-[00:00:01.744,842] <dbg> bt_csip_set_coordinator: discover_func: Subscribed to handle 0x00ED
-[00:00:01.744,873] <dbg> bt_csip_set_coordinator: discover_func: [ATTRIBUTE] handle 0x00F0
-[00:00:01.744,903] <dbg> bt_csip_set_coordinator: discover_func: Set size
-[00:00:01.744,903] <dbg> bt_csip_set_coordinator: discover_func: Subscribing to handle 0x00F0
-[00:00:01.744,964] <dbg> bt_csip_set_coordinator: discover_func: Subscribed to handle 0x00F0
-[00:00:01.744,964] <dbg> bt_csip_set_coordinator: discover_func: [ATTRIBUTE] handle 0x00F3
-[00:00:01.744,995] <dbg> bt_csip_set_coordinator: discover_func: Set lock
-[00:00:01.745,025] <dbg> bt_csip_set_coordinator: discover_func: Subscribing to handle 0x00F3
-[00:00:01.745,086] <dbg> bt_csip_set_coordinator: discover_func: Subscribed to handle 0x00F3
-[00:00:02.144,622] <dbg> bt_csip_set_coordinator: discover_func: [ATTRIBUTE] handle 0x00F6
-[00:00:02.144,653] <dbg> bt_csip_set_coordinator: discover_func: Set rank
-[00:00:02.594,573] <dbg> bt_csip_set_coordinator: discover_func: Setup complete for 1 / 1
-[00:00:02.694,641] <dbg> bt_csip_set_coordinator: csip_set_coordinator_discover_insts_read_sirk_cb: Data read
+[00:00:00.763,214] <inf> fs_nvs: 6 Sectors of 4096 bytes
+[00:00:00.763,214] <inf> fs_nvs: alloc wra: 0, f48
+[00:00:00.763,214] <inf> fs_nvs: data wra: 0, 134
+[00:00:00.764,160] <inf> vcp_controller: VCP controller initialized
+[00:00:00.764,190] <inf> battery_reader: Battery reader initialized
+[00:00:00.764,190] <inf> csip_coordinator: CSIP Coordinator initialized
+[00:00:00.764,221] <inf> has_controller: HAS controller initialized
+[00:00:00.764,282] <inf> main: Buttons initialized: Button 1 = Vol Up, Button 2 = Vol Down, Button 3 = Pair new HIs, Button 4 = Next Preset
+[00:00:00.765,655] <inf> bt_hci_core: HW Platform: Nordic Semiconductor (0x0002)
+[00:00:00.765,686] <inf> bt_hci_core: HW Variant: nRF52x (0x0002)
+[00:00:00.765,716] <inf> bt_hci_core: Firmware: Standard Bluetooth controller (0x00) Version 4.2 Build 99
+[00:00:00.765,930] <inf> bt_hci_core: No ID address. App must call settings_load()
+[00:00:00.765,960] <inf> ble_manager: Bluetooth initialized
+[00:00:00.765,960] <dbg> ble_manager: bt_ready_cb: Loading BT settings from flash
+[00:00:00.766,723] <inf> bt_hci_core: HCI transport: Controller
+[00:00:00.766,845] <inf> bt_hci_core: Identity: FF:EC:58:97:C1:15 (random)
+[00:00:00.766,876] <inf> bt_hci_core: HCI: version 5.4 (0x0d) revision 0x0000, manufacturer 0x05f1
+[00:00:00.766,906] <inf> bt_hci_core: LMP: version 5.4 (0x0d) subver 0xffff
+[00:00:00.766,937] <dbg> ble_manager: bt_ready_cb: Clearing filter accept list
+[00:00:00.767,028] <dbg> ble_manager: ble_manager_init: Initializing security & connection works
+[00:00:00.767,181] <inf> devices_manager: Updating bonded devices collection...
+[00:00:00.767,211] <inf> devices_manager: Enumerated 0 bonded devices
+[00:00:00.767,211] <inf> devices_manager: Bonded devices collection updated. Total bonded devices: 0
+[00:00:00.767,242] <inf> devices_manager: Devices manager initialized
+[00:00:00.767,242] <inf> ble_manager: BLE manager and subsystems initialized
+[00:00:00.767,272] <dbg> app_controller: app_controller_notify_system_ready: Notifying system ready
+[00:00:00.767,364] <dbg> app_controller: app_controller_thread: App thread started
+[00:00:00.767,364] <dbg> app_controller: app_controller_thread: SM_WAKE: Determining state
+[00:00:00.767,395] <inf> app_controller: No bonded devices found, entering first time use procedure
+[00:00:00.767,395] <dbg> app_controller: app_controller_thread: SM_FIRST_TIME_USE: Starting first time use procedure
+[00:00:00.767,425] <inf> devices_manager: Scanned devices list cleared
+[00:00:00.767,944] <inf> ble_manager: Scanning for HIs
+[00:00:00.767,974] <inf> ble_manager: BLE command thread 0 started
+[00:00:00.768,005] <inf> ble_manager: BLE command thread 1 started
+[00:00:00.972,747] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -40 dBm, EXT_AD len 61
+[00:00:00.973,236] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:00.973,449] <inf> devices_manager: Added scanned device 1: 50:21:B2:4F:D5:B3 (random) (RSSI: -40)
+[00:00:00.973,571] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:01.023,773] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:01.024,261] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:01.024,475] <inf> devices_manager: Added scanned device 2: 6D:D3:8D:AD:80:0A (random) (RSSI: -34)
+[00:00:01.024,597] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:01.284,057] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -40 dBm, EXT_AD len 61
+[00:00:01.284,576] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:01.284,820] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:01.337,310] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:01.337,799] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:01.338,043] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:01.440,673] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -38 dBm, EXT_AD len 61
+[00:00:01.441,162] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:01.441,467] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:01.590,759] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:00:01.591,247] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:01.591,491] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:01.645,568] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -35 dBm, EXT_AD len 61
+[00:00:01.646,026] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:01.646,270] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:01.747,802] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -38 dBm, EXT_AD len 61
+[00:00:01.748,291] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:01.748,535] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:01.906,890] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -40 dBm, EXT_AD len 61
+[00:00:01.907,379] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:01.907,623] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:01.954,772] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:01.955,261] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:01.955,505] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:02.057,586] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -39 dBm, EXT_AD len 61
+[00:00:02.058,074] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:02.058,410] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:02.113,739] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:02.114,227] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:02.114,471] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:02.214,233] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -40 dBm, EXT_AD len 61
+[00:00:02.214,721] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:02.214,965] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:02.265,838] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -35 dBm, EXT_AD len 61
+[00:00:02.266,326] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:02.266,540] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:02.682,037] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -38 dBm, EXT_AD len 61
+[00:00:02.682,525] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:02.682,769] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:02.726,898] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:02.727,386] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:02.727,630] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:02.880,432] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -37 dBm, EXT_AD len 61
+[00:00:02.880,920] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:02.881,164] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:02.995,788] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -38 dBm, EXT_AD len 61
+[00:00:02.996,307] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:02.996,582] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:03.031,494] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -35 dBm, EXT_AD len 61
+[00:00:03.031,982] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:03.032,226] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:03.151,245] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -36 dBm, EXT_AD len 61
+[00:00:03.151,733] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:03.151,977] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:03.345,214] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:03.345,733] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:03.345,947] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:03.500,762] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:03.501,251] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:03.501,495] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:03.624,176] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:00:03.624,664] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:03.624,908] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:03.654,541] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:03.655,029] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:03.655,303] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:03.960,540] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -35 dBm, EXT_AD len 61
+[00:00:03.961,029] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:03.961,273] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:04.088,134] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -39 dBm, EXT_AD len 61
+[00:00:04.088,623] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:04.088,867] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:04.114,074] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:04.114,562] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:04.114,807] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:04.242,095] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -38 dBm, EXT_AD len 61
+[00:00:04.242,584] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:04.242,828] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:04.266,510] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -35 dBm, EXT_AD len 61
+[00:00:04.266,998] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:04.267,272] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:04.393,707] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -38 dBm, EXT_AD len 61
+[00:00:04.394,195] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:04.394,439] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:04.419,830] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:04.420,318] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:04.420,562] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:04.551,300] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:00:04.551,788] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:04.552,062] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:04.574,462] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -35 dBm, EXT_AD len 61
+[00:00:04.574,951] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:04.575,195] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:04.706,451] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -38 dBm, EXT_AD len 61
+[00:00:04.706,939] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:04.707,183] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:04.857,696] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -41 dBm, EXT_AD len 61
+[00:00:04.858,215] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:04.858,459] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:04.885,620] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:00:04.886,108] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:04.886,352] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:05.037,261] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -36 dBm, EXT_AD len 61
+[00:00:05.037,750] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:05.037,994] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:05.169,921] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -39 dBm, EXT_AD len 61
+[00:00:05.170,440] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:05.170,684] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:05.187,988] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:05.188,476] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:05.188,720] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:05.325,622] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -40 dBm, EXT_AD len 61
+[00:00:05.326,110] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:05.326,354] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:05.342,468] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -35 dBm, EXT_AD len 61
+[00:00:05.342,956] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:05.343,200] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:05.478,118] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -38 dBm, EXT_AD len 61
+[00:00:05.478,698] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:05.478,942] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:05.635,650] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:00:05.636,169] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:05.636,383] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:05.658,721] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:00:05.659,210] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:05.659,423] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:05.788,757] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -36 dBm, EXT_AD len 61
+[00:00:05.789,245] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:05.789,489] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:05.945,709] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -38 dBm, EXT_AD len 61
+[00:00:05.946,228] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:05.946,472] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:06.267,303] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:06.267,791] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:06.268,066] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:06.569,976] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -41 dBm, EXT_AD len 61
+[00:00:06.570,465] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:06.570,709] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:06.881,561] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -41 dBm, EXT_AD len 61
+[00:00:06.882,049] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:06.882,293] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:07.039,062] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:00:07.039,581] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:07.039,886] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:07.191,772] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:00:07.192,291] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:07.192,535] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:07.344,818] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -39 dBm, EXT_AD len 61
+[00:00:07.345,336] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:07.345,550] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:07.357,849] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:07.358,337] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:07.358,581] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:07.516,937] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:07.517,425] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:07.517,669] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:07.669,372] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:07.669,921] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:07.670,166] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:07.807,067] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -39 dBm, EXT_AD len 61
+[00:00:07.807,556] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:07.807,800] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:07.965,362] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -40 dBm, EXT_AD len 61
+[00:00:07.965,850] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:07.966,094] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:07.981,719] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:07.982,208] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:07.982,452] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:08.280,853] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -39 dBm, EXT_AD len 61
+[00:00:08.281,372] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:08.281,616] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:08.435,241] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:00:08.435,729] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:08.435,974] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:08.447,357] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -35 dBm, EXT_AD len 61
+[00:00:08.447,845] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:08.448,089] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:08.588,592] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:00:08.589,080] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:08.589,324] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:08.744,445] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -40 dBm, EXT_AD len 61
+[00:00:08.744,934] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:08.745,178] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:08.763,031] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:08.763,519] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:08.763,763] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:09.081,298] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:09.081,787] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:09.082,031] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:09.205,352] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -39 dBm, EXT_AD len 61
+[00:00:09.205,841] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:09.206,085] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:09.360,046] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -39 dBm, EXT_AD len 61
+[00:00:09.360,534] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:09.360,778] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:09.395,050] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -35 dBm, EXT_AD len 61
+[00:00:09.395,538] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:09.395,782] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:09.510,223] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -40 dBm, EXT_AD len 61
+[00:00:09.510,711] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:09.510,955] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:09.665,618] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -36 dBm, EXT_AD len 61
+[00:00:09.666,107] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:09.666,351] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:09.864,807] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:09.865,295] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:09.865,509] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:10.022,033] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -35 dBm, EXT_AD len 61
+[00:00:10.022,521] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:10.022,796] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:10.139,526] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -36 dBm, EXT_AD len 61
+[00:00:10.140,014] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:10.140,258] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:10.177,734] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -35 dBm, EXT_AD len 61
+[00:00:10.178,222] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:10.178,466] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:10.293,731] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:00:10.294,250] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:10.294,494] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:10.335,906] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -35 dBm, EXT_AD len 61
+[00:00:10.336,395] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:10.336,608] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:10.450,378] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -39 dBm, EXT_AD len 61
+[00:00:10.450,866] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:10.451,110] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:10.494,445] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -35 dBm, EXT_AD len 61
+[00:00:10.494,934] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:10.495,178] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:10.650,451] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:10.650,939] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:10.651,184] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:10.767,333] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -36 dBm, EXT_AD len 61
+[00:00:10.767,822] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:10.768,096] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:10.768,157] <dbg> app_controller: app_controller_thread: Timeout waiting for scan completion in SM_FIRST_TIME_USE
+[00:00:10.768,402] <inf> ble_manager: Scan stopped
+[00:00:10.768,432] <inf> devices_manager: Scanned Devices List (Total: 2):
+[00:00:10.768,554] <inf> devices_manager:   [0] Name: HARC HI | RSSI: -34 | Address: 6D:D3:8D:AD:80:0A (random)
+[00:00:10.768,646] <inf> devices_manager:   [1] Name: HARC HI | RSSI: -36 | Address: 50:21:B2:4F:D5:B3 (random)
+[00:00:10.768,676] <wrn> app_controller: Multiple devices found, selecting the first one for now
+[00:00:10.768,829] <dbg> ble_manager: connect_work_handler: Connect work executing for 6D:D3:8D:AD:80:0A (random) [DEVICE ID 0]
+[00:00:10.768,951] <dbg> ble_manager: ble_manager_connect: Connecting to 6D:D3:8D:AD:80:0A (random)
+[00:00:10.800,903] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:10.800,933] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 0
+[00:00:10.801,025] <dbg> ble_manager: connected_cb: Connected to new device 6D:D3:8D:AD:80:0A (random) - expecting pairing [DEVICE ID 0]
+[00:00:10.801,086] <dbg> devices_manager: devices_manager_set_device_state: Device ID 0 state changed from DISCONNECTED to CONNECTED
+[00:00:10.801,147] <dbg> ble_manager: ble_cmd_enqueue: High priority BLE command enqueued, type: BLE_CMD_REQUEST_SECURITY [DEVICE ID 0]
+[00:00:10.801,818] <dbg> ble_manager: ble_cmd_execute: Executing BLE command type BLE_CMD_REQUEST_SECURITY [DEVICE ID 0]
+[00:00:10.801,879] <dbg> ble_manager: ble_cmd_execute: BLE command initiated successfully: type=BLE_CMD_REQUEST_SECURITY [DEVICE ID 0]
+[00:00:10.801,940] <dbg> ble_manager: ble_process_next_command: Command waiting for completion: type=BLE_CMD_REQUEST_SECURITY [DEVICE ID 0]
+[00:00:10.801,971] <dbg> ble_manager: security_request_handler: Requesting security [DEVICE ID 0]
+[00:00:10.803,405] <dbg> ble_manager: security_request_handler: Security request initiated [DEVICE ID 0]
+[00:00:10.803,466] <dbg> devices_manager: devices_manager_set_device_state: Device ID 0 state changed from CONNECTED to PAIRING
+[00:00:12.752,593] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:12.752,593] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 0
+[00:00:12.752,655] <dbg> ble_manager: security_changed_cb: Security changed: 6D:D3:8D:AD:80:0A (random) level 2 [DEVICE ID 0]
+[00:00:12.752,685] <dbg> ble_manager: security_changed_cb: Encryption established at level 2 [DEVICE ID 0]
+[00:00:12.752,685] <dbg> ble_manager: security_changed_cb: New device - waiting for pairing completion [DEVICE ID 0]
+[00:00:12.752,746] <dbg> ble_manager: ble_cmd_complete: BLE command completed successfully: type=BLE_CMD_REQUEST_SECURITY [DEVICE ID 0]
+[00:00:12.752,777] <dbg> ble_manager: ble_process_next_command: No BLE commands in queue [DEVICE ID 0]
+[00:00:12.814,208] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:12.814,239] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 0
+[00:00:12.814,239] <dbg> ble_manager: pairing_complete: Pairing complete. Bonded: 1 [DEVICE ID 0]
+[00:00:12.814,331] <dbg> devices_manager: devices_manager_set_device_state: Device ID 0 state changed from PAIRING to PAIRED
+[00:00:12.814,331] <inf> ble_manager: New device paired successfully - saving bond [DEVICE ID 0]
+[00:00:12.814,361] <dbg> ble_manager: pairing_complete: Saving bond information to flash [DEVICE ID 0]
+[00:00:12.814,361] <inf> devices_manager: Updating bonded devices collection...
+[00:00:12.815,155] <dbg> csip_coordinator: csip_settings_load_sirk: Loaded CSIP info for CC:89:6C:EE:41:04 (public): rank=2
+[00:00:12.815,277] <dbg> devices_manager: enumerate_bonds_cb: Enumerated bonded device 0: CC:89:6C:EE:41:04 (public) (SIRK: yes, Rank: 2)
+[00:00:12.815,307] <inf> devices_manager: Enumerated 1 bonded device
+[00:00:12.815,307] <inf> devices_manager: Bonded devices collection updated. Total bonded devices: 1
+[00:00:12.815,399] <dbg> devices_manager: devices_manager_set_device_state: Device ID 0 state changed from PAIRED to READY
+[00:00:12.815,399] <dbg> app_controller: app_controller_notify_device_ready: Notifying device ready: device_id=0
+[00:00:12.815,490] <inf> app_controller: [DEVICE ID 0] ready, discovering CSIP
+[00:00:12.815,521] <dbg> ble_manager: ble_cmd_enqueue: BLE command enqueued, type: BLE_CMD_CSIP_DISCOVER [DEVICE ID 0]
+[00:00:12.815,612] <dbg> ble_manager: ble_cmd_execute: Executing BLE command type BLE_CMD_CSIP_DISCOVER [DEVICE ID 0]
+[00:00:12.815,856] <dbg> ble_manager: ble_cmd_execute: BLE command initiated successfully: type=BLE_CMD_CSIP_DISCOVER [DEVICE ID 0]
+[00:00:12.815,917] <dbg> ble_manager: ble_process_next_command: Command waiting for completion: type=BLE_CMD_CSIP_DISCOVER [DEVICE ID 0]
+[00:00:12.852,355] <wrn> bt_l2cap: Ignoring data for unknown channel ID 0x002a
+[00:00:12.902,709] <dbg> bt_csip_set_coordinator: primary_discover_func: [ATTRIBUTE] handle 0x00EC
+[00:00:13.052,337] <dbg> bt_csip_set_coordinator: primary_discover_func: Discover complete, found 1 instances
+[00:00:13.152,435] <dbg> bt_csip_set_coordinator: discover_func: [ATTRIBUTE] handle 0x00ED
+[00:00:13.152,465] <dbg> bt_csip_set_coordinator: discover_func: SIRK
+[00:00:13.152,496] <dbg> bt_csip_set_coordinator: discover_func: Subscribing to handle 0x00ED
+[00:00:13.152,557] <dbg> bt_csip_set_coordinator: discover_func: Subscribed to handle 0x00ED
+[00:00:13.152,587] <dbg> bt_csip_set_coordinator: discover_func: [ATTRIBUTE] handle 0x00F0
+[00:00:13.152,587] <dbg> bt_csip_set_coordinator: discover_func: Set size
+[00:00:13.152,618] <dbg> bt_csip_set_coordinator: discover_func: Subscribing to handle 0x00F0
+[00:00:13.152,679] <dbg> bt_csip_set_coordinator: discover_func: Subscribed to handle 0x00F0
+[00:00:13.152,679] <dbg> bt_csip_set_coordinator: discover_func: [ATTRIBUTE] handle 0x00F3
+[00:00:13.152,709] <dbg> bt_csip_set_coordinator: discover_func: Set lock
+[00:00:13.152,709] <dbg> bt_csip_set_coordinator: discover_func: Subscribing to handle 0x00F3
+[00:00:13.152,770] <dbg> bt_csip_set_coordinator: discover_func: Subscribed to handle 0x00F3
+[00:00:13.152,801] <dbg> bt_csip_set_coordinator: discover_func: [ATTRIBUTE] handle 0x00F6
+[00:00:13.152,801] <dbg> bt_csip_set_coordinator: discover_func: Set rank
+[00:00:13.552,246] <dbg> bt_csip_set_coordinator: discover_func: Setup complete for 1 / 1
+[00:00:13.952,301] <dbg> bt_csip_set_coordinator: csip_set_coordinator_discover_insts_read_sirk_cb: Data read
                                                   01 4f 34 3c f3 c8 af 54  f3 87 9b 1b c7 f4 5c 30 |.O4<...T ......\0
                                                   49                                               |I                
-[00:00:02.694,671] <dbg> bt_csip_set_coordinator: parse_sirk: SIRK not encrypted
-[00:00:02.694,702] <dbg> bt_csip_set_coordinator: parse_sirk: SIRK
+[00:00:13.952,331] <dbg> bt_csip_set_coordinator: parse_sirk: SIRK not encrypted
+[00:00:13.952,331] <dbg> bt_csip_set_coordinator: parse_sirk: SIRK
                                                   4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:02.794,586] <dbg> bt_csip_set_coordinator: csip_set_coordinator_discover_insts_read_set_size_cb: Data read
+[00:00:14.052,215] <dbg> bt_csip_set_coordinator: csip_set_coordinator_discover_insts_read_set_size_cb: Data read
                                                   02                                               |.                
-[00:00:02.794,586] <dbg> bt_csip_set_coordinator: csip_set_coordinator_discover_insts_read_set_size_cb: 2
-[00:00:02.894,592] <dbg> bt_csip_set_coordinator: csip_set_coordinator_discover_insts_read_rank_cb: Data read
-                                                  01                                               |.                
-[00:00:02.894,592] <dbg> bt_csip_set_coordinator: csip_set_coordinator_discover_insts_read_rank_cb: 1
-[00:00:02.894,622] <inf> csip_coordinator: CSIP Coordinator discovered successfully [DEVICE ID 0]
-[00:00:02.894,622] <inf> csip_coordinator:   Set count: 1
-[00:00:02.894,653] <inf> csip_coordinator:   SIRK extracted successfully [DEVICE ID 0]
-[00:00:02.894,653] <dbg> csip_coordinator: csip_discover_cb: SIRK:
+[00:00:14.052,246] <dbg> bt_csip_set_coordinator: csip_set_coordinator_discover_insts_read_set_size_cb: 2
+[00:00:14.152,221] <dbg> bt_csip_set_coordinator: csip_set_coordinator_discover_insts_read_rank_cb: Data read
+                                                  02                                               |.                
+[00:00:14.152,252] <dbg> bt_csip_set_coordinator: csip_set_coordinator_discover_insts_read_rank_cb: 2
+[00:00:14.152,252] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:14.152,282] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 0
+[00:00:14.152,282] <inf> csip_coordinator: CSIP Coordinator discovered successfully [DEVICE ID 0]
+[00:00:14.152,313] <inf> csip_coordinator:   Set count: 1
+[00:00:14.152,313] <inf> csip_coordinator:   SIRK extracted successfully [DEVICE ID 0]
+[00:00:14.152,343] <dbg> csip_coordinator: csip_discover_cb: SIRK:
                                            4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:02.894,683] <inf> csip_coordinator:   Rank: 1 [DEVICE ID 0]
-[00:00:02.894,683] <inf> csip_coordinator:   Set size: 2 [DEVICE ID 0]
-[00:00:02.894,714] <inf> csip_coordinator:   Lock supported: yes [DEVICE ID 0]
-[00:00:02.895,019] <inf> csip_coordinator: Stored CSIP info for CC:89:6C:EE:40:F3 (public): rank=1
-[00:00:02.895,050] <inf> csip_coordinator: CSIP data stored to flash [DEVICE ID 0]
-[00:00:02.895,050] <inf> connection_strategy: State machine: CSIP discovered on device 0 (phase: 1)
-[00:00:02.895,050] <inf> connection_strategy: Single bond: Primary device discovered - starting RSI scanning for pair
-[00:00:02.895,050] <inf> connection_strategy: Starting RSI scan for set pair [DEVICE ID 0]
-[00:00:02.895,080] <inf> connection_strategy: Using SIRK from device 0 (rank 1) to search for pair
-[00:00:02.895,111] <dbg> connection_strategy: start_rsi_scan_for_pair: SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:02.895,477] <inf> connection_strategy: RSI scan started successfully (10 second timeout)
-[00:00:02.895,538] <dbg> ble_manager: ble_cmd_complete: BLE command completed successfully: type=BLE_CMD_CSIP_DISCOVER [DEVICE ID 0]
-[00:00:02.895,538] <dbg> ble_manager: ble_process_next_command: No BLE commands in queue [DEVICE ID 0]
-[00:00:03.170,135] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 50:CA:2B:4D:70:0F (random), rssi: -71
-[00:00:03.170,166] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              da d9 65 30 e8 6c                                |..e0.l           
-[00:00:03.170,196] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:03.170,227] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:03.170,257] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 30e86c
-[00:00:03.170,318] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 31cd87
-[00:00:03.170,349] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:03.233,795] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -41
-[00:00:03.233,825] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:03.233,856] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:03.233,886] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:03.233,947] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:03.234,008] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:03.234,039] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:03.499,816] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -41
-[00:00:03.499,847] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:03.499,877] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:03.499,908] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:03.499,969] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:03.500,030] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:03.500,061] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:03.764,038] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -43
-[00:00:03.764,068] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:03.764,099] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:03.764,160] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:03.764,190] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:03.764,251] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:03.764,282] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:03.808,349] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 58:44:1A:BB:AC:76 (random), rssi: -85
-[00:00:03.808,380] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              62 9e 76 19 ae 41                                |b.v..A           
-[00:00:03.808,410] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:03.808,441] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 629e76
-[00:00:03.808,502] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 19ae41
-[00:00:03.808,532] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: ed5d19
-[00:00:03.808,593] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 629e76
-[00:00:03.957,000] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 50:CA:2B:4D:70:0F (random), rssi: -77
-[00:00:03.957,031] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              da d9 65 30 e8 6c                                |..e0.l           
-[00:00:03.957,061] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:03.957,092] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:03.957,122] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 30e86c
-[00:00:03.957,183] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 31cd87
-[00:00:03.957,214] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:03.971,008] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -39
-[00:00:03.971,008] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:03.971,038] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:03.971,069] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:03.971,099] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:03.971,160] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:03.971,221] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:04.023,742] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -41
-[00:00:04.023,773] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:04.023,803] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:04.023,834] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:04.023,895] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:04.023,986] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:04.024,017] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:04.497,467] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -39
-[00:00:04.497,497] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:04.497,528] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:04.497,558] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:04.497,619] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:04.497,680] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:04.497,711] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:05.012,603] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 50:CA:2B:4D:70:0F (random), rssi: -69
-[00:00:05.012,634] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              da d9 65 30 e8 6c                                |..e0.l           
-[00:00:05.012,664] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:05.012,695] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:05.012,725] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 30e86c
-[00:00:05.012,786] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 31cd87
-[00:00:05.012,817] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:05.015,594] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -41
-[00:00:05.015,625] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:05.015,655] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:05.015,686] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:05.015,716] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:05.015,777] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:05.015,808] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:05.082,489] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -40
-[00:00:05.082,489] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:05.082,519] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:05.082,550] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:05.082,611] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:05.082,672] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:05.082,702] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:05.271,972] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 50:CA:2B:4D:70:0F (random), rssi: -68
-[00:00:05.272,003] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              da d9 65 30 e8 6c                                |..e0.l           
-[00:00:05.272,033] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:05.272,064] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:05.272,125] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 30e86c
-[00:00:05.272,155] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 31cd87
-[00:00:05.272,216] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:05.278,167] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -40
-[00:00:05.278,198] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:05.278,228] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:05.278,259] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:05.278,320] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:05.278,381] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:05.278,411] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:05.346,221] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -41
-[00:00:05.346,221] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:05.346,252] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:05.346,282] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:05.346,343] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:05.346,405] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:05.346,435] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:05.545,837] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -41
-[00:00:05.545,867] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:05.545,867] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:05.545,928] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:05.545,989] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:05.546,020] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:05.546,051] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:05.804,595] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 50:CA:2B:4D:70:0F (random), rssi: -70
-[00:00:05.804,626] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              da d9 65 30 e8 6c                                |..e0.l           
-[00:00:05.804,656] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:05.804,687] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:05.804,718] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 30e86c
-[00:00:05.804,779] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 31cd87
-[00:00:05.804,809] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:05.867,248] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -40
-[00:00:05.867,279] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:05.867,309] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:05.867,340] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:05.867,401] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:05.867,462] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:05.867,492] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:05.913,665] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 71:7C:BA:06:10:7B (random), rssi: -87
-[00:00:05.913,665] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              ca 3d f5 89 09 57                                |.=...W           
-[00:00:05.913,696] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:05.913,726] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: ca3df5
-[00:00:05.913,787] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 890957
-[00:00:05.913,848] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 85c290
-[00:00:05.913,879] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: ca3df5
-[00:00:06.129,333] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -41
-[00:00:06.129,364] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:06.129,394] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:06.129,425] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:06.129,486] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:06.129,547] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:06.129,577] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:06.179,840] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 71:7C:BA:06:10:7B (random), rssi: -86
-[00:00:06.179,870] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              ca 3d f5 89 09 57                                |.=...W           
-[00:00:06.179,901] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:06.179,931] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: ca3df5
-[00:00:06.179,992] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 890957
-[00:00:06.180,053] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 85c290
-[00:00:06.180,084] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: ca3df5
-[00:00:06.323,425] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 50:CA:2B:4D:70:0F (random), rssi: -70
-[00:00:06.323,455] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              da d9 65 30 e8 6c                                |..e0.l           
-[00:00:06.323,486] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:06.323,516] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:06.323,577] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 30e86c
-[00:00:06.323,638] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 31cd87
-[00:00:06.323,669] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:06.657,196] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -41
-[00:00:06.657,226] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:06.657,257] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:06.657,287] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:06.657,348] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:06.657,409] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:06.657,440] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:06.916,290] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -41
-[00:00:06.916,320] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:06.916,351] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:06.916,412] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:06.916,473] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:06.916,503] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:06.916,564] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:07.112,945] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -39
-[00:00:07.112,976] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:07.113,006] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:07.113,037] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:07.113,098] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:07.113,128] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:07.113,159] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:07.184,234] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -41
-[00:00:07.184,265] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:07.184,295] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:07.184,326] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:07.184,387] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:07.184,448] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:07.184,478] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:07.641,265] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -40
-[00:00:07.641,296] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:07.641,326] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:07.641,357] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:07.641,418] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:07.641,479] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:07.641,510] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:07.943,267] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 63:B6:CA:37:91:ED (random), rssi: -82
-[00:00:07.943,298] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              ae f3 49 61 f9 55                                |..Ia.U           
-[00:00:07.943,298] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:07.943,389] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: aef349
-[00:00:07.943,420] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 61f955
-[00:00:07.943,481] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: c31d5f
-[00:00:07.943,511] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: aef349
-[00:00:08.162,292] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -39
-[00:00:08.162,322] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:08.162,353] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:08.162,384] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:08.162,445] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:08.162,506] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:08.162,536] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:08.234,680] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -40
-[00:00:08.234,710] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:08.234,741] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:08.234,771] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:08.234,832] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:08.234,893] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:08.234,924] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:08.416,900] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 50:CA:2B:4D:70:0F (random), rssi: -68
-[00:00:08.416,931] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              da d9 65 30 e8 6c                                |..e0.l           
-[00:00:08.416,961] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:08.416,992] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:08.417,022] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 30e86c
-[00:00:08.417,083] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 31cd87
-[00:00:08.417,114] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:08.427,398] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -41
-[00:00:08.427,429] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:08.427,429] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:08.427,459] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:08.427,520] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:08.427,581] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:08.427,612] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:08.510,498] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 58:44:1A:BB:AC:76 (random), rssi: -80
-[00:00:08.510,528] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              62 9e 76 19 ae 41                                |b.v..A           
-[00:00:08.510,559] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:08.510,589] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 629e76
-[00:00:08.510,620] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 19ae41
-[00:00:08.510,681] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: ed5d19
-[00:00:08.510,711] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 629e76
-[00:00:08.690,277] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -38
-[00:00:08.690,277] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:08.690,307] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:08.690,338] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:08.690,399] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:08.690,460] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:08.690,490] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:08.758,728] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -40
-[00:00:08.758,758] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:08.758,758] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:08.758,819] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:08.758,880] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:08.758,911] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:08.758,941] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:08.774,536] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 58:44:1A:BB:AC:76 (random), rssi: -80
-[00:00:08.774,566] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              62 9e 76 19 ae 41                                |b.v..A           
-[00:00:08.774,566] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:08.774,597] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 629e76
-[00:00:08.774,658] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 19ae41
-[00:00:08.774,719] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: ed5d19
-[00:00:08.774,749] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 629e76
-[00:00:08.957,366] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -39
-[00:00:08.957,397] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:08.957,427] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:08.957,458] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:08.957,519] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:08.957,580] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:08.957,611] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:09.281,036] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -41
-[00:00:09.281,066] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:09.281,066] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:09.281,127] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:09.281,188] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:09.281,219] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:09.281,250] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:09.479,034] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -38
-[00:00:09.479,064] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:09.479,064] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:09.479,125] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:09.479,187] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:09.479,217] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:09.479,278] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:09.539,276] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -41
-[00:00:09.539,306] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:09.539,337] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:09.539,367] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:09.539,428] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:09.539,489] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:09.539,520] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:09.743,103] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -39
-[00:00:09.743,133] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:09.743,164] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:09.743,194] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:09.743,255] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:09.743,316] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:09.743,347] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:09.805,969] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -41
-[00:00:09.805,999] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:09.806,030] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:09.806,060] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:09.806,121] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:09.806,182] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:09.806,213] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:10.005,737] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -38
-[00:00:10.005,767] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:10.005,798] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:10.005,828] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:10.005,889] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:10.005,950] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:10.005,981] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:10.065,185] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -41
-[00:00:10.065,185] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:10.065,216] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:10.065,277] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:10.065,307] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:10.065,368] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:10.065,399] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:10.239,990] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 50:CA:2B:4D:70:0F (random), rssi: -68
-[00:00:10.240,020] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              da d9 65 30 e8 6c                                |..e0.l           
-[00:00:10.240,051] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:10.240,081] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:10.240,112] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 30e86c
-[00:00:10.240,173] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 31cd87
-[00:00:10.240,203] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:10.524,078] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -39
-[00:00:10.524,139] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:10.524,139] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:10.524,200] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:10.524,230] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:10.524,261] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:10.524,322] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:10.857,177] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -41
-[00:00:10.857,208] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:10.857,238] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:10.857,299] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:10.857,330] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:10.857,391] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:10.857,421] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:11.283,874] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 50:CA:2B:4D:70:0F (random), rssi: -69
-[00:00:11.283,905] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              da d9 65 30 e8 6c                                |..e0.l           
-[00:00:11.283,996] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:11.284,027] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:11.284,088] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 30e86c
-[00:00:11.284,118] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 31cd87
-[00:00:11.284,149] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:11.311,889] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -39
-[00:00:11.311,889] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:11.311,920] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:11.312,011] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:11.312,042] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:11.312,103] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:11.312,133] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:11.371,185] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -41
-[00:00:11.371,215] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:11.371,246] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:11.371,276] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:11.371,307] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:11.371,368] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:11.371,398] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:11.543,029] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 50:CA:2B:4D:70:0F (random), rssi: -79
-[00:00:11.543,060] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              da d9 65 30 e8 6c                                |..e0.l           
-[00:00:11.543,090] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:11.543,121] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:11.543,151] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 30e86c
-[00:00:11.543,212] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 31cd87
-[00:00:11.543,243] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:11.648,925] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 58:44:1A:BB:AC:76 (random), rssi: -80
-[00:00:11.648,956] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              62 9e 76 19 ae 41                                |b.v..A           
-[00:00:11.648,986] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:11.649,017] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 629e76
-[00:00:11.649,078] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 19ae41
-[00:00:11.649,139] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: ed5d19
-[00:00:11.649,169] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 629e76
-[00:00:11.835,998] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -38
-[00:00:11.836,029] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:11.836,059] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:11.836,090] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:11.836,151] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:11.836,212] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:11.836,242] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:12.323,425] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 50:CA:2B:4D:70:0F (random), rssi: -79
-[00:00:12.323,455] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              da d9 65 30 e8 6c                                |..e0.l           
-[00:00:12.323,455] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:12.323,516] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:12.323,547] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 30e86c
-[00:00:12.323,608] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 31cd87
-[00:00:12.323,638] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:12.417,480] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 42:61:A7:E2:D8:1D (random), rssi: -44
-[00:00:12.417,510] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              b6 9b 89 ae fa 43                                |.....C           
-[00:00:12.417,541] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:12.417,572] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:12.417,633] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand aefa43
-[00:00:12.417,694] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 3c0fe8
-[00:00:12.417,724] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: b69b89
-[00:00:12.584,869] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 50:CA:2B:4D:70:0F (random), rssi: -71
-[00:00:12.584,899] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              da d9 65 30 e8 6c                                |..e0.l           
-[00:00:12.584,930] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:12.584,960] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:12.584,991] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 30e86c
-[00:00:12.585,052] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 31cd87
-[00:00:12.585,083] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:12.613,342] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 51:B6:1F:FD:55:72 (random), rssi: -38
-[00:00:12.613,372] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              29 35 92 83 b9 5c                                |)5...\           
-[00:00:12.613,403] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:12.613,433] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:12.613,494] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 83b95c
-[00:00:12.613,525] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 1cb93b
-[00:00:12.613,555] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 293592
-[00:00:12.846,160] <dbg> connection_strategy: rsi_device_found: Found RSI advertisement from 50:CA:2B:4D:70:0F (random), rssi: -79
-[00:00:12.846,191] <dbg> connection_strategy: rsi_device_found: RSI advertisement:
-                                              da d9 65 30 e8 6c                                |..e0.l           
-[00:00:12.846,221] <dbg> connection_strategy: rsi_device_found: Checking against SIRK:
-                                              4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
-[00:00:12.846,252] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:12.846,313] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 30e86c
-[00:00:12.846,374] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 31cd87
-[00:00:12.846,405] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dad965
-[00:00:12.895,538] <wrn> connection_strategy: RSI scan timeout - no matching set member found after 10 seconds [DEVICE ID 0]
+[00:00:14.152,343] <inf> csip_coordinator:   Rank: 2 [DEVICE ID 0]
+[00:00:14.152,343] <inf> csip_coordinator:   Set size: 2 [DEVICE ID 0]
+[00:00:14.152,374] <inf> csip_coordinator:   Lock supported: yes [DEVICE ID 0]
+[00:00:14.152,893] <inf> csip_coordinator: Stored CSIP info for CC:89:6C:EE:41:04 (public): rank=2
+[00:00:14.152,893] <inf> csip_coordinator: CSIP data stored to flash [DEVICE ID 0]
+[00:00:14.152,923] <inf> app_controller: Notifying CSIP discovered: device_id=0
+[00:00:14.152,984] <dbg> ble_manager: ble_cmd_complete: BLE command completed successfully: type=BLE_CMD_CSIP_DISCOVER [DEVICE ID 0]
+[00:00:14.152,984] <dbg> ble_manager: ble_process_next_command: No BLE commands in queue [DEVICE ID 0]
+[00:00:14.153,045] <inf> app_controller: CSIP discovered for device 0, proceeding to RSI scan
+[00:00:14.153,564] <inf> csip_coordinator: Scanning for RSI advertisements started
+[00:00:14.217,864] <dbg> csip_coordinator: rsi_scan_adv_parse: RSI data received from 5E:DF:CD:19:F0:17 (random), RSSI -35 dBm
+[00:00:14.217,895] <dbg> csip_coordinator: rsi_scan_adv_parse: Checking if device is already known; skipping if so...
+[00:00:14.217,895] <dbg> devices_manager: devices_manager_get_device_context_by_addr: Getting device context by address
+[00:00:14.217,926] <dbg> devices_manager: devices_manager_get_device_context_by_addr: No device with matching address found
+[00:00:14.217,926] <dbg> devices_manager: devices_manager_find_bonded_entry_by_addr: Address not found in bonded devices collection
+[00:00:14.217,956] <dbg> csip_coordinator: rsi_scan_adv_parse: RSI data:
+                                           dd e4 0e 96 95 43                                |.....C           
+[00:00:14.217,987] <dbg> csip_coordinator: rsi_scan_adv_parse: Using SIRK:
+                                           4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
+[00:00:14.218,017] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dde40e
+[00:00:14.218,048] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand 969543
+[00:00:14.218,078] <dbg> bt_csip_crypto: bt_csip_sih: SIRK 4f343cf3c8af54f3879b1bc7f45c3049
+[00:00:14.218,109] <dbg> bt_csip_crypto: bt_csip_sih: r 969543
+[00:00:14.218,170] <dbg> bt_csip_crypto: bt_csip_sih: r' 96954300000000000000000000000000
+[00:00:14.218,231] <dbg> bt_csip_crypto: bt_csip_sih: res 8a08b6621fb59ce15e8246adac559d84
+[00:00:14.218,261] <dbg> bt_csip_crypto: bt_csip_sih: sih 8a08b6
+[00:00:14.218,292] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 8a08b6
+[00:00:14.218,383] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: dde40e
+[00:00:14.218,414] <dbg> csip_coordinator: rsi_scan_adv_parse: RSI does not match SIRK for 5E:DF:CD:19:F0:17 (random)
+[00:00:14.261,474] <dbg> csip_coordinator: rsi_scan_adv_parse: RSI data received from 63:2D:F2:C0:5C:AE (random), RSSI -39 dBm
+[00:00:14.261,474] <dbg> csip_coordinator: rsi_scan_adv_parse: Checking if device is already known; skipping if so...
+[00:00:14.261,505] <dbg> devices_manager: devices_manager_get_device_context_by_addr: Getting device context by address
+[00:00:14.261,505] <dbg> devices_manager: devices_manager_get_device_context_by_addr: No device with matching address found
+[00:00:14.261,535] <dbg> devices_manager: devices_manager_find_bonded_entry_by_addr: Address not found in bonded devices collection
+[00:00:14.261,535] <dbg> csip_coordinator: rsi_scan_adv_parse: RSI data:
+                                           79 d9 24 a6 67 7e                                |y.$.g~           
+[00:00:14.261,657] <dbg> csip_coordinator: rsi_scan_adv_parse: Using SIRK:
+                                           4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
+[00:00:14.261,688] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 79d924
+[00:00:14.261,718] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand a6677e
+[00:00:14.261,779] <dbg> bt_csip_crypto: bt_csip_sih: SIRK 4f343cf3c8af54f3879b1bc7f45c3049
+[00:00:14.261,810] <dbg> bt_csip_crypto: bt_csip_sih: r a6677e
+[00:00:14.261,840] <dbg> bt_csip_crypto: bt_csip_sih: r' a6677e00000000000000000000000000
+[00:00:14.261,901] <dbg> bt_csip_crypto: bt_csip_sih: res 0dab5b8f677018721c8eedd4fd0aee9f
+[00:00:14.261,993] <dbg> bt_csip_crypto: bt_csip_sih: sih 0dab5b
+[00:00:14.262,023] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 0dab5b
+[00:00:14.262,054] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 79d924
+[00:00:14.262,115] <dbg> csip_coordinator: rsi_scan_adv_parse: RSI does not match SIRK for 63:2D:F2:C0:5C:AE (random)
+[00:00:14.332,031] <dbg> csip_coordinator: rsi_scan_adv_parse: RSI data received from 50:21:B2:4F:D5:B3 (random), RSSI -39 dBm
+[00:00:14.332,031] <dbg> csip_coordinator: rsi_scan_adv_parse: Checking if device is already known; skipping if so...
+[00:00:14.332,061] <dbg> devices_manager: devices_manager_get_device_context_by_addr: Getting device context by address
+[00:00:14.332,061] <dbg> devices_manager: devices_manager_get_device_context_by_addr: No device with matching address found
+[00:00:14.332,092] <dbg> devices_manager: devices_manager_find_bonded_entry_by_addr: Address not found in bonded devices collection
+[00:00:14.332,092] <dbg> csip_coordinator: rsi_scan_adv_parse: RSI data:
+                                           2f 26 14 f0 71 62                                |/&..qb           
+[00:00:14.332,122] <dbg> csip_coordinator: rsi_scan_adv_parse: Using SIRK:
+                                           4f 34 3c f3 c8 af 54 f3  87 9b 1b c7 f4 5c 30 49 |O4<...T. .....\0I
+[00:00:14.332,153] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 2f2614
+[00:00:14.332,183] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: prand f07162
+[00:00:14.332,244] <dbg> bt_csip_crypto: bt_csip_sih: SIRK 4f343cf3c8af54f3879b1bc7f45c3049
+[00:00:14.332,275] <dbg> bt_csip_crypto: bt_csip_sih: r f07162
+[00:00:14.332,305] <dbg> bt_csip_crypto: bt_csip_sih: r' f0716200000000000000000000000000
+[00:00:14.332,366] <dbg> bt_csip_crypto: bt_csip_sih: res 2f2614aeca10a79f718caa97f90f2910
+[00:00:14.332,397] <dbg> bt_csip_crypto: bt_csip_sih: sih 2f2614
+[00:00:14.332,427] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: calculated_hash: 2f2614
+[00:00:14.332,458] <dbg> bt_csip_set_coordinator: bt_csip_set_coordinator_is_set_member: hash: 2f2614
+[00:00:14.332,550] <inf> csip_coordinator: RSI from 50:21:B2:4F:D5:B3 (random) matches SIRK
+[00:00:14.332,824] <inf> csip_coordinator: RSI scanning stopped
+[00:00:14.332,824] <inf> app_controller: Notifying CSIP member match: device_id=0
+[00:00:14.333,007] <inf> app_controller: CSIP member match (50:21:B2:4F:D5:B3 (random)) found for device 0
+[00:00:14.333,007] <inf> app_controller: Bonding to device
+[00:00:14.333,099] <dbg> ble_manager: ble_manager_connect: Connecting to 50:21:B2:4F:D5:B3 (random)
+[00:00:14.392,059] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:14.392,059] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 1
+[00:00:14.392,181] <dbg> ble_manager: connected_cb: Connected to new device 50:21:B2:4F:D5:B3 (random) - expecting pairing [DEVICE ID 1]
+[00:00:14.392,242] <dbg> devices_manager: devices_manager_set_device_state: Device ID 1 state changed from DISCONNECTED to CONNECTED
+[00:00:14.392,303] <dbg> ble_manager: ble_cmd_enqueue: High priority BLE command enqueued, type: BLE_CMD_REQUEST_SECURITY [DEVICE ID 1]
+[00:00:14.392,883] <dbg> ble_manager: ble_cmd_execute: Executing BLE command type BLE_CMD_REQUEST_SECURITY [DEVICE ID 1]
+[00:00:14.392,944] <dbg> ble_manager: ble_cmd_execute: BLE command initiated successfully: type=BLE_CMD_REQUEST_SECURITY [DEVICE ID 1]
+[00:00:14.392,974] <dbg> ble_manager: ble_process_next_command: Command waiting for completion: type=BLE_CMD_REQUEST_SECURITY [DEVICE ID 1]
+[00:00:14.393,005] <dbg> ble_manager: security_request_handler: Requesting security [DEVICE ID 1]
+[00:00:14.394,256] <dbg> ble_manager: security_request_handler: Security request initiated [DEVICE ID 1]
+[00:00:14.394,348] <dbg> devices_manager: devices_manager_set_device_state: Device ID 1 state changed from CONNECTED to PAIRING
+[00:00:16.254,333] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:16.254,364] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 1
+[00:00:16.254,425] <dbg> ble_manager: security_changed_cb: Security changed: 50:21:B2:4F:D5:B3 (random) level 2 [DEVICE ID 1]
+[00:00:16.254,425] <dbg> ble_manager: security_changed_cb: Encryption established at level 2 [DEVICE ID 1]
+[00:00:16.254,455] <dbg> ble_manager: security_changed_cb: New device - waiting for pairing completion [DEVICE ID 1]
+[00:00:16.254,516] <dbg> ble_manager: ble_cmd_complete: BLE command completed successfully: type=BLE_CMD_REQUEST_SECURITY [DEVICE ID 1]
+[00:00:16.254,516] <dbg> ble_manager: ble_process_next_command: No BLE commands in queue [DEVICE ID 1]
+[00:00:16.319,946] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:16.319,976] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 1
+[00:00:16.319,976] <dbg> ble_manager: pairing_complete: Pairing complete. Bonded: 1 [DEVICE ID 1]
+[00:00:16.320,068] <dbg> devices_manager: devices_manager_set_device_state: Device ID 1 state changed from PAIRING to PAIRED
+[00:00:16.320,068] <inf> ble_manager: New device paired successfully - saving bond [DEVICE ID 1]
+[00:00:16.320,098] <dbg> ble_manager: pairing_complete: Saving bond information to flash [DEVICE ID 1]
+[00:00:16.320,098] <inf> devices_manager: Updating bonded devices collection...
+[00:00:16.321,044] <dbg> csip_coordinator: csip_settings_load_sirk: Loaded CSIP info for CC:89:6C:EE:41:04 (public): rank=2
+[00:00:16.321,166] <dbg> devices_manager: enumerate_bonds_cb: Enumerated bonded device 0: CC:89:6C:EE:41:04 (public) (SIRK: yes, Rank: 2)
+[00:00:16.321,990] <dbg> csip_coordinator: csip_settings_load_sirk: CSIP data not found for CC:89:6C:EE:40:F3 (public) (SIRK: no, rank: no)
+[00:00:16.322,113] <dbg> devices_manager: enumerate_bonds_cb: Enumerated bonded device 1: CC:89:6C:EE:40:F3 (public) (SIRK: no, Rank: 0)
+[00:00:16.322,143] <inf> devices_manager: Enumerated 2 bonded devices
+[00:00:16.322,174] <inf> devices_manager: Bonded devices collection updated. Total bonded devices: 2
+[00:00:16.322,235] <dbg> devices_manager: devices_manager_set_device_state: Device ID 1 state changed from PAIRED to READY
+[00:00:16.322,235] <dbg> app_controller: app_controller_notify_device_ready: Notifying device ready: device_id=1
+[00:00:16.322,326] <inf> app_controller: [DEVICE ID 1] ready, proceeding to dual device
+[00:00:16.322,326] <dbg> app_controller: app_controller_thread: SM_BONDED_DEVICES: Managing bonded device(s)
+[00:00:16.322,357] <inf> ble_manager: Establishing trusted bond with device [DEVICE ID 0]
+[00:00:16.322,418] <dbg> devices_manager: devices_manager_set_device_state: Device ID 0 state changed from READY to TRUSTING
+[00:00:16.322,418] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:16.322,448] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 0
+[00:00:16.322,448] <inf> ble_manager: Disconnecting connection [DEVICE ID 0]
+[00:00:16.353,973] <wrn> bt_l2cap: Ignoring data for unknown channel ID 0x002a
+[00:00:16.402,862] <dbg> bt_csip_set_coordinator: lock_notify_func: [UNSUBSCRIBED] 244
+[00:00:16.402,862] <dbg> bt_csip_set_coordinator: size_notify_func: [UNSUBSCRIBED] 241
+[00:00:16.402,893] <dbg> bt_csip_set_coordinator: sirk_notify_func: [UNSUBSCRIBED] 238
+[00:00:16.402,923] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:16.402,923] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 0
+[00:00:16.403,076] <inf> ble_manager: Disconnected from CC:89:6C:EE:41:04 (public) with (reason 0x16) [DEVICE ID 0]
+[00:00:16.403,106] <inf> ble_manager: Disconnected to establish trusted bond [DEVICE ID 0]
+[00:00:16.403,106] <dbg> ble_manager: disconnected_cb: Scheduling reconnection to establish bond [DEVICE ID 0]
+[00:00:16.403,228] <dbg> ble_manager: ble_manager_connect_to_bonded_device: Found entry in bonded devices to connect to, addr=CC:89:6C:EE:41:04 (public) [DEVICE ID 0]
+[00:00:16.403,350] <dbg> devices_manager: devices_manager_set_device_state: Device ID 0 state changed from DISCONNECTED to BONDED
+[00:00:16.403,442] <dbg> ble_manager: ble_manager_connect_to_bonded_device: Set device context to connect to, addr=CC:89:6C:EE:41:04 (public) [DEVICE ID 0]
+[00:00:16.653,625] <dbg> ble_manager: connect_work_handler: Connect work executing for CC:89:6C:EE:41:04 (public) [DEVICE ID 0]
+[00:00:16.653,717] <dbg> ble_manager: ble_manager_connect: Connecting to CC:89:6C:EE:41:04 (public)
+[00:00:16.700,195] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:16.700,195] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 0
+[00:00:16.700,317] <inf> ble_manager: Connected to bonded (or bonding) device CC:89:6C:EE:41:04 (public) [DEVICE ID 0]
+[00:00:16.700,378] <dbg> ble_manager: ble_cmd_enqueue: High priority BLE command enqueued, type: BLE_CMD_REQUEST_SECURITY [DEVICE ID 0]
+[00:00:16.700,958] <dbg> ble_manager: ble_cmd_execute: Executing BLE command type BLE_CMD_REQUEST_SECURITY [DEVICE ID 0]
+[00:00:16.701,019] <dbg> ble_manager: ble_cmd_execute: BLE command initiated successfully: type=BLE_CMD_REQUEST_SECURITY [DEVICE ID 0]
+[00:00:16.701,080] <dbg> ble_manager: ble_process_next_command: Command waiting for completion: type=BLE_CMD_REQUEST_SECURITY [DEVICE ID 0]
+[00:00:16.701,110] <dbg> ble_manager: security_request_handler: Requesting security [DEVICE ID 0]
+[00:00:16.701,202] <dbg> ble_manager: security_request_handler: Security request initiated [DEVICE ID 0]
+[00:00:17.305,664] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:17.305,694] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 0
+[00:00:17.305,755] <dbg> ble_manager: security_changed_cb: Security changed: CC:89:6C:EE:41:04 (public) level 2 [DEVICE ID 0]
+[00:00:17.305,755] <dbg> ble_manager: security_changed_cb: Encryption established at level 2 [DEVICE ID 0]
+[00:00:17.305,786] <dbg> ble_manager: security_changed_cb: Bonded device - encryption established [DEVICE ID 0]
+[00:00:17.305,847] <dbg> devices_manager: devices_manager_set_device_state: Device ID 0 state changed from BONDED to READY
+[00:00:17.305,847] <dbg> app_controller: app_controller_notify_device_ready: Notifying device ready: device_id=0
+[00:00:17.305,969] <dbg> ble_manager: ble_cmd_complete: BLE command completed successfully: type=BLE_CMD_REQUEST_SECURITY [DEVICE ID 0]
+[00:00:17.305,969] <dbg> ble_manager: ble_process_next_command: No BLE commands in queue [DEVICE ID 0]
+[00:00:17.306,152] <wrn> bt_l2cap: Ignoring data for unknown channel ID 0x002a
+[00:00:17.306,213] <inf> app_controller: [DEVICE ID 0] ready after trusted bond, discovering services
+[00:00:17.306,274] <dbg> ble_manager: ble_cmd_enqueue: BLE command enqueued, type: BLE_CMD_BAS_DISCOVER [DEVICE ID 0]
+[00:00:17.306,823] <dbg> ble_manager: ble_cmd_execute: Executing BLE command type BLE_CMD_BAS_DISCOVER [DEVICE ID 0]
+[00:00:17.306,823] <dbg> battery_reader: battery_discover: Starting Battery Service discovery [DEVICE ID 0]
+[00:00:17.307,067] <dbg> ble_manager: ble_cmd_execute: BLE command initiated successfully: type=BLE_CMD_BAS_DISCOVER [DEVICE ID 0]
+[00:00:17.307,128] <dbg> ble_manager: ble_process_next_command: Command waiting for completion: type=BLE_CMD_BAS_DISCOVER [DEVICE ID 0]
+[00:00:17.406,127] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:17.406,158] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 0
+[00:00:17.406,158] <dbg> battery_reader: discover_service_cb: Found Battery Service at handle 0x011E-0x0121 [DEVICE ID 0]
+[00:00:17.406,188] <dbg> battery_reader: discover_service_cb: Discover characteristics within Battery Service [DEVICE ID 0]
+[00:00:17.506,134] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:17.506,164] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 0
+[00:00:17.506,164] <dbg> battery_reader: discover_char_cb: [ATTRIBUTE] handle 0x011F [DEVICE ID 0]
+[00:00:17.506,195] <dbg> battery_reader: discover_char_cb: Found Battery Level characteristic at handle 0x0120 (properties 0x12) [DEVICE ID 0]
+[00:00:17.655,639] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:17.655,670] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 0
+[00:00:17.655,700] <dbg> battery_reader: discover_char_cb: Discovery complete for type 3 [DEVICE ID 0]
+[00:00:17.655,731] <dbg> battery_reader: discover_char_cb: Battery Service discovery complete (handle: 0x0120, CCC: 0x0000) [DEVICE ID 0]
+[00:00:17.655,731] <inf> app_controller: Notifying BAS discovered: device_id=0
+[00:00:17.655,792] <dbg> ble_manager: ble_cmd_complete: BLE command completed successfully: type=BLE_CMD_BAS_DISCOVER [DEVICE ID 0]
+[00:00:17.655,792] <dbg> ble_manager: ble_process_next_command: No BLE commands in queue [DEVICE ID 0]
+[00:00:17.656,066] <inf> app_controller: BAS discovered for device 0, reading level
+[00:00:17.656,127] <dbg> ble_manager: ble_cmd_enqueue: BLE command enqueued, type: BLE_CMD_BAS_READ_LEVEL [DEVICE ID 0]
+[00:00:17.656,188] <dbg> ble_manager: ble_cmd_enqueue: BLE command enqueued, type: BLE_CMD_VCP_DISCOVER [DEVICE ID 0]
+[00:00:17.656,250] <dbg> ble_manager: ble_cmd_execute: Executing BLE command type BLE_CMD_BAS_READ_LEVEL [DEVICE ID 0]
+[00:00:17.656,280] <dbg> battery_reader: battery_read_level: Reading battery level from handle 0x0120 [DEVICE ID 0]
+[00:00:17.656,524] <dbg> ble_manager: ble_cmd_execute: BLE command initiated successfully: type=BLE_CMD_BAS_READ_LEVEL [DEVICE ID 0]
+[00:00:17.656,585] <dbg> ble_manager: ble_process_next_command: Command waiting for completion: type=BLE_CMD_BAS_READ_LEVEL [DEVICE ID 0]
+[00:00:17.756,164] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:17.756,195] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 0
+[00:00:17.756,195] <inf> battery_reader: Battery level read: 40% [DEVICE ID 0]
+[00:00:17.756,256] <dbg> ble_manager: ble_cmd_complete: BLE command completed successfully: type=BLE_CMD_BAS_READ_LEVEL [DEVICE ID 0]
+[00:00:17.756,286] <dbg> ble_manager: ble_cmd_execute: Executing BLE command type BLE_CMD_VCP_DISCOVER [DEVICE ID 0]
+[00:00:17.756,317] <dbg> vcp_controller: vcp_controller_reset: VCP controller state reset [DEVICE ID 0]
+[00:00:17.756,408] <dbg> ble_manager: ble_cmd_execute: BLE command initiated successfully: type=BLE_CMD_VCP_DISCOVER [DEVICE ID 0]
+[00:00:17.756,439] <dbg> ble_manager: ble_process_next_command: Command waiting for completion: type=BLE_CMD_VCP_DISCOVER [DEVICE ID 0]
+[00:00:18.255,706] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:18.255,737] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 0
+[00:00:18.255,737] <inf> vcp_controller: VCP discovery complete [DEVICE ID 0]
+[00:00:18.255,737] <inf> app_controller: Notifying VCP discovered: device_id=0
+[00:00:18.255,798] <dbg> ble_manager: ble_cmd_complete: BLE command completed successfully: type=BLE_CMD_VCP_DISCOVER [DEVICE ID 0]
+[00:00:18.255,828] <dbg> ble_manager: ble_process_next_command: No BLE commands in queue [DEVICE ID 0]
+[00:00:18.256,011] <inf> app_controller: VCP discovered for device 0
+[00:00:18.256,042] <dbg> has_controller: has_controller_reset: HAS controller state reset [DEVICE ID 0]
+[00:00:18.256,103] <dbg> ble_manager: ble_cmd_enqueue: BLE command enqueued, type: BLE_CMD_HAS_DISCOVER [DEVICE ID 0]
+[00:00:18.256,195] <dbg> ble_manager: ble_cmd_execute: Executing BLE command type BLE_CMD_HAS_DISCOVER [DEVICE ID 0]
+[00:00:18.256,225] <dbg> has_controller: has_cmd_discover: Starting HAS discovery
+[00:00:18.256,286] <dbg> ble_manager: ble_cmd_execute: BLE command initiated successfully: type=BLE_CMD_HAS_DISCOVER [DEVICE ID 0]
+[00:00:18.256,347] <dbg> ble_manager: ble_process_next_command: Command waiting for completion: type=BLE_CMD_HAS_DISCOVER [DEVICE ID 0]
+[00:00:24.505,676] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:24.505,706] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 0
+[00:00:24.505,706] <inf> has_controller: HAS discovery complete
+[00:00:24.505,706] <inf> has_controller: Hearing aid type: 0
+[00:00:24.505,737] <inf> has_controller: Hearing aid capabilities: 0x01
+[00:00:24.505,767] <dbg> ble_manager: ble_cmd_enqueue: High priority BLE command enqueued, type: BLE_CMD_HAS_READ_PRESETS [DEVICE ID 0]
+[00:00:24.505,798] <dbg> app_controller: app_controller_notify_has_discovered: Notifying HAS discovered: device_id=0
+[00:00:24.505,859] <dbg> ble_manager: ble_cmd_complete: BLE command completed successfully: type=BLE_CMD_HAS_DISCOVER [DEVICE ID 0]
+[00:00:24.505,889] <dbg> ble_manager: ble_cmd_execute: Executing BLE command type BLE_CMD_HAS_READ_PRESETS [DEVICE ID 0]
+[00:00:24.505,920] <dbg> has_controller: has_cmd_read_presets: Reading presets [DEVICE ID 0]
+[00:00:24.506,072] <dbg> ble_manager: ble_cmd_execute: BLE command initiated successfully: type=BLE_CMD_HAS_READ_PRESETS [DEVICE ID 0]
+[00:00:24.506,103] <dbg> ble_manager: ble_process_next_command: Command waiting for completion: type=BLE_CMD_HAS_READ_PRESETS [DEVICE ID 0]
+[00:00:24.506,134] <dbg> has_controller: has_preset_switch_cb: ctx->current_ble_cmd->type=13
+[00:00:24.506,164] <inf> has_controller: Active preset changed to 1: 'Unknown'
+[00:00:24.506,347] <inf> app_controller: HAS discovered for device 0, entering idle state
+[00:00:24.506,347] <inf> ble_manager: Establishing trusted bond with device [DEVICE ID 1]
+[00:00:24.506,408] <dbg> devices_manager: devices_manager_set_device_state: Device ID 1 state changed from READY to TRUSTING
+[00:00:24.506,408] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:24.506,439] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 1
+[00:00:24.506,439] <inf> ble_manager: Disconnecting connection [DEVICE ID 1]
+[00:00:24.606,170] <inf> has_controller: Preset 1: 'Basic' (available: 1, writable: 0)
+[00:00:24.704,620] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:24.704,620] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 1
+[00:00:24.704,772] <inf> ble_manager: Disconnected from CC:89:6C:EE:40:F3 (public) with (reason 0x16) [DEVICE ID 1]
+[00:00:24.704,803] <inf> ble_manager: Disconnected to establish trusted bond [DEVICE ID 1]
+[00:00:24.704,803] <dbg> ble_manager: disconnected_cb: Scheduling reconnection to establish bond [DEVICE ID 1]
+[00:00:24.704,925] <dbg> ble_manager: ble_manager_connect_to_bonded_device: Found entry in bonded devices to connect to, addr=CC:89:6C:EE:40:F3 (public) [DEVICE ID 1]
+[00:00:24.705,017] <dbg> devices_manager: devices_manager_set_device_state: Device ID 1 state changed from DISCONNECTED to BONDED
+[00:00:24.705,139] <dbg> ble_manager: ble_manager_connect_to_bonded_device: Set device context to connect to, addr=CC:89:6C:EE:40:F3 (public) [DEVICE ID 1]
+[00:00:24.705,780] <inf> has_controller: Preset 2: 'Restaurant' (available: 1, writable: 0)
+[00:00:24.805,755] <inf> has_controller: Preset 3: 'Outdoor' (available: 1, writable: 0)
+[00:00:24.805,755] <dbg> has_controller: has_preset_read_rsp_cb: Preset read complete, total: 3
+[00:00:24.805,816] <dbg> ble_manager: ble_cmd_complete: BLE command completed successfully: type=BLE_CMD_HAS_READ_PRESETS [DEVICE ID 0]
+[00:00:24.805,847] <dbg> ble_manager: ble_process_next_command: No BLE commands in queue [DEVICE ID 0]
+[00:00:24.955,322] <dbg> ble_manager: connect_work_handler: Connect work executing for CC:89:6C:EE:40:F3 (public) [DEVICE ID 1]
+[00:00:24.955,474] <dbg> ble_manager: ble_manager_connect: Connecting to CC:89:6C:EE:40:F3 (public)
+[00:00:24.980,926] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:24.980,926] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 1
+[00:00:24.981,048] <inf> ble_manager: Connected to bonded (or bonding) device CC:89:6C:EE:40:F3 (public) [DEVICE ID 1]
+[00:00:24.981,109] <dbg> ble_manager: ble_cmd_enqueue: High priority BLE command enqueued, type: BLE_CMD_REQUEST_SECURITY [DEVICE ID 1]
+[00:00:24.981,689] <dbg> ble_manager: ble_cmd_execute: Executing BLE command type BLE_CMD_REQUEST_SECURITY [DEVICE ID 1]
+[00:00:24.981,750] <dbg> ble_manager: ble_cmd_execute: BLE command initiated successfully: type=BLE_CMD_REQUEST_SECURITY [DEVICE ID 1]
+[00:00:24.981,781] <dbg> ble_manager: ble_process_next_command: Command waiting for completion: type=BLE_CMD_REQUEST_SECURITY [DEVICE ID 1]
+[00:00:24.981,811] <dbg> ble_manager: security_request_handler: Requesting security [DEVICE ID 1]
+[00:00:24.981,933] <dbg> ble_manager: security_request_handler: Security request initiated [DEVICE ID 1]
+[00:00:25.607,421] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:25.607,421] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 1
+[00:00:25.607,482] <dbg> ble_manager: security_changed_cb: Security changed: CC:89:6C:EE:40:F3 (public) level 2 [DEVICE ID 1]
+[00:00:25.607,482] <dbg> ble_manager: security_changed_cb: Encryption established at level 2 [DEVICE ID 1]
+[00:00:25.607,513] <dbg> ble_manager: security_changed_cb: Bonded device - encryption established [DEVICE ID 1]
+[00:00:25.607,574] <dbg> devices_manager: devices_manager_set_device_state: Device ID 1 state changed from BONDED to READY
+[00:00:25.607,574] <dbg> app_controller: app_controller_notify_device_ready: Notifying device ready: device_id=1
+[00:00:25.607,696] <dbg> ble_manager: ble_cmd_complete: BLE command completed successfully: type=BLE_CMD_REQUEST_SECURITY [DEVICE ID 1]
+[00:00:25.607,727] <dbg> ble_manager: ble_process_next_command: No BLE commands in queue [DEVICE ID 1]
+[00:00:25.607,879] <wrn> bt_l2cap: Ignoring data for unknown channel ID 0x002a
+[00:00:25.607,971] <inf> app_controller: [DEVICE ID 1] ready after trusted bond, discovering services
+[00:00:25.608,001] <dbg> ble_manager: ble_cmd_enqueue: BLE command enqueued, type: BLE_CMD_BAS_DISCOVER [DEVICE ID 1]
+[00:00:25.608,551] <dbg> ble_manager: ble_cmd_execute: Executing BLE command type BLE_CMD_BAS_DISCOVER [DEVICE ID 1]
+[00:00:25.608,551] <dbg> battery_reader: battery_discover: Starting Battery Service discovery [DEVICE ID 1]
+[00:00:25.608,795] <dbg> ble_manager: ble_cmd_execute: BLE command initiated successfully: type=BLE_CMD_BAS_DISCOVER [DEVICE ID 1]
+[00:00:25.608,856] <dbg> ble_manager: ble_process_next_command: Command waiting for completion: type=BLE_CMD_BAS_DISCOVER [DEVICE ID 1]
+[00:00:25.757,507] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:25.757,537] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 1
+[00:00:25.757,537] <dbg> battery_reader: discover_service_cb: Found Battery Service at handle 0x011E-0x0121 [DEVICE ID 1]
+[00:00:25.757,568] <dbg> battery_reader: discover_service_cb: Discover characteristics within Battery Service [DEVICE ID 1]
+[00:00:25.857,543] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:25.857,543] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 1
+[00:00:25.857,574] <dbg> battery_reader: discover_char_cb: [ATTRIBUTE] handle 0x011F [DEVICE ID 1]
+[00:00:25.857,574] <dbg> battery_reader: discover_char_cb: Found Battery Level characteristic at handle 0x0120 (properties 0x12) [DEVICE ID 1]
+[00:00:25.957,519] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:25.957,519] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 1
+[00:00:25.957,550] <dbg> battery_reader: discover_char_cb: Discovery complete for type 3 [DEVICE ID 1]
+[00:00:25.957,550] <dbg> battery_reader: discover_char_cb: Battery Service discovery complete (handle: 0x0120, CCC: 0x0000) [DEVICE ID 1]
+[00:00:25.957,580] <inf> app_controller: Notifying BAS discovered: device_id=1
+[00:00:25.957,641] <dbg> ble_manager: ble_cmd_complete: BLE command completed successfully: type=BLE_CMD_BAS_DISCOVER [DEVICE ID 1]
+[00:00:25.957,641] <dbg> ble_manager: ble_process_next_command: No BLE commands in queue [DEVICE ID 1]
+[00:00:25.957,733] <inf> app_controller: BAS discovered for device 1, reading level
+[00:00:25.957,794] <dbg> ble_manager: ble_cmd_enqueue: BLE command enqueued, type: BLE_CMD_BAS_READ_LEVEL [DEVICE ID 1]
+[00:00:25.957,855] <dbg> ble_manager: ble_cmd_enqueue: BLE command enqueued, type: BLE_CMD_VCP_DISCOVER [DEVICE ID 1]
+[00:00:25.957,916] <dbg> ble_manager: ble_cmd_execute: Executing BLE command type BLE_CMD_BAS_READ_LEVEL [DEVICE ID 1]
+[00:00:25.957,946] <dbg> battery_reader: battery_read_level: Reading battery level from handle 0x0120 [DEVICE ID 1]
+[00:00:25.958,190] <dbg> ble_manager: ble_cmd_execute: BLE command initiated successfully: type=BLE_CMD_BAS_READ_LEVEL [DEVICE ID 1]
+[00:00:25.958,221] <dbg> ble_manager: ble_process_next_command: Command waiting for completion: type=BLE_CMD_BAS_READ_LEVEL [DEVICE ID 1]
+[00:00:26.107,482] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:26.107,513] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 1
+[00:00:26.107,543] <inf> battery_reader: Battery level read: 80% [DEVICE ID 1]
+[00:00:26.107,574] <dbg> ble_manager: ble_cmd_complete: BLE command completed successfully: type=BLE_CMD_BAS_READ_LEVEL [DEVICE ID 1]
+[00:00:26.107,635] <dbg> ble_manager: ble_cmd_execute: Executing BLE command type BLE_CMD_VCP_DISCOVER [DEVICE ID 1]
+[00:00:26.107,635] <dbg> vcp_controller: vcp_controller_reset: VCP controller state reset [DEVICE ID 1]
+[00:00:26.107,818] <dbg> ble_manager: ble_cmd_execute: BLE command initiated successfully: type=BLE_CMD_VCP_DISCOVER [DEVICE ID 1]
+[00:00:26.107,849] <dbg> ble_manager: ble_process_next_command: Command waiting for completion: type=BLE_CMD_VCP_DISCOVER [DEVICE ID 1]
+[00:00:26.657,470] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:26.657,501] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 1
+[00:00:26.657,501] <inf> vcp_controller: VCP discovery complete [DEVICE ID 1]
+[00:00:26.657,501] <inf> app_controller: Notifying VCP discovered: device_id=1
+[00:00:26.657,562] <dbg> ble_manager: ble_cmd_complete: BLE command completed successfully: type=BLE_CMD_VCP_DISCOVER [DEVICE ID 1]
+[00:00:26.657,592] <dbg> ble_manager: ble_process_next_command: No BLE commands in queue [DEVICE ID 1]
+[00:00:26.657,745] <inf> app_controller: VCP discovered for device 1
+[00:00:26.657,806] <dbg> has_controller: has_controller_reset: HAS controller state reset [DEVICE ID 1]
+[00:00:26.657,836] <dbg> app_controller: app_controller_thread: All bonded devices managed, entering idle state
+[00:00:29.815,551] <wrn> main: Button 3 pressed - Pairing!
+[00:00:29.815,582] <dbg> app_controller: app_controller_notify_pair_button_pressed: Notifying pair button pressed
+[00:00:29.815,612] <dbg> app_controller: app_controller_thread: SM_IDLE: Pair button pressed, clearing bonds and starting first time use procedure
+[00:00:29.815,643] <wrn> devices_manager: Clearing all bonds...
+[00:00:29.821,319] <dbg> devices_manager: devices_manager_clear_all_bonds: Unpaired bonded device 0
+[00:00:29.830,535] <dbg> devices_manager: devices_manager_clear_all_bonds: Unpaired bonded device 1
+[00:00:29.830,535] <inf> devices_manager: All bonds cleared
+[00:00:29.830,566] <dbg> app_controller: app_controller_notify_bonds_cleared: Notifying bonds cleared
+[00:00:29.830,627] <dbg> devices_manager: devices_manager_set_device_state: Device ID 0 state changed from READY to DISCONNECTING
+[00:00:29.830,657] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:29.830,688] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 0
+[00:00:29.830,688] <inf> ble_manager: Disconnecting connection [DEVICE ID 0]
+[00:00:29.856,292] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:29.856,323] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 0
+[00:00:29.856,414] <inf> ble_manager: Disconnected from CC:89:6C:EE:41:04 (public) with (reason 0x16) [DEVICE ID 0]
+[00:00:29.856,475] <dbg> vcp_controller: vcp_controller_reset: VCP controller state reset [DEVICE ID 0]
+[00:00:29.856,506] <dbg> battery_reader: battery_reader_reset: Battery reader state reset [DEVICE ID 0]
+[00:00:29.856,567] <dbg> has_controller: has_controller_reset: HAS controller state reset [DEVICE ID 0]
+[00:00:29.856,567] <inf> ble_manager: Intentional disconnection completed [DEVICE ID 0]
+[00:00:29.856,597] <dbg> app_controller: app_controller_notify_device_disconnected: Notifying device disconnected: device_id=0
+[00:00:29.856,658] <dbg> devices_manager: devices_manager_set_device_state: Device ID 0 state changed from DISCONNECTING to DISCONNECTED
+[00:00:29.856,811] <dbg> devices_manager: devices_manager_set_device_state: Device ID 1 state changed from READY to DISCONNECTING
+[00:00:29.856,811] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:29.856,842] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 1
+[00:00:29.856,842] <inf> ble_manager: Disconnecting connection [DEVICE ID 1]
+[00:00:29.856,872] <err> app_controller: Device 1 not disconnected before clearing bonds as expected, current state: 1
+[00:00:29.856,872] <dbg> app_controller: app_controller_thread: SM_FIRST_TIME_USE: Starting first time use procedure
+[00:00:29.856,903] <inf> devices_manager: Scanned devices list cleared
+[00:00:29.857,391] <inf> ble_manager: Scanning for HIs
+[00:00:29.858,032] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Getting device context by connection
+[00:00:29.858,062] <dbg> devices_manager: devices_manager_get_device_context_by_conn: Found matching device context for device ID 1
+[00:00:29.858,154] <inf> ble_manager: Disconnected from CC:89:6C:EE:40:F3 (public) with (reason 0x16) [DEVICE ID 1]
+[00:00:29.858,154] <dbg> vcp_controller: vcp_controller_reset: VCP controller state reset [DEVICE ID 1]
+[00:00:29.858,184] <dbg> battery_reader: battery_reader_reset: Battery reader state reset [DEVICE ID 1]
+[00:00:29.858,184] <inf> ble_manager: Intentional disconnection completed [DEVICE ID 1]
+[00:00:29.858,215] <dbg> app_controller: app_controller_notify_device_disconnected: Notifying device disconnected: device_id=1
+[00:00:29.858,276] <dbg> devices_manager: devices_manager_set_device_state: Device ID 1 state changed from DISCONNECTING to DISCONNECTED
+[00:00:29.858,367] <err> app_controller: Unexpected event 4 in SM_FIRST_TIME_USE (expected EVENT_SCAN_COMPLETE)
+[00:00:29.952,239] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:00:29.952,728] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:29.952,941] <inf> devices_manager: Added scanned device 1: 6D:D3:8D:AD:80:0A (random) (RSSI: -31)
+[00:00:29.953,063] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:30.012,817] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -30 dBm, EXT_AD len 61
+[00:00:30.013,305] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:30.013,549] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:30.092,956] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -31 dBm, EXT_AD len 61
+[00:00:30.093,444] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:30.093,658] <inf> devices_manager: Added scanned device 2: 50:21:B2:4F:D5:B3 (random) (RSSI: -31)
+[00:00:30.093,780] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:30.153,778] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -32 dBm, EXT_AD len 61
+[00:00:30.154,266] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:30.154,510] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:30.197,784] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -31 dBm, EXT_AD len 61
+[00:00:30.198,272] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:30.198,486] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:30.260,894] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:00:30.261,383] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:30.261,627] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:30.391,815] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -35 dBm, EXT_AD len 61
+[00:00:30.392,303] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:30.392,547] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:30.451,904] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:30.452,362] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:30.452,606] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:30.638,061] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:00:30.638,549] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:30.638,793] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:30.762,176] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:00:30.762,664] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:30.762,908] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:30.885,131] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:00:30.885,620] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:30.885,986] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:30.895,935] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -35 dBm, EXT_AD len 61
+[00:00:30.896,453] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:30.896,697] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:30.956,420] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:00:30.957,000] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:30.957,244] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:31.012,542] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -37 dBm, EXT_AD len 61
+[00:00:31.013,031] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:31.013,275] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:31.134,399] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -34 dBm, EXT_AD len 61
+[00:00:31.134,887] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:31.135,131] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:31.200,195] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -43 dBm, EXT_AD len 61
+[00:00:31.200,683] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:31.200,927] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:31.261,260] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:00:31.261,749] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:31.261,962] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:31.379,486] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -32 dBm, EXT_AD len 61
+[00:00:31.379,974] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:31.380,218] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:31.502,441] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -39 dBm, EXT_AD len 61
+[00:00:31.502,929] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:31.503,173] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:31.633,728] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -40 dBm, EXT_AD len 61
+[00:00:31.634,216] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:31.634,460] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:31.697,601] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:00:31.698,089] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:31.698,333] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:31.760,925] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -36 dBm, EXT_AD len 61
+[00:00:31.761,444] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:31.761,688] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:31.819,702] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -35 dBm, EXT_AD len 61
+[00:00:31.820,190] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:31.820,434] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:32.006,683] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -36 dBm, EXT_AD len 61
+[00:00:32.007,263] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:32.007,507] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:32.072,174] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:00:32.072,662] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:32.072,906] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:32.127,593] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -36 dBm, EXT_AD len 61
+[00:00:32.128,082] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:32.128,387] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:32.191,101] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 6D:D3:8D:AD:80:0A (random), RSSI -33 dBm, EXT_AD len 61
+[00:00:32.191,619] <inf> ble_manager: Found GN Hearing HI service UUID from 6D:D3:8D:AD:80:0A (random)
+[00:00:32.191,833] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 6D:D3:8D:AD:80:0A (random): HARC HI
+[00:00:32.251,800] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -39 dBm, EXT_AD len 61
+[00:00:32.252,319] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:32.252,593] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:32.309,234] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -39 dBm, EXT_AD len 61
+[00:00:32.309,722] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:32.309,967] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI
+[00:00:32.370,971] <dbg> ble_manager: advertisement_found_cb: Received extended adv from 50:21:B2:4F:D5:B3 (random), RSSI -38 dBm, EXT_AD len 61
+[00:00:32.371,459] <inf> ble_manager: Found GN Hearing HI service UUID from 50:21:B2:4F:D5:B3 (random)
+[00:00:32.371,704] <dbg> devices_manager: devices_manager_update_scanned_device_name: Updated name for 50:21:B2:4F:D5:B3 (random): HARC HI

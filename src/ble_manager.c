@@ -10,9 +10,8 @@
 LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_DBG);
 
 static struct bond_collection *bonded_devices;
-static struct k_work_delayable auto_connect_work[2];
-static struct k_work_delayable auto_connect_timeout_work[2];
 static struct k_work_delayable security_request_work[2];
+static struct k_work_delayable connect_work[2];
 
 /* BLE Command queue state */
 static sys_slist_t ble_cmd_queue[2];
@@ -20,7 +19,6 @@ static struct k_mutex ble_queue_mutex[2];
 static struct k_sem ble_cmd_sem[2];
 static struct k_work_delayable ble_cmd_timeout_work[2];
 static bool ble_cmd_in_progress[2] = {false, false};
-// static bool queue_is_active[2] = {false, false};
 
 /* Memory pool for BLE commands */
 K_MEM_SLAB_DEFINE(ble_cmd_slab_0, sizeof(struct ble_cmd), BLE_CMD_QUEUE_SIZE, 4);
@@ -29,6 +27,7 @@ K_MEM_SLAB_DEFINE(ble_cmd_slab_1, sizeof(struct ble_cmd), BLE_CMD_QUEUE_SIZE, 4)
 /* Forward declarations */
 static void ble_process_next_command(uint8_t queue_id);
 static void ble_cmd_timeout_handler(struct k_work *work);
+static void connect_work_handler(struct k_work *work);
 // static bool is_bonded_device(const bt_addr_le_t *addr);
 static char *command_type_to_string(enum ble_cmd_type type);
 
@@ -134,7 +133,7 @@ static void security_request_handler(struct k_work *work)
 
 	if (ctx->state == CONN_STATE_CONNECTED)
 	{
-		ctx->state = CONN_STATE_PAIRING;
+		devices_manager_set_device_state(ctx, CONN_STATE_PAIRING);
 	}
 }
 
@@ -146,22 +145,19 @@ void pairing_complete(struct bt_conn *conn, bool bonded)
 	if (!bonded)
 	{
 		LOG_ERR("Pairing did not result in bonding! [DEVICE ID %d]", ctx->device_id);
-		ctx->state = CONN_STATE_DISCONNECTED;
+		devices_manager_set_device_state(ctx, CONN_STATE_DISCONNECTED);
 		return;
 	}
 
-	ctx->state = CONN_STATE_PAIRED;
+	devices_manager_set_device_state(ctx, CONN_STATE_PAIRED);
 
 	if (ctx->info.is_new_device)
 	{
-		LOG_INF("New device paired successfully - saving bond [DEVICE ID %d]",
-				ctx->device_id);
+		LOG_INF("New device paired successfully - saving bond [DEVICE ID %d]", ctx->device_id);
+
 		// Save the bond
-		if (IS_ENABLED(CONFIG_SETTINGS))
-		{
-			LOG_DBG("Saving bond information to flash [DEVICE ID %d]", ctx->device_id);
-			settings_save();
-		}
+		LOG_DBG("Saving bond information to flash [DEVICE ID %d]", ctx->device_id);
+		settings_save();
 
 		devices_manager_update_bonded_devices_collection();
 		devices_manager_get_bonded_devices_collection(bonded_devices);
@@ -237,7 +233,7 @@ void ble_manager_establish_trusted_bond(uint8_t device_id)
 {
 	struct device_context *ctx = &device_ctx[device_id];
 	LOG_INF("Establishing trusted bond with device [DEVICE ID %d]", device_id);
-	ctx->state = CONN_STATE_BONDED;
+	devices_manager_set_device_state(ctx, CONN_STATE_TRUSTING);
 
 	int err = ble_manager_disconnect_device(ctx->conn);
 	if (err)
@@ -266,16 +262,16 @@ int ble_manager_disconnect_device(struct bt_conn *conn)
 	int err = bt_conn_disconnect(conn, BT_HCI_ERR_REMOTE_USER_TERM_CONN);
 	if (err != 0)
 	{
-		LOG_WRN("Failed to initiate disconnection [DEVICE ID %d]", ctx->device_id);
 		if (err == -ENOTCONN)
 		{
 			LOG_DBG("Device already disconnected [DEVICE ID %d]", ctx->device_id);
 			return 1;
 		}
+
+		LOG_WRN("Failed to initiate disconnection [DEVICE ID %d]", ctx->device_id);
 		return err;
 	}
 
-	// bt_conn_unref(conn);
 	return 0;
 }
 
@@ -291,29 +287,22 @@ static void connected_cb(struct bt_conn *conn, uint8_t err)
 	if (err)
 	{
 		LOG_ERR("Connection failed (err 0x%02X)", err);
-		ctx->state = CONN_STATE_DISCONNECTED;
-
-		// Cancel auto-connect if it was active
-		bt_conn_create_auto_stop();
-		k_work_cancel_delayable(&auto_connect_timeout_work[ctx->device_id]);
+		devices_manager_set_device_state(ctx, CONN_STATE_DISCONNECTED);
 		return;
 	}
-
-	// Cancel the timeout since we connected successfully
-	k_work_cancel_delayable(&auto_connect_timeout_work[ctx->device_id]);
 
 	const bt_addr_le_t *addr = bt_conn_get_dst(conn);
 	char addr_str[BT_ADDR_LE_STR_LEN];
 	bt_addr_le_to_str(addr, addr_str, sizeof(addr_str));
 
-	ctx->conn = bt_conn_ref(conn);
+	ctx->conn = conn;
 	bt_addr_le_copy(&ctx->info.addr, addr);
 
 	if (ctx->state != CONN_STATE_BONDED)
 	{
 		LOG_DBG("Connected to new device %s - expecting pairing [DEVICE ID %d]", addr_str,
 				ctx->device_id);
-		ctx->state = CONN_STATE_CONNECTED;
+		devices_manager_set_device_state(ctx, CONN_STATE_CONNECTED);
 	}
 	else
 	{
@@ -361,7 +350,7 @@ static void disconnected_cb(struct bt_conn *conn, uint8_t reason)
 	if (reason != BT_HCI_ERR_LOCALHOST_TERM_CONN && reason != BT_HCI_ERR_CONN_FAIL_TO_ESTAB)
 	{
 		LOG_WRN("Unintentional disconnection (reason 0x%02X) [DEVICE ID %d]", reason, ctx->device_id);
-		ctx->state = CONN_STATE_DISCONNECTED;
+		devices_manager_set_device_state(ctx, CONN_STATE_DISCONNECTED);
 		return;
 	}
 
@@ -380,20 +369,27 @@ static void disconnected_cb(struct bt_conn *conn, uint8_t reason)
 			return;
 		}
 
-		ble_manager_connect(ctx->device_id, &ctx->info.addr);
+		// ble_manager_connect(ctx->device_id, &ctx->info.addr);
+		k_work_schedule(&connect_work[ctx->device_id], K_MSEC(250));
 		return;
 	}
-	else if (ctx->state == CONN_STATE_BONDED)
+	else if (ctx->state == CONN_STATE_TRUSTING)
 	{
 		LOG_INF("Disconnected to establish trusted bond [DEVICE ID %d]", ctx->device_id);
 		LOG_DBG("Scheduling reconnection to establish bond [DEVICE ID %d]", ctx->device_id);
 		ble_manager_connect_to_bonded_device(ctx->device_id);
 		return;
 	}
+	else if (ctx->state == CONN_STATE_DISCONNECTING)
+	{
+		LOG_INF("Intentional disconnection completed [DEVICE ID %d]", ctx->device_id);
+		app_controller_notify_device_disconnected(ctx->device_id);
+		devices_manager_set_device_state(ctx, CONN_STATE_DISCONNECTED);
+	}
 	else
 	{
 		LOG_WRN("Disconnected unexpectedly, state = %d [DEVICE ID %d]", ctx->state, ctx->device_id);
-		ctx->state = CONN_STATE_DISCONNECTED;
+		devices_manager_set_device_state(ctx, CONN_STATE_DISCONNECTED);
 	}
 }
 
@@ -568,74 +564,8 @@ int ble_manager_connect_to_scanned_device(uint8_t device_id, uint8_t idx)
 	// Populate device info
 	bt_addr_le_copy(&ctx->info.addr, &scanned_device->addr);
 	ctx->info.is_new_device = true;
-	return ble_manager_connect(device_id, &scanned_device->addr);
-}
-
-static void auto_connect_timeout_handler(struct k_work *work)
-{
-	LOG_WRN("Auto-connect timeout - falling back to active scan");
-	LOG_DBG("Cancelling ongoing connection attempt");
-	int err = bt_conn_create_auto_stop();
-	if (err)
-	{
-		LOG_ERR("Failed to stop auto-connect (err %d)", err);
-	}
-}
-
-static void auto_connect_work_handler(struct k_work *work)
-{
-	struct device_context *ctx =
-		(work == &auto_connect_work[0].work) ? &device_ctx[0] : &device_ctx[1];
-
-	LOG_INF("Connecting to device [DEVICE ID %d]", ctx->device_id);
-
-	// Stop any existing auto-connect operation first
-	int err = bt_conn_create_auto_stop();
-	LOG_DBG("bt_conn_create_auto_stop returned: %d", err);
-	if (err && err != -EALREADY && err != -EINVAL) {
-		LOG_WRN("Failed to stop existing auto-connect (err %d)", err);
-	}
-
-	// Stop any active scanning
-	err = bt_le_scan_stop();
-	LOG_DBG("bt_le_scan_stop returned: %d", err);
-	if (err && err != -EALREADY) {
-		LOG_WRN("Failed to stop scan before auto-connect (err %d)", err);
-	}
-
-	// Small delay to ensure controller processes the stop command
-	k_sleep(K_MSEC(50));
-
-	LOG_DBG("Attempting bt_conn_le_create_auto");
-	err = bt_conn_le_create_auto(BT_CONN_LE_CREATE_CONN, BT_LE_CONN_PARAM_DEFAULT);
-	if (err)
-	{
-		LOG_ERR("Failed to set auto-connect (err %d)", err);
-		// LOG_DBG("Starting active scan for devices");
-		// ble_manager_start_scan_for_HIs();
-		return;
-	}
-
-	// Set a timeout to fall back to active scanning if auto-connect doesn't work
-	k_work_schedule(&auto_connect_timeout_work[ctx->device_id],
-					K_MSEC(BT_AUTO_CONNECT_TIMEOUT_MS));
-}
-
-/**
- * @brief Schedule auto-connect for a device
- *
- * @param device_id Device ID (0 or 1)
- * @return 0 on success, negative error code on failure
- */
-int schedule_auto_connect(uint8_t device_id)
-{
-	if (device_id > 1)
-	{
-		return -EINVAL;
-	}
-
-	LOG_DBG("Scheduling auto-connect [DEVICE ID %d]", device_id);
-	k_work_schedule(&auto_connect_work[device_id], K_MSEC(0));
+	// return ble_manager_connect(device_id, &scanned_device->addr);
+	k_work_schedule(&connect_work[ctx->device_id], K_MSEC(0));
 	return 0;
 }
 
@@ -655,12 +585,11 @@ int ble_manager_init(void)
 		return err;
 	}
 
-	LOG_DBG("Initializing connection works");
+	LOG_DBG("Initializing security & connection works");
 	for (ssize_t i = 0; i < 2; i++)
 	{
 		k_work_init_delayable(&security_request_work[i], security_request_handler);
-		k_work_init_delayable(&auto_connect_work[i], auto_connect_work_handler);
-		k_work_init_delayable(&auto_connect_timeout_work[i], auto_connect_timeout_handler);
+		k_work_init_delayable(&connect_work[i], connect_work_handler);
 	}
 
 	err = devices_manager_init();
@@ -686,6 +615,20 @@ int ble_manager_init(void)
 
 	LOG_INF("BLE manager and subsystems initialized");
 	return 0;
+}
+
+/* Reconnect work handler - performs the actual connection with delay */
+static void connect_work_handler(struct k_work *work)
+{
+	struct device_context *ctx =
+		(work == &connect_work[0].work) ? &device_ctx[0] : &device_ctx[1];
+
+	char addr_str[BT_ADDR_LE_STR_LEN];
+	bt_addr_le_to_str(&ctx->info.addr, addr_str, sizeof(addr_str));
+
+	LOG_DBG("Connect work executing for %s [DEVICE ID %d]", addr_str, ctx->device_id);
+
+	ble_manager_connect(ctx->device_id, &ctx->info.addr);
 }
 
 int ble_manager_connect(uint8_t device_id, const bt_addr_le_t *addr)
@@ -786,11 +729,12 @@ int ble_manager_connect_to_bonded_device(uint8_t device_id)
 	memset(ctx, 0, sizeof(struct device_context));
 	bt_addr_le_copy(&ctx->info.addr, &entry.addr);
 	ctx->device_id = device_id;
-	ctx->state = CONN_STATE_BONDED;
+	devices_manager_set_device_state(ctx, CONN_STATE_BONDED);
 	bt_addr_le_to_str(&ctx->info.addr, addr_str, sizeof(addr_str));
 	LOG_DBG("Set device context to connect to, addr=%s [DEVICE ID %d]", addr_str, device_id);
 
-	ble_manager_connect(ctx->device_id, &ctx->info.addr);
+	// ble_manager_connect(ctx->device_id, &ctx->info.addr);
+	k_work_schedule(&connect_work[ctx->device_id], K_MSEC(250));
 
 	return 0;
 }

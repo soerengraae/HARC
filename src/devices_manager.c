@@ -105,20 +105,70 @@ void devices_manager_clear_all_bonds(void)
 {
 	LOG_WRN("Clearing all bonds...");
 
-	// Clear connections if any exist
-	if (device_ctx[0].conn) {
-		LOG_INF("Disconnecting before clearing bonds...");
-		ble_manager_disconnect_device(device_ctx[0].conn);
+	// // Clear connections if any exist
+	// if (device_ctx[0].conn) {
+	// 	LOG_INF("Disconnecting before clearing bonds...");
+	// 	device_ctx[0].state = CONN_STATE_DISCONNECTING;
+	// 	ble_manager_disconnect_device(device_ctx[0].conn);
+	// }
+
+	// if (device_ctx[1].conn) {
+	// 	LOG_INF("Disconnecting before clearing bonds...");
+	// 	device_ctx[0].state = CONN_STATE_DISCONNECTING;
+	// 	ble_manager_disconnect_device(device_ctx[1].conn);
+	// }
+
+	for (ssize_t i = 0; i < bonded_devices->count; i++) {
+		int err = bt_unpair(BT_ID_DEFAULT, &bonded_devices->devices[i].addr);
+		if (err != 0) {
+			LOG_ERR("Failed to unpair device %d (err %d)", i, err);
+		} else {
+			LOG_DBG("Unpaired bonded device %d", i);
+		}
 	}
 
-	if (device_ctx[1].conn) {
-		LOG_INF("Disconnecting before clearing bonds...");
-		ble_manager_disconnect_device(device_ctx[1].conn);
-	}
+	settings_save();
 
+	// Erase bonds from RAM
 	memset(bonded_devices, 0, sizeof(struct bond_collection));
 
 	LOG_INF("All bonds cleared");
+	app_controller_notify_bonds_cleared();
+}
+
+char *device_state_to_str(enum connection_state state)
+{
+	switch (state) {
+	case CONN_STATE_DISCONNECTED:
+		return "DISCONNECTED";
+	case CONN_STATE_DISCONNECTING:
+		return "DISCONNECTING";
+	case CONN_STATE_CONNECTED:
+		return "CONNECTED";
+	case CONN_STATE_PAIRING:
+		return "PAIRING";
+	case CONN_STATE_PAIRED:
+		return "PAIRED";
+	case CONN_STATE_BONDED:
+		return "BONDED";
+	case CONN_STATE_READY:
+		return "READY";
+	case CONN_STATE_TRUSTING:
+		return "TRUSTING";
+	default:
+		return "UNKNOWN";
+	}
+}
+
+void devices_manager_set_device_state(struct device_context *ctx, enum connection_state state)
+{
+	if (!ctx) {
+		LOG_ERR("Cannot set device state - context is NULL");
+		return;
+	}
+
+	LOG_DBG("Device ID %d state changed from %s to %s", ctx->device_id, device_state_to_str(ctx->state), device_state_to_str(state));
+	ctx->state = state;
 }
 
 void devices_manager_update_bonded_devices_collection(void)
@@ -158,10 +208,12 @@ int devices_manager_init(void)
 struct device_context *devices_manager_get_device_context_by_conn(struct bt_conn *conn)
 {
   LOG_DBG("Getting device context by connection");
-	if (bt_addr_le_cmp(bt_conn_get_dst(device_ctx[0].conn), bt_conn_get_dst(conn)) == 0) {
+	if (device_ctx[0].conn && bt_addr_le_cmp(bt_conn_get_dst(device_ctx[0].conn), bt_conn_get_dst(conn)) == 0) {
+		LOG_DBG("Found matching device context for device ID 0");
 		return &device_ctx[0];
-	} else if (bt_addr_le_cmp(bt_conn_get_dst(device_ctx[1].conn), bt_conn_get_dst(conn)) ==
+	} else if (device_ctx[1].conn && bt_addr_le_cmp(bt_conn_get_dst(device_ctx[1].conn), bt_conn_get_dst(conn)) ==
 		   0) {
+		LOG_DBG("Found matching device context for device ID 1");
 		return &device_ctx[1];
 	} else {
 		LOG_DBG("No device with matching connection found");
