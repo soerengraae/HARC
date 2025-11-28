@@ -2,6 +2,7 @@
 #include "devices_manager.h"
 #include "app_controller.h"
 #include "ble_manager.h"
+#include "display_manager.h"
 
 LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_DBG);
 
@@ -75,8 +76,8 @@ static void vcp_state_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err, uint8_t volu
         LOG_DBG("VCP state notification: Volume: %u%%, Mute: %u [DEVICE ID %d]", (uint8_t)(volume_percent), ctx->vcp_ctlr.state.mute, ctx->device_id);
     }
 
-    // /* Update OLED display with current volume state (via work queue) */
-    // main_update_volume_display(volume, mute);
+    /* Update display with current volume state */
+    display_manager_update_volume(ctx->device_id, volume, mute);
 
     // Mark as complete only if this was a READ_STATE command
     if (ctx->current_ble_cmd && ctx->current_ble_cmd->type == BLE_CMD_VCP_READ_STATE) {

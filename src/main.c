@@ -10,6 +10,7 @@
 #include "battery_reader.h"
 #include "app_controller.h"
 #include "has_controller.h"
+#include "display_manager.h"
 
 LOG_MODULE_REGISTER(main, LOG_LEVEL_INF);
 
@@ -175,12 +176,13 @@ int main(void)
 		return err;
 	}
 
-    // LOG_INF("Starting display initialization...");
-    // err = display_manager_init();
-    // if (err) {
-    //     LOG_WRN("Display manager init failed (err %d) - continuing without display", err);
-    // }
-    // LOG_INF("Display initialization completed");
+    LOG_INF("Starting display initialization...");
+    err = display_manager_init();
+    if (err) {
+        LOG_WRN("Display manager init failed (err %d) - continuing without display", err);
+    }
+    LOG_INF("Display initialization completed");
+
     err = has_controller_init();
     if (err) {
         LOG_ERR("HAS controller init failed (err %d)", err);
@@ -222,7 +224,7 @@ int main(void)
         k_sleep(K_SECONDS(1));
 
         // Update display every second
-        // display_refresh_periodic();
+        display_manager_update();
     }
 
     return 0;

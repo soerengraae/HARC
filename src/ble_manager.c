@@ -15,7 +15,9 @@ static struct k_work_delayable connect_work[2];
 /* BLE Command queue state */
 static sys_slist_t ble_cmd_queue[2];
 static struct k_mutex ble_queue_mutex[2];
-static struct k_sem ble_cmd_sem[2];
+K_SEM_DEFINE(ble_cmd_sem_0, 0, 1);
+K_SEM_DEFINE(ble_cmd_sem_1, 0, 1);
+static struct k_sem *ble_cmd_sem[2] = {&ble_cmd_sem_0, &ble_cmd_sem_1};
 static struct k_work_delayable ble_cmd_timeout_work[2];
 static bool ble_cmd_in_progress[2] = {false, false};
 
@@ -37,7 +39,7 @@ static int ble_queues_init(void)
 	{
 		sys_slist_init(&ble_cmd_queue[i]);
 		k_mutex_init(&ble_queue_mutex[i]);
-		k_sem_init(&ble_cmd_sem[i], 0, 1);
+		/* Semaphores are now statically initialized with K_SEM_DEFINE */
 		k_work_init_delayable(&ble_cmd_timeout_work[i], ble_cmd_timeout_handler);
 		device_ctx[i].current_ble_cmd = NULL;
 	}
@@ -79,6 +81,12 @@ static int ble_cmd_enqueue(struct ble_cmd *cmd, bool high_priority)
 		return -EINVAL;
 	}
 
+	if (!device_ctx)
+	{
+		LOG_ERR("Cannot enqueue command - device_ctx not initialized");
+		return -EINVAL;
+	}
+
 	k_mutex_lock(&ble_queue_mutex[cmd->device_id], K_FOREVER);
 	if (high_priority)
 	{
@@ -91,10 +99,11 @@ static int ble_cmd_enqueue(struct ble_cmd *cmd, bool high_priority)
 	k_mutex_unlock(&ble_queue_mutex[cmd->device_id]);
 
 	// Signal the processing thread
-	k_sem_give(&ble_cmd_sem[cmd->device_id]);
+	k_sem_give(ble_cmd_sem[cmd->device_id]);
 
-	LOG_DBG("%sBLE command enqueued, type: %s [DEVICE ID %d]",
+	LOG_DBG("%sBLE command enqueued, type: %s, current_cmd=%p, sem given [DEVICE ID %d]",
 			high_priority ? "High priority " : "", command_type_to_string(cmd->type),
+			(void *)device_ctx[cmd->device_id].current_ble_cmd,
 			cmd->device_id);
 	return 0;
 }
@@ -1342,14 +1351,28 @@ static void ble_cmd_thread_0(void)
 	while (1)
 	{
 		// Wait for a command to be enqueued
-		k_sem_take(&ble_cmd_sem[0], K_FOREVER);
+		k_sem_take(ble_cmd_sem[0], K_FOREVER);
+
+		// Don't process if device_ctx isn't initialized yet
+		if (!device_ctx)
+		{
+			LOG_WRN("Thread 0 woke but device_ctx not initialized yet");
+			continue;
+		}
+
+		LOG_DBG("Thread 0 woke up, current_cmd=%p", (void *)device_ctx[0].current_ble_cmd);
 
 		// Process the next command only if nothing is in progress
 		// If a command is already in progress, it will call ble_process_next_command()
 		// when it completes via ble_cmd_complete()
 		if (!device_ctx[0].current_ble_cmd /*&& queue_is_active[0]*/)
 		{
+			LOG_DBG("Thread 0 processing next command");
 			ble_process_next_command(0);
+		}
+		else
+		{
+			LOG_DBG("Thread 0 skipping - command already in progress");
 		}
 	}
 }
@@ -1361,14 +1384,28 @@ static void ble_cmd_thread_1(void)
 	while (1)
 	{
 		// Wait for a command to be enqueued
-		k_sem_take(&ble_cmd_sem[1], K_FOREVER);
+		k_sem_take(ble_cmd_sem[1], K_FOREVER);
+
+		// Don't process if device_ctx isn't initialized yet
+		if (!device_ctx)
+		{
+			LOG_WRN("Thread 1 woke but device_ctx not initialized yet");
+			continue;
+		}
+
+		LOG_DBG("Thread 1 woke up, current_cmd=%p", (void *)device_ctx[1].current_ble_cmd);
 
 		// Process the next command only if nothing is in progress
 		// If a command is already in progress, it will call ble_process_next_command_1()
 		// when it completes via ble_cmd_complete()
 		if (!device_ctx[1].current_ble_cmd /*&& queue_is_active[1]*/)
 		{
+			LOG_DBG("Thread 1 processing next command");
 			ble_process_next_command(1);
+		}
+		else
+		{
+			LOG_DBG("Thread 1 skipping - command already in progress");
 		}
 	}
 }

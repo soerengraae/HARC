@@ -2,6 +2,7 @@
 #include "devices_manager.h"
 #include "app_controller.h"
 #include "csip_coordinator.h"
+#include "display_manager.h"
 
 LOG_MODULE_REGISTER(devices_manager, LOG_LEVEL_DBG);
 
@@ -169,6 +170,9 @@ void devices_manager_set_device_state(struct device_context *ctx, enum connectio
 
 	LOG_DBG("Device ID %d state changed from %s to %s", ctx->device_id, device_state_to_str(ctx->state), device_state_to_str(state));
 	ctx->state = state;
+
+	/* Update display with new connection state */
+	display_manager_update_connection_state(ctx->device_id, device_state_to_str(state));
 }
 
 void devices_manager_update_bonded_devices_collection(void)

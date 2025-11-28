@@ -1,6 +1,7 @@
 #include "battery_reader.h"
 #include "devices_manager.h"
 #include "app_controller.h"
+#include "display_manager.h"
 
 LOG_MODULE_REGISTER(battery_reader, LOG_LEVEL_DBG);
 
@@ -35,6 +36,9 @@ static uint8_t battery_read_cb(struct bt_conn *conn, uint8_t err,
 
 	ctx->bas_ctlr.battery_level = *(uint8_t *)data;
 	LOG_INF("Battery level read: %u%% [DEVICE ID %d]", ctx->bas_ctlr.battery_level, ctx->device_id);
+
+	/* Update display with battery level */
+	display_manager_update_battery(ctx->device_id, ctx->bas_ctlr.battery_level);
 
 	ble_cmd_complete(ctx->device_id, 0);
 
