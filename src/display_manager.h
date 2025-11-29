@@ -46,6 +46,15 @@ void display_manager_update_volume(uint8_t device_id, uint8_t volume, uint8_t mu
 void display_manager_update_battery(uint8_t device_id, uint8_t battery_level);
 
 /**
+ * @brief Update active preset on display
+ *
+ * @param device_id Device ID (0 or 1)
+ * @param preset_index Active preset index
+ * @param preset_name Active preset name
+ */
+void display_manager_update_preset(uint8_t device_id, uint8_t preset_index, const char *preset_name);
+
+/**
  * @brief Clear the display
  */
 void display_manager_clear(void);

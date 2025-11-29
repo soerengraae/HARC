@@ -2,6 +2,7 @@
 #include "devices_manager.h"
 #include "ble_manager.h"
 #include "app_controller.h"
+#include "display_manager.h"
 
 LOG_MODULE_REGISTER(has_controller, LOG_LEVEL_DBG);
 
@@ -129,16 +130,19 @@ static void has_preset_switch_cb(struct bt_has *has, int err, uint8_t index)
         return;
     }
 
-    // ctx->has_ctlr.active_preset_index = index;
+    ctx->has_ctlr.active_preset_index = index;
 
     // Find preset name for better logging
     char *preset_name = "Unknown";
-    // for (int i = 0; i < ctx->has_ctlr.preset_count; i++) {
-    //     if (ctx->has_ctlr.presets[i].index == index) {
-    //         preset_name = ctx->has_ctlr.presets[i].name;
-    //         break;
-    //     }
-    // }
+    for (int i = 0; i < ctx->has_ctlr.preset_count; i++) {
+        if (ctx->has_ctlr.presets[i].index == index) {
+            preset_name = ctx->has_ctlr.presets[i].name;
+            break;
+        }
+    }
+
+    /* Update display with new preset */
+    display_manager_update_preset(ctx->device_id, index, preset_name);
 
     if (ctx->current_ble_cmd && ctx->current_ble_cmd->type) {
         LOG_DBG("ctx->current_ble_cmd->type=%d", ctx->current_ble_cmd->type);

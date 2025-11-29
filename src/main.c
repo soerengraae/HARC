@@ -222,9 +222,6 @@ int main(void)
 
     while (1) {
         k_sleep(K_SECONDS(1));
-
-        // Update display every second
-        display_manager_update();
     }
 
     return 0;
