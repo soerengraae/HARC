@@ -101,9 +101,8 @@ static int ble_cmd_enqueue(struct ble_cmd *cmd, bool high_priority)
 	// Signal the processing thread
 	k_sem_give(ble_cmd_sem[cmd->device_id]);
 
-	LOG_DBG("%sBLE command enqueued, type: %s, current_cmd=%p, sem given [DEVICE ID %d]",
+	LOG_DBG("%sBLE command enqueued, type: %s [DEVICE ID %d]",
 			high_priority ? "High priority " : "", command_type_to_string(cmd->type),
-			(void *)device_ctx[cmd->device_id].current_ble_cmd,
 			cmd->device_id);
 	return 0;
 }
@@ -248,7 +247,7 @@ void ble_manager_establish_trusted_bond(uint8_t device_id)
 	{
 		LOG_WRN("Failed to disconnect for bonding (err %d) [DEVICE ID %d]", err, device_id);
 
-		if (err == 1)
+		if (err == 1 || err == -EINVAL)
 		{
 			LOG_DBG("Scheduling connection to establish bond [DEVICE ID %d]",
 					ctx->device_id);
@@ -1034,11 +1033,27 @@ static void ble_process_next_command(uint8_t device_id)
 
 		if (err == -EBUSY)
 		{
-			LOG_WRN("Server was busy - skipping command: type=%s [DEVICE ID %d]",
-					command_type_to_string(ctx->current_ble_cmd->type), device_id);
-			ble_cmd_free(cmd);
-			ctx->current_ble_cmd = NULL;
-			ble_cmd_in_progress[ctx->device_id] = false;
+			LOG_WRN("Server was busy: type=%s [DEVICE ID %d]", command_type_to_string(ctx->current_ble_cmd->type), device_id);
+
+			// Re-enqueue the command at the front of the queue if VCP volume command
+			switch (ctx->current_ble_cmd->type)
+			{
+			case BLE_CMD_VCP_VOLUME_UP:
+			case BLE_CMD_VCP_VOLUME_DOWN:
+			case BLE_CMD_VCP_SET_VOLUME:
+			case BLE_CMD_VCP_MUTE:
+			case BLE_CMD_VCP_UNMUTE:
+				LOG_DBG("Re-enqueuing VCP volume command at front of queue [DEVICE ID %d]", device_id);
+				ble_cmd_enqueue(cmd, true);
+				break;
+
+			default:
+				LOG_WRN("Skipping command [DEVICE ID %d]", device_id);
+				ble_cmd_free(cmd);
+				ctx->current_ble_cmd = NULL;
+				ble_cmd_in_progress[ctx->device_id] = false;
+				break;
+			}
 		}
 
 		ble_process_next_command(ctx->device_id);
@@ -1346,7 +1361,7 @@ void ble_cmd_queue_reset(uint8_t device_id)
 /* Command processing thread */
 static void ble_cmd_thread_0(void)
 {
-	LOG_INF("BLE command thread 0 started");
+	LOG_INF("[DEVICE ID 0] BLE command thread started");
 
 	while (1)
 	{
@@ -1356,30 +1371,30 @@ static void ble_cmd_thread_0(void)
 		// Don't process if device_ctx isn't initialized yet
 		if (!device_ctx)
 		{
-			LOG_WRN("Thread 0 woke but device_ctx not initialized yet");
+			LOG_WRN("[DEVICE ID 0] BLE CMD thread woken but device_ctx not initialized yet");
 			continue;
 		}
 
-		LOG_DBG("Thread 0 woke up, current_cmd=%p", (void *)device_ctx[0].current_ble_cmd);
+		// LOG_DBG("[DEVICE ID 0] BLE CMD thread woken");
 
 		// Process the next command only if nothing is in progress
 		// If a command is already in progress, it will call ble_process_next_command()
 		// when it completes via ble_cmd_complete()
 		if (!device_ctx[0].current_ble_cmd /*&& queue_is_active[0]*/)
 		{
-			LOG_DBG("Thread 0 processing next command");
+			// LOG_DBG("[DEVICE ID 0] BLE CMD thread processing next command");
 			ble_process_next_command(0);
 		}
 		else
 		{
-			LOG_DBG("Thread 0 skipping - command already in progress");
+			// LOG_DBG("[DEVICE ID 0] BLE CMD thread skipping - command already in progress");
 		}
 	}
 }
 
 static void ble_cmd_thread_1(void)
 {
-	LOG_INF("BLE command thread 1 started");
+	LOG_INF("[DEVICE ID 1] BLE command thread started");
 
 	while (1)
 	{
@@ -1389,23 +1404,23 @@ static void ble_cmd_thread_1(void)
 		// Don't process if device_ctx isn't initialized yet
 		if (!device_ctx)
 		{
-			LOG_WRN("Thread 1 woke but device_ctx not initialized yet");
+			LOG_WRN("[DEVICE ID 1] BLE CMD thread woken but device_ctx not initialized yet");
 			continue;
 		}
 
-		LOG_DBG("Thread 1 woke up, current_cmd=%p", (void *)device_ctx[1].current_ble_cmd);
+		// LOG_DBG("[DEVICE ID 1] BLE CMD thread woken");
 
 		// Process the next command only if nothing is in progress
 		// If a command is already in progress, it will call ble_process_next_command_1()
 		// when it completes via ble_cmd_complete()
 		if (!device_ctx[1].current_ble_cmd /*&& queue_is_active[1]*/)
 		{
-			LOG_DBG("Thread 1 processing next command");
+			// LOG_DBG("[DEVICE ID 1] BLE CMD thread processing next command");
 			ble_process_next_command(1);
 		}
 		else
 		{
-			LOG_DBG("Thread 1 skipping - command already in progress");
+			// LOG_DBG("[DEVICE ID 1] BLE CMD thread skipping - command already in progress");
 		}
 	}
 }
