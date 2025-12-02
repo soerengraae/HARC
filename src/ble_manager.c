@@ -5,6 +5,7 @@
 #include "app_controller.h"
 #include "devices_manager.h"
 #include "has_controller.h"
+#include "display_manager.h"
 
 LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_DBG);
 
@@ -295,6 +296,7 @@ static void connected_cb(struct bt_conn *conn, uint8_t err)
 	{
 		LOG_ERR("Connection failed (err 0x%02X)", err);
 		devices_manager_set_device_state(ctx, CONN_STATE_DISCONNECTED);
+		display_manager_show_status("Connect failed");
 		return;
 	}
 
@@ -304,6 +306,9 @@ static void connected_cb(struct bt_conn *conn, uint8_t err)
 
 	ctx->conn = conn;
 	bt_addr_le_copy(&ctx->info.addr, addr);
+
+	/* Show connected status on display */
+	display_manager_show_status("Connected");
 
 	if (ctx->state != CONN_STATE_BONDED)
 	{
@@ -519,14 +524,18 @@ void ble_manager_start_scan_for_HIs(void)
 
 	// Clear any previous scanned devices
 	devices_manager_clear_scanned_devices();
-	
+
 	// bt_conn_unref(device_ctx->conn);
 	// device_ctx->conn = NULL;
+
+	/* Show searching indicator on display */
+	display_manager_show_status("Searching...");
 
 	err = bt_le_scan_start(BT_LE_SCAN_ACTIVE_CONTINUOUS, advertisement_found_cb);
 	if (err)
 	{
 		LOG_ERR("Scanning failed to start (err %d)", err);
+		display_manager_show_status("Scan failed");
 		return;
 	}
 
