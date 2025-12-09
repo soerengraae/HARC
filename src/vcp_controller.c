@@ -5,7 +5,10 @@
 #include "ble_manager.h"
 #include "display_manager.h"
 
-LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(vcp_controller, LOG_LEVEL_INF);
+
+/* Track whether handles were loaded from cache (per device) - skip re-storing if true */
+static bool handles_from_cache[CONFIG_BT_MAX_CONN];
 
 static struct device_context *get_device_context_by_vol_ctlr(struct bt_vcp_vol_ctlr *vol_ctlr);
 
@@ -13,6 +16,9 @@ int vcp_cmd_discover(uint8_t device_id)
 {
     struct device_context *ctx = devices_manager_get_device_context_by_id(device_id);
     vcp_controller_reset(device_id);
+
+    /* Reset cache flag - will be set if handles are successfully loaded from cache */
+    handles_from_cache[device_id] = false;
 
     /* Try to load cached handles first */
     struct bt_vcp_vol_ctlr_handles cached_handles;
@@ -23,6 +29,9 @@ int vcp_cmd_discover(uint8_t device_id)
         if (inject_err != 0) {
             LOG_WRN("Failed to inject cached VCP handles (err %d), proceeding with full discovery", inject_err);
             vcp_settings_clear_handles(&ctx->info.addr);
+        } else {
+            LOG_INF("Cached handles restored successfully");
+            handles_from_cache[device_id] = true;
         }
     }
 
@@ -135,13 +144,58 @@ static void vcp_discover_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err,
     ctx->vcp_ctlr.vol_ctlr = vol_ctlr;
     ctx->info.vcp_discovered = true;
 
-    /* Cache handles for future reconnections */
-    struct bt_vcp_vol_ctlr_handles handles;
-    int get_err = bt_vcp_vol_ctlr_get_handles(vol_ctlr, &handles);
-    if (get_err == 0) {
-        vcp_settings_store_handles(&ctx->info.addr, &handles);
+    /* Only extract and cache handles if they weren't loaded from cache.
+     * This avoids unnecessary stack usage from settings operations when
+     * handles are already in NVS. */
+    if (!handles_from_cache[ctx->device_id]) {
+        /* Cache handles for future reconnections */
+        struct bt_vcp_vol_ctlr_handles handles;
+        int get_err = bt_vcp_vol_ctlr_get_handles(vol_ctlr, &handles);
+        if (get_err == 0) {
+            /* Store handles for the current device */
+            vcp_settings_store_handles(&ctx->info.addr, &handles);
+
+            /* If this is a new device (initial pairing) and part of a CSIP set, also store handles
+             * for all other set members. Since all hearing aids in the set have identical firmware
+             * and GATT layout, we can reuse the same handles for all set members.
+             * Skip this on reconnection to avoid unnecessary work and potential stack issues. */
+            // if (ctx->info.is_new_device) {
+                struct bond_collection collection;
+                if (devices_manager_get_bonded_devices_collection(&collection) == 0) {
+                    struct bonded_device_entry current_entry;
+                    if (devices_manager_find_bonded_entry_by_addr(&ctx->info.addr, &current_entry) &&
+                        current_entry.is_set_member) {
+
+                    LOG_DBG("Current device is CSIP set member, caching VCP handles for all set members");
+
+                    for (uint8_t i = 0; i < collection.count; i++) {
+                        /* Skip the current device (already stored) */
+                        if (bt_addr_le_cmp(&collection.devices[i].addr, &ctx->info.addr) == 0) {
+                            continue;
+                        }
+
+                        /* Only store for devices in the same CSIP set */
+                        if (collection.devices[i].is_set_member &&
+                            memcmp(collection.devices[i].sirk, current_entry.sirk, CSIP_SIRK_SIZE) == 0) {
+
+                            int err = vcp_settings_store_handles(&collection.devices[i].addr, &handles);
+                            if (err == 0) {
+                                char addr_str[BT_ADDR_LE_STR_LEN];
+                                bt_addr_le_to_str(&collection.devices[i].addr, addr_str, sizeof(addr_str));
+                                LOG_INF("VCP handles also cached for set member: %s", addr_str);
+                            } else {
+                                LOG_WRN("Failed to cache VCP handles for set member (err %d)", err);
+                            }
+                        }
+                    }
+                }
+                }
+            // }
+        } else {
+            LOG_WRN("Failed to get VCP handles for caching (err %d)", get_err);
+        }
     } else {
-        LOG_WRN("Failed to get VCP handles for caching (err %d)", get_err);
+        LOG_DBG("Handles were loaded from cache, skipping re-storage");
     }
 
     // Mark discovery command as complete
@@ -263,6 +317,7 @@ void vcp_controller_reset(uint8_t device_id)
 
     ctx->info.vcp_discovered = false;
     ctx->vcp_ctlr.vol_ctlr = NULL;
+    handles_from_cache[device_id] = false;
 
     LOG_DBG("VCP controller state reset [DEVICE ID %d]", ctx->device_id);
 }

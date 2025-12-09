@@ -8,7 +8,7 @@
 #include "display_manager.h"
 #include "power_manager.h"
 
-LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_INF);
 
 static struct bond_collection *bonded_devices;
 static struct k_work_delayable security_request_work[2];
@@ -134,6 +134,12 @@ static void security_request_handler(struct k_work *work)
 	int err = bt_conn_set_security(device_ctx[device_id].conn, BT_SECURITY_WANTED);
 	if (err)
 	{
+		if (err == -EACCES) {
+			LOG_WRN("Security request already in progress [DEVICE ID %d]", device_id);
+			LOG_DBG("Re-enqueueing security request command [DEVICE ID %d]", device_id);
+			ble_cmd_request_security(ctx->device_id);
+		}
+
 		LOG_ERR("Failed to set security (err %d) [DEVICE ID %d]", err, device_id);
 		ble_cmd_complete(device_id, err);
 		return;
@@ -326,9 +332,9 @@ static void connected_cb(struct bt_conn *conn, uint8_t err)
 	{
 		LOG_INF("Connected to bonded (or bonding) device %s [DEVICE ID %d]", addr_str,
 				ctx->device_id);
+		app_controller_notify_device_connected(ctx->device_id);
 	}
 
-	// queue_is_active[ctx->device_id] = true;
 	ble_cmd_request_security(ctx->device_id);
 }
 
@@ -671,18 +677,18 @@ int ble_manager_connect(uint8_t device_id, const bt_addr_le_t *addr)
 		return -EINVAL;
 	}
 
-	LOG_DBG("Connecting to %s", addr_str);
+	LOG_DBG("Connecting to %s [DEVICE ID %d]", addr_str, device_id);
 
 	int err = bt_le_scan_stop();
 	if (err) {
-		printk("Failed to stop scan: %d\n", err);
+		LOG_DBG("Failed to stop scan: %d [DEVICE ID %d]", err, device_id);
 		return err;
 	}
 
 	err = bt_conn_le_create(addr, BT_CONN_LE_CREATE_CONN,
 		BT_LE_CONN_PARAM_DEFAULT, &ctx->conn);
 	if (err) {
-		printk("Failed to establish conn: %d\n", err);
+		LOG_DBG("Failed to establish conn: %d [DEVICE ID %d]\n", err, device_id);
 		return err;
 	}
 
@@ -993,12 +999,16 @@ void ble_cmd_complete(uint8_t device_id, int err)
 		{
 			if (err == 15)
 			{
-				// queue_is_active[ctx->device_id] = false;
 				LOG_ERR("VCP command failed due to insufficient authentication - "
 						"reconnecting [DEVICE ID %d]",
 						ctx->device_id);
 				ble_manager_disconnect_device(device_ctx[ctx->device_id].conn);
-				switch (ctx->current_ble_cmd->type)
+			} else if (err == 0x80) {
+				LOG_ERR("VCP command failed due to incorrect change_counter - reading state [DEVICE ID %d]", ctx->device_id);
+				ble_cmd_vcp_read_state(ctx->current_ble_cmd->device_id, true);
+			}
+
+			switch (ctx->current_ble_cmd->type)
 				{
 				case BLE_CMD_VCP_VOLUME_UP:
 					ble_cmd_vcp_volume_up(ctx->current_ble_cmd->device_id,
@@ -1029,13 +1039,23 @@ void ble_cmd_complete(uint8_t device_id, int err)
 				default:
 					break;
 				}
-			}
 		}
 	}
 	else
 	{
 		LOG_DBG("BLE command completed successfully: type=%s [DEVICE ID %d]",
 				command_type_to_string(ctx->current_ble_cmd->type), ctx->device_id);
+
+		if (ctx->current_ble_cmd->type == BLE_CMD_HAS_DISCOVER)
+		{
+			// After HAS discovery, read presets
+			ble_cmd_has_read_presets(ctx->device_id, true);
+		}
+		else if (ctx->current_ble_cmd->type == BLE_CMD_VCP_DISCOVER)
+		{
+			// After VCP discovery, read initial state
+			ble_cmd_vcp_read_state(ctx->device_id, true);
+		}
 	}
 
 	// Free the command
@@ -1160,7 +1180,7 @@ int ble_cmd_vcp_volume_up(uint8_t device_id, bool high_priority)
 {
 	(void)high_priority;
 	struct device_context *ctx = &device_ctx[device_id];
-	ble_cmd_vcp_read_state(ctx->device_id, false);
+	// ble_cmd_vcp_read_state(ctx->device_id, false);
 
 	struct ble_cmd *cmd = ble_cmd_alloc(ctx->device_id);
 	if (!cmd)
@@ -1364,8 +1384,11 @@ int ble_cmd_has_set_preset(uint8_t device_id, uint8_t preset_index, bool high_pr
 
 int ble_cmd_has_next_preset(uint8_t device_id, bool high_priority)
 {
-	if (!presets_loaded) {
-		ble_cmd_has_read_presets(device_id, true);
+	if (!device_ctx[0].has_ctlr.presets_read) {
+		ble_cmd_has_read_presets(0, true);
+	}
+	if (!device_ctx[1].has_ctlr.presets_read) {
+		ble_cmd_has_read_presets(1, true);
 	}
 
 	struct device_context *ctx = &device_ctx[device_id];

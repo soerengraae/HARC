@@ -9,7 +9,7 @@
 #include <zephyr/logging/log.h>
 #include <string.h>
 
-LOG_MODULE_REGISTER(bas_settings, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(bas_settings, LOG_LEVEL_INF);
 
 /**
  * @brief Store BAS handles to NVS

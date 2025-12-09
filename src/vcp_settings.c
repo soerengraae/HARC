@@ -9,7 +9,7 @@
 #include <zephyr/logging/log.h>
 #include <string.h>
 
-LOG_MODULE_REGISTER(vcp_settings, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(vcp_settings, LOG_LEVEL_INF);
 
 /**
  * @brief Store VCP handles to NVS

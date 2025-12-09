@@ -7,7 +7,7 @@
 #include "vcp_settings.h"
 #include "bas_settings.h"
 
-LOG_MODULE_REGISTER(devices_manager, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(devices_manager, LOG_LEVEL_INF);
 
 struct device_context *device_ctx;
 struct bond_collection *bonded_devices;
@@ -98,6 +98,39 @@ static int enumerate_bonded_devices(struct bond_collection *collection)
 
 	// Iterate through all bonded devices
 	bt_foreach_bond(BT_ID_DEFAULT, enumerate_bonds_cb, collection);
+
+	// Sort devices by set_rank to ensure consistent device_id mapping
+	// This is critical for HAS handle caching to work correctly across reboots
+	if (collection->count > 1) {
+		for (uint8_t i = 0; i < collection->count - 1; i++) {
+			for (uint8_t j = i + 1; j < collection->count; j++) {
+				// Sort by set_rank (ascending), with non-set-members last
+				bool should_swap = false;
+
+				if (collection->devices[i].is_set_member && collection->devices[j].is_set_member) {
+					// Both are set members, sort by rank
+					should_swap = collection->devices[i].set_rank > collection->devices[j].set_rank;
+				} else if (!collection->devices[i].is_set_member && collection->devices[j].is_set_member) {
+					// i is not a set member but j is, swap them
+					should_swap = true;
+				}
+
+				if (should_swap) {
+					struct bonded_device_entry temp = collection->devices[i];
+					collection->devices[i] = collection->devices[j];
+					collection->devices[j] = temp;
+				}
+			}
+		}
+
+		LOG_DBG("Sorted bonded devices by set_rank:");
+		for (uint8_t i = 0; i < collection->count; i++) {
+			char addr_str[BT_ADDR_LE_STR_LEN];
+			bt_addr_le_to_str(&collection->devices[i].addr, addr_str, sizeof(addr_str));
+			LOG_DBG("  [%d] %s - rank: %d, is_set_member: %d",
+				i, addr_str, collection->devices[i].set_rank, collection->devices[i].is_set_member);
+		}
+	}
 
 	LOG_INF("Enumerated %d bonded device%s", collection->count,
 		collection->count == 1 ? "" : "s");

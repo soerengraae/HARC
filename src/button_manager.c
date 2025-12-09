@@ -1,7 +1,7 @@
 #include "button_manager.h"
 #include "app_controller.h"
 
-LOG_MODULE_REGISTER(button_manager, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(button_manager, LOG_LEVEL_INF);
 
 /* Button definitions from device tree */
 static struct gpio_dt_spec button1 = GPIO_DT_SPEC_GET(DT_ALIAS(sw0), gpios);

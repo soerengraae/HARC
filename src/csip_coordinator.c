@@ -3,7 +3,7 @@
 #include "devices_manager.h"
 #include "app_controller.h"
 
-LOG_MODULE_REGISTER(csip_coordinator, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(csip_coordinator, LOG_LEVEL_INF);
 
 static struct k_work_delayable rsi_scan_timeout_work;
 static void rsi_scan_timeout_handler(struct k_work *work);

@@ -3,10 +3,11 @@
 #include "devices_manager.h"
 #include "button_manager.h"
 #include "display_manager.h"
+#include "app_controller.h"
 #include <hal/nrf_gpio.h>
 #include <zephyr/init.h>
 
-LOG_MODULE_REGISTER(power_manager, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(power_manager, LOG_LEVEL_INF);
 
 uint8_t power_manager_wake_button;
 

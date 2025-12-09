@@ -67,6 +67,7 @@ struct bt_has_ctlr {
     uint8_t preset_count;
     uint8_t active_preset_index;
     struct has_preset_info presets[HAS_MAX_PRESETS];
+    bool presets_read;
 };
 
 struct bt_vcp_ctlr {
@@ -116,7 +117,7 @@ struct ble_cmd {
 };
 
 /* Command queue configuration */
-#define BLE_CMD_QUEUE_SIZE 5
+#define BLE_CMD_QUEUE_SIZE 10
 #define BLE_CMD_TIMEOUT_MS 15000
 
 /* BLE manager public functions */

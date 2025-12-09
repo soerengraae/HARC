@@ -4,11 +4,14 @@
 #include "app_controller.h"
 #include "display_manager.h"
 
-LOG_MODULE_REGISTER(battery_reader, LOG_LEVEL_DBG);
+LOG_MODULE_REGISTER(battery_reader, LOG_LEVEL_INF);
 
 /* Global state variables */
 bool battery_discovered = false;
 uint8_t battery_level = 0;
+
+/* Track whether handles were loaded from cache (per device) - skip re-storing if true */
+static bool handles_from_cache[CONFIG_BT_MAX_CONN];
 
 /* Read callback for battery level characteristic */
 static uint8_t battery_read_cb(struct bt_conn *conn, uint8_t err,
@@ -67,13 +70,66 @@ static uint8_t discover_char_cb(struct bt_conn *conn,
 		if (ctx->bas_ctlr.battery_level_handle != 0) {
 			ctx->info.bas_discovered = true;
 
-			/* Cache handles for future reconnections */
-			struct bt_bas_handles handles = {
-				.service_handle = ctx->bas_ctlr.battery_service_handle,
-				.service_handle_end = ctx->bas_ctlr.battery_service_handle_end,
-				.battery_level_handle = ctx->bas_ctlr.battery_level_handle,
-			};
-			bas_settings_store_handles(&ctx->info.addr, &handles);
+			/* Only extract and cache handles if they weren't loaded from cache.
+			 * This avoids unnecessary stack usage from settings operations when
+			 * handles are already in NVS. */
+			if (!handles_from_cache[ctx->device_id]) {
+				/* Cache handles for future reconnections */
+				struct bt_bas_handles handles = {
+					.service_handle = ctx->bas_ctlr.battery_service_handle,
+					.service_handle_end = ctx->bas_ctlr.battery_service_handle_end,
+					.battery_level_handle = ctx->bas_ctlr.battery_level_handle,
+				};
+
+				/* Store handles for the current device */
+				bas_settings_store_handles(&ctx->info.addr, &handles);
+
+				/* If this is a new device (initial pairing) and part of a CSIP set, also store handles
+				 * for all other set members. Since all hearing aids in the set have identical firmware
+				 * and GATT layout, we can reuse the same handles for all set members.
+				 * Skip this on reconnection to avoid unnecessary work and potential stack issues. */
+				// if (ctx->info.is_new_device) {
+					struct bond_collection collection;
+					if (devices_manager_get_bonded_devices_collection(&collection) == 0) {
+						struct bonded_device_entry current_entry;
+						if (devices_manager_find_bonded_entry_by_addr(&ctx->info.addr, &current_entry) && current_entry.is_set_member) {
+						LOG_DBG("Current device is CSIP set member, caching BAS handles for all set members");
+						LOG_DBG("Bonded devices count: %d", collection.count);
+						LOG_HEXDUMP_DBG(current_entry.sirk, CSIP_SIRK_SIZE, "Current device SIRK:");
+
+						for (uint8_t i = 0; i < collection.count; i++) {
+							char debug_addr[BT_ADDR_LE_STR_LEN];
+							bt_addr_le_to_str(&collection.devices[i].addr, debug_addr, sizeof(debug_addr));
+							LOG_DBG("  Device %d: %s, is_set_member=%d, set_rank=%d",
+								i, debug_addr, collection.devices[i].is_set_member, collection.devices[i].set_rank);
+							if (collection.devices[i].is_set_member) {
+								LOG_HEXDUMP_DBG(collection.devices[i].sirk, CSIP_SIRK_SIZE, "  Device SIRK:");
+							}
+							/* Skip the current device (already stored) */
+							if (bt_addr_le_cmp(&collection.devices[i].addr, &ctx->info.addr) == 0) {
+								continue;
+							}
+
+							/* Only store for devices in the same CSIP set */
+							if (collection.devices[i].is_set_member &&
+								memcmp(collection.devices[i].sirk, current_entry.sirk, CSIP_SIRK_SIZE) == 0) {
+
+								int err = bas_settings_store_handles(&collection.devices[i].addr, &handles);
+								if (err == 0) {
+									char addr_str[BT_ADDR_LE_STR_LEN];
+									bt_addr_le_to_str(&collection.devices[i].addr, addr_str, sizeof(addr_str));
+									LOG_INF("BAS handles also cached for set member: %s", addr_str);
+								} else {
+									LOG_WRN("Failed to cache BAS handles for set member (err %d)", err);
+								}
+							}
+						}
+					}
+					}
+				// }
+			} else {
+				LOG_DBG("Handles were loaded from cache, skipping re-storage");
+			}
 
 			// Complete the discovery command
 			LOG_DBG("Battery Service discovery complete (handle: 0x%04x, CCC: 0x%04x) [DEVICE ID %d]",
@@ -164,6 +220,9 @@ int battery_discover(uint8_t device_id)
 
 	if (!ctx->info.bas_discovered)
 	{
+		/* Reset cache flag - will be set if handles are successfully loaded from cache */
+		handles_from_cache[device_id] = false;
+
 		/* Try to load cached handles first */
 		struct bt_bas_handles cached_handles;
 		int load_err = bas_settings_load_handles(&ctx->info.addr, &cached_handles);
@@ -173,6 +232,7 @@ int battery_discover(uint8_t device_id)
 			ctx->bas_ctlr.battery_service_handle_end = cached_handles.service_handle_end;
 			ctx->bas_ctlr.battery_level_handle = cached_handles.battery_level_handle;
 			ctx->info.bas_discovered = true;
+			handles_from_cache[device_id] = true;
 
 			app_controller_notify_bas_discovered(ctx->device_id, 0);
 			ble_cmd_complete(ctx->device_id, 0);
@@ -242,6 +302,7 @@ void battery_reader_reset(uint8_t device_id)
 	ctx->bas_ctlr.battery_level_handle = 0;
 	ctx->bas_ctlr.battery_level_ccc_handle = 0;
 	ctx->bas_ctlr.battery_level = 0;
+	handles_from_cache[device_id] = false;
 	LOG_DBG("Battery reader state reset [DEVICE ID %d]", ctx->device_id);
 }
 
