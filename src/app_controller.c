@@ -26,6 +26,8 @@ enum app_event_type {
 	EVENT_VCP_STATE_READ,
 	EVENT_HAS_DISCOVERED,
 	EVENT_HAS_PRESETS_READ,
+	EVENT_HAS_READ_PRESETS,
+	EVENT_ALL_SERVICES_COMPLETE,
 	EVENT_VOLUME_UP_BUTTON_PRESSED,
 	EVENT_VOLUME_DOWN_BUTTON_PRESSED,
 	EVENT_PAIR_BUTTON_PRESSED,
@@ -52,6 +54,11 @@ K_MSGQ_DEFINE(app_event_queue, sizeof(struct app_event), 10, 4);
 
 static uint8_t bonded_devices_count = 0;
 static enum sm_state state = SM_WAKE;
+
+/* Per-device service discovery completion tracking for parallel discovery */
+static bool device_services_complete[CONFIG_BT_MAX_CONN];
+static uint8_t devices_pending_completion = 0;
+static bool parallel_discovery_active = false;
 
 void app_controller_thread(void)
 {
@@ -191,6 +198,12 @@ void app_controller_thread(void)
 				}
 
                 break;
+
+			case EVENT_HAS_READ_PRESETS:
+				LOG_DBG("SM_IDLE: Reading HAS presets");
+				ble_cmd_has_read_presets(0, false);
+				ble_cmd_has_read_presets(1, false);
+				break;
 
 			default:
 				LOG_DBG("SM_IDLE: Received event %d", evt.type);
@@ -453,86 +466,115 @@ void app_controller_thread(void)
 				break;
 			}
 
-			for (ssize_t i = 0; i < bonded_devices_count; i++) {
+			/* Initialize parallel service discovery */
+			devices_pending_completion = bonded_devices_count;
+			parallel_discovery_active = true;
+			for (uint8_t i = 0; i < bonded_devices_count; i++) {
+				device_services_complete[i] = false;
+			}
+
+			/* Start BAS discovery for ALL devices in parallel */
+			for (uint8_t i = 0; i < bonded_devices_count; i++) {
 				battery_reader_reset(i);
 				ble_cmd_bas_discover(i, false);
+			}
 
-				while (k_msgq_get(&app_event_queue, &evt, K_FOREVER));
-				if (evt.type != EVENT_BAS_DISCOVERED) {
-					LOG_ERR("Unexpected event %d in SM_BONDED_DEVICES",
-						evt.type);
-					state = SM_IDLE;
-				} else {
-					LOG_INF("BAS discovered for device %d, reading level",
-						evt.device_id);
-					ble_cmd_bas_read_level(evt.device_id, false);
+			/* Event-driven service discovery loop */
+			while (devices_pending_completion > 0) {
+				if (k_msgq_get(&app_event_queue, &evt, APP_CONTROLLER_ACTION_TIMEOUT) == -EAGAIN) {
+					LOG_ERR("Timeout waiting for service discovery events");
+					state = SM_POWER_OFF;
+					break;
 				}
 
-				vcp_controller_reset(i);
-				ble_cmd_vcp_discover(i, false);
-				while (k_msgq_get(&app_event_queue, &evt, K_FOREVER));
-				if (evt.type != EVENT_VCP_DISCOVERED) {
-					LOG_ERR("Unexpected event %d in SM_BONDED_DEVICES",
-						evt.type);
-				} else {
-					LOG_INF("VCP discovered for device %d", evt.device_id);
-				}
-				while (k_msgq_get(&app_event_queue, &evt, K_FOREVER));
-				if (evt.type != EVENT_VCP_STATE_READ) {
-					LOG_ERR("Unexpected event %d in SM_BONDED_DEVICES",
-						evt.type);
-				} else {
-					LOG_INF("VCP state read for device %d", evt.device_id);
-				}
-
-                has_controller_reset(i);
-				ble_cmd_has_discover(i, false);
-				while (k_msgq_get(&app_event_queue, &evt, K_FOREVER));
-				if (evt.type != EVENT_HAS_DISCOVERED) {
-					LOG_ERR("Unexpected event %d in SM_BONDED_DEVICES", evt.type);
-				} else {
+				switch (evt.type) {
+				case EVENT_BAS_DISCOVERED:
 					if (evt.error_code != 0) {
-						LOG_WRN("HAS discovery failed for device %d",
+						LOG_ERR("BAS discovery failed for device %d (err %d)",
+							evt.device_id, evt.error_code);
+					} else {
+						LOG_INF("BAS discovered for device %d, reading level",
 							evt.device_id);
+						ble_cmd_bas_read_level(evt.device_id, false);
+					}
+					/* Chain: Start VCP discovery for this device */
+					vcp_controller_reset(evt.device_id);
+					ble_cmd_vcp_discover(evt.device_id, false);
+					break;
+
+				case EVENT_VCP_DISCOVERED:
+					if (evt.error_code != 0) {
+						LOG_ERR("VCP discovery failed for device %d",
+							evt.device_id);
+					} else {
+						LOG_INF("VCP discovered for device %d", evt.device_id);
+					}
+					/* VCP state read is auto-queued by vcp_controller */
+					break;
+
+				case EVENT_VCP_STATE_READ:
+					if (evt.error_code != 0) {
+						LOG_ERR("VCP state read failed for device %d",
+							evt.device_id);
+					} else {
+						LOG_INF("VCP state read for device %d", evt.device_id);
+					}
+					/* Chain: Start HAS discovery for this device */
+					has_controller_reset(evt.device_id);
+					ble_cmd_has_discover(evt.device_id, false);
+					break;
+
+				case EVENT_HAS_DISCOVERED:
+					if (evt.error_code != 0) {
+						LOG_WRN("HAS discovery failed for device %d (err %d)",
+							evt.device_id, evt.error_code);
 						if (evt.error_code == 15) {
-							LOG_DBG("Attempting to discover HAS again for device %d", evt.device_id);
+							LOG_DBG("Attempting to discover HAS again for device %d",
+								evt.device_id);
 							ble_cmd_has_discover(evt.device_id, false);
 						}
 					} else {
 						LOG_INF("HAS discovered for device %d", evt.device_id);
+						/* Mark this device as complete */
+						if (!device_services_complete[evt.device_id]) {
+							device_services_complete[evt.device_id] = true;
+							devices_pending_completion--;
+							LOG_DBG("Device %d services complete, %d device(s) remaining",
+								evt.device_id, devices_pending_completion);
+						}
 					}
-				}
-				while (k_msgq_get(&app_event_queue, &evt, K_FOREVER));
-				if (evt.type != EVENT_HAS_PRESETS_READ) {
-					LOG_ERR("Unexpected event %d in SM_BONDED_DEVICES", evt.type);
-				} else {
-					if (evt.error_code != 0) {
-						LOG_WRN("HAS presets read failed for device %d",
-							evt.device_id);
-					} else {
-						LOG_INF("HAS presets read for device %d", evt.device_id);
-					}
+					break;
+
+				default:
+					LOG_DBG("Received event %d during parallel discovery", evt.type);
+					break;
 				}
 			}
 
-            LOG_INF("All bonded devices managed, entering idle state");
+			parallel_discovery_active = false;
+			LOG_INF("All bonded devices managed, entering idle state");
 			state = SM_IDLE;
 
 			switch (power_manager_wake_button) {
 			case VOLUME_UP_BTN_ID:
 				LOG_DBG("SM_IDLE: Wake button is volume up");
 				app_controller_notify_volume_up_button_pressed();
+				app_controller_notify_has_read_presets();
 				break;
 			case VOLUME_DOWN_BTN_ID:
 				LOG_DBG("SM_IDLE: Wake button is volume down");
 				app_controller_notify_volume_down_button_pressed();
+				app_controller_notify_has_read_presets();
 				break;
 			case NEXT_PRESET_BTN_ID:
 				LOG_DBG("SM_IDLE: Wake button is next preset");
+				app_controller_notify_has_read_presets();
 				app_controller_notify_preset_button_pressed();
 				break;
 			default:
 				LOG_DBG("SM_IDLE: No wake button pressed");
+				app_controller_notify_has_read_presets();
+
 				break;
 			}
 			
@@ -748,6 +790,17 @@ int8_t app_controller_notify_has_presets_read(uint8_t device_id, int err)
 		.type = EVENT_HAS_PRESETS_READ,
 		.device_id = device_id,
 		.error_code = err,
+	};
+	return k_msgq_put(&app_event_queue, &evt, K_NO_WAIT);
+}
+
+int8_t app_controller_notify_has_read_presets()
+{
+	LOG_DBG("Notifying HAS read presets");
+	struct app_event evt = {
+		.type = EVENT_HAS_READ_PRESETS,
+		.device_id = 0,
+		.error_code = 0,
 	};
 	return k_msgq_put(&app_event_queue, &evt, K_NO_WAIT);
 }

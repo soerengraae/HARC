@@ -8,7 +8,7 @@
 #include "display_manager.h"
 #include "power_manager.h"
 
-LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_INF);
+LOG_MODULE_REGISTER(ble_manager, LOG_LEVEL_DBG);
 
 static struct bond_collection *bonded_devices;
 static struct k_work_delayable security_request_work[2];
@@ -22,6 +22,7 @@ K_SEM_DEFINE(ble_cmd_sem_1, 0, 1);
 static struct k_sem *ble_cmd_sem[2] = {&ble_cmd_sem_0, &ble_cmd_sem_1};
 static struct k_work_delayable ble_cmd_timeout_work[2];
 static bool ble_cmd_in_progress[2] = {false, false};
+static bool security_request_in_progress = false;
 
 /* Memory pool for BLE commands */
 K_MEM_SLAB_DEFINE(ble_cmd_slab_0, sizeof(struct ble_cmd), BLE_CMD_QUEUE_SIZE, 4);
@@ -130,6 +131,12 @@ static void security_request_handler(struct k_work *work)
 	uint8_t device_id = (work == &security_request_work[0].work) ? 0 : 1;
 	struct device_context *ctx = &device_ctx[device_id];
 
+	if (security_request_in_progress)
+	{
+		k_work_schedule(&security_request_work[device_id], K_MSEC(0));
+		return;
+	}
+
 	LOG_DBG("Requesting security [DEVICE ID %d]", device_id);
 	int err = bt_conn_set_security(device_ctx[device_id].conn, BT_SECURITY_WANTED);
 	if (err)
@@ -144,6 +151,8 @@ static void security_request_handler(struct k_work *work)
 		ble_cmd_complete(device_id, err);
 		return;
 	}
+
+	security_request_in_progress = true;
 	LOG_DBG("Security request initiated [DEVICE ID %d]", device_id);
 
 	if (ctx->state == CONN_STATE_CONNECTED)
@@ -184,6 +193,7 @@ void pairing_complete(struct bt_conn *conn, bool bonded)
 				ctx->device_id);
 	}
 
+	security_request_in_progress = false;
 	app_controller_notify_device_ready(ctx->device_id);
 }
 
@@ -191,7 +201,8 @@ void pairing_failed(struct bt_conn *conn, enum bt_security_err reason)
 {
 	struct device_context *ctx = devices_manager_get_device_context_by_conn(conn);
 	LOG_ERR("Pairing failed: %d [DEVICE ID %d]", reason, ctx->device_id);
-	// ble_manager_disconnect_device(conn);
+
+	security_request_in_progress = false;
 	ble_cmd_request_security(ctx->device_id);
 }
 
@@ -238,6 +249,7 @@ void security_changed_cb(struct bt_conn *conn, bt_security_t level, enum bt_secu
 		LOG_ERR("Security failed: %s level %u err %d [DEVICE ID %d]", addr, level, err, ctx->device_id);
 	}
 
+	security_request_in_progress = false;
 	ble_cmd_complete(ctx->device_id, err);
 }
 
@@ -992,53 +1004,55 @@ void ble_cmd_complete(uint8_t device_id, int err)
 
 	if (err)
 	{
-		LOG_ERR("BLE command failed: type=%s, err=%d [DEVICE ID %d]",
-				command_type_to_string(ctx->current_ble_cmd->type), err, device_id);
-
-		if (ctx->current_ble_cmd->type >= 0x2 && ctx->current_ble_cmd->type <= 0x8)
+		LOG_ERR("BLE command failed: type=%s, err=%d [DEVICE ID %d]", command_type_to_string(ctx->current_ble_cmd->type), err, device_id);
+		
+		if (ctx->current_ble_cmd->type == BLE_CMD_REQUEST_SECURITY && err == -1)
+		{
+			ble_cmd_request_security(ctx->device_id);
+		} else if (ctx->current_ble_cmd->type >= 0x2 && ctx->current_ble_cmd->type <= 0x8)
 		{
 			if (err == 15)
 			{
 				LOG_ERR("VCP command failed due to insufficient authentication - "
 						"reconnecting [DEVICE ID %d]",
 						ctx->device_id);
-				ble_manager_disconnect_device(device_ctx[ctx->device_id].conn);
+				ble_manager_establish_trusted_bond(ctx->device_id);
 			} else if (err == 0x80) {
 				LOG_ERR("VCP command failed due to incorrect change_counter - reading state [DEVICE ID %d]", ctx->device_id);
 				ble_cmd_vcp_read_state(ctx->current_ble_cmd->device_id, true);
 			}
 
-			switch (ctx->current_ble_cmd->type)
-				{
-				case BLE_CMD_VCP_VOLUME_UP:
-					ble_cmd_vcp_volume_up(ctx->current_ble_cmd->device_id,
-										  true);
-					break;
-				case BLE_CMD_VCP_VOLUME_DOWN:
-					ble_cmd_vcp_volume_down(ctx->current_ble_cmd->device_id,
-											true);
-					break;
-				case BLE_CMD_VCP_SET_VOLUME:
-					ble_cmd_vcp_set_volume(ctx->current_ble_cmd->device_id,
-										   ctx->current_ble_cmd->d0, true);
-					break;
-				case BLE_CMD_VCP_MUTE:
-					ble_cmd_vcp_mute(ctx->current_ble_cmd->device_id, true);
-					break;
-				case BLE_CMD_VCP_UNMUTE:
-					ble_cmd_vcp_unmute(ctx->current_ble_cmd->device_id, true);
-					break;
-				case BLE_CMD_VCP_READ_STATE:
-					ble_cmd_vcp_read_state(ctx->current_ble_cmd->device_id,
-										   true);
-					break;
-				case BLE_CMD_VCP_READ_FLAGS:
-					ble_cmd_vcp_read_flags(ctx->current_ble_cmd->device_id,
-										   true);
-					break;
-				default:
-					break;
-				}
+			// switch (ctx->current_ble_cmd->type)
+			// 	{
+			// 	case BLE_CMD_VCP_VOLUME_UP:
+			// 		ble_cmd_vcp_volume_up(ctx->current_ble_cmd->device_id,
+			// 							  true);
+			// 		break;
+			// 	case BLE_CMD_VCP_VOLUME_DOWN:
+			// 		ble_cmd_vcp_volume_down(ctx->current_ble_cmd->device_id,
+			// 								true);
+			// 		break;
+			// 	case BLE_CMD_VCP_SET_VOLUME:
+			// 		ble_cmd_vcp_set_volume(ctx->current_ble_cmd->device_id,
+			// 							   ctx->current_ble_cmd->d0, true);
+			// 		break;
+			// 	case BLE_CMD_VCP_MUTE:
+			// 		ble_cmd_vcp_mute(ctx->current_ble_cmd->device_id, true);
+			// 		break;
+			// 	case BLE_CMD_VCP_UNMUTE:
+			// 		ble_cmd_vcp_unmute(ctx->current_ble_cmd->device_id, true);
+			// 		break;
+			// 	case BLE_CMD_VCP_READ_STATE:
+			// 		ble_cmd_vcp_read_state(ctx->current_ble_cmd->device_id,
+			// 							   true);
+			// 		break;
+			// 	case BLE_CMD_VCP_READ_FLAGS:
+			// 		ble_cmd_vcp_read_flags(ctx->current_ble_cmd->device_id,
+			// 							   true);
+			// 		break;
+			// 	default:
+			// 		break;
+			// 	}
 		}
 	}
 	else
@@ -1046,12 +1060,7 @@ void ble_cmd_complete(uint8_t device_id, int err)
 		LOG_DBG("BLE command completed successfully: type=%s [DEVICE ID %d]",
 				command_type_to_string(ctx->current_ble_cmd->type), ctx->device_id);
 
-		if (ctx->current_ble_cmd->type == BLE_CMD_HAS_DISCOVER)
-		{
-			// After HAS discovery, read presets
-			ble_cmd_has_read_presets(ctx->device_id, true);
-		}
-		else if (ctx->current_ble_cmd->type == BLE_CMD_VCP_DISCOVER)
+		if (ctx->current_ble_cmd->type == BLE_CMD_VCP_DISCOVER)
 		{
 			// After VCP discovery, read initial state
 			ble_cmd_vcp_read_state(ctx->device_id, true);

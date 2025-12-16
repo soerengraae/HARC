@@ -38,6 +38,7 @@ int8_t app_controller_notify_preset_button_pressed();
 int8_t app_controller_notify_clear_bonds_button_pressed();
 int8_t app_controller_notify_has_discovered(uint8_t device_id, int err);
 int8_t app_controller_notify_has_presets_read(uint8_t device_id, int err);
+int8_t app_controller_notify_has_read_presets();
 int8_t app_controller_notify_power_off();
 
 #endif /* CONNECTION_MANAGER_H */
