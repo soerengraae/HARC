@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 3.20.0)
+set(DTC_OVERLAY_FILE "${CMAKE_CURRENT_SOURCE_DIR}/nrf54l15dk_nrf54l05_cpuapp.overlay")
 find_package(Zephyr REQUIRED HINTS $ENV{ZEPHYR_BASE})
 
 project(VCPcontroller)

@@ -1,0 +1,51 @@
+/*
+ * Device Tree Overlay for nRF54L15DK
+ * Configures I2C for OLED display (SSD1306)
+ * SDA: P1.11, SCL: P1.10
+ */
+
+/* Pin Configuration for I2C21 */
+/{
+    chosen {
+        zephyr,display = &ssd1306;
+    };
+};
+
+&pinctrl {
+    i2c21_default: i2c21_default {
+        group1 {
+            psels = <NRF_PSEL(TWIM_SDA, 1, 11)>,
+                    <NRF_PSEL(TWIM_SCL, 1, 10)>;
+        };
+    };
+
+    i2c21_sleep: i2c21_sleep {
+        group1 {
+            psels = <NRF_PSEL(TWIM_SDA, 1, 11)>,
+                    <NRF_PSEL(TWIM_SCL, 1, 10)>;
+            low-power-enable;
+        };
+    };
+};
+
+&i2c21 {
+    compatible = "nordic,nrf-twim";
+    status = "okay";
+    pinctrl-0 = <&i2c21_default>;
+    pinctrl-1 = <&i2c21_sleep>;
+    pinctrl-names = "default", "sleep";
+
+    ssd1306: ssd1306@3c {
+        compatible = "solomon,ssd1306fb";
+        reg = <0x3c>;
+        width = <128>;
+        height = <64>;
+        segment-offset = <0>;
+        page-offset = <0>;
+        display-offset = <0>;
+        multiplex-ratio = <63>;
+        segment-remap;
+        com-invdir;
+        prechargep = <0x22>;
+    };
+};
