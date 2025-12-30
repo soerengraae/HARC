@@ -3,6 +3,12 @@
 
 LOG_MODULE_REGISTER(button_manager, LOG_LEVEL_INF);
 
+/* Debounce settings */
+#define DEBOUNCE_TIME_MS 1000  /* 1000ms debounce period */
+
+/* Last press timestamps for each button */
+static int64_t last_press_time[4] = {0};
+
 /* Button definitions from device tree */
 static struct gpio_dt_spec button1 = GPIO_DT_SPEC_GET(DT_ALIAS(sw0), gpios);
 static struct gpio_dt_spec button2 = GPIO_DT_SPEC_GET(DT_ALIAS(sw1), gpios);
@@ -20,6 +26,10 @@ bool button_manager_buttons_ready = false;
 
 void button_manager_reset_buttons(void) {
     button_manager_buttons_ready = false;
+    /* Reset debounce timestamps */
+    for (int i = 0; i < 4; i++) {
+        last_press_time[i] = 0;
+    }
 }
 
 int button_manager_init_buttons(void)
@@ -134,26 +144,53 @@ void button_manager_set_button_interrupt_mode(uint8_t button_id, gpio_flags_t mo
     }
 }
 
+static bool is_debounced(uint8_t button_index)
+{
+    int64_t current_time = k_uptime_get();
+    int64_t time_since_last_press = current_time - last_press_time[button_index];
+
+    if (time_since_last_press >= DEBOUNCE_TIME_MS) {
+        last_press_time[button_index] = current_time;
+        return true;
+    }
+
+    LOG_DBG("Button %d debounced (only %lld ms since last press)",
+            button_index + 1, time_since_last_press);
+    return false;
+}
+
 void button1_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
+    if (!is_debounced(0)) {
+        return;
+    }
     LOG_INF("Button 1 pressed - Volume Up");
     app_controller_notify_volume_up_button_pressed();
 }
 
 void button2_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
+    if (!is_debounced(1)) {
+        return;
+    }
     LOG_INF("Button 2 pressed - Volume Down");
     app_controller_notify_volume_down_button_pressed();
 }
 
 void button3_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
+    if (!is_debounced(2)) {
+        return;
+    }
     LOG_WRN("Button 3 pressed - Pairing!");
     app_controller_notify_pair_button_pressed();
 }
 
 void button4_pressed(const struct device *dev, struct gpio_callback *cb, uint32_t pins)
 {
+    if (!is_debounced(3)) {
+        return;
+    }
     LOG_INF("Button 4 pressed - Next Preset");
     app_controller_notify_preset_button_pressed();
 }
