@@ -1,0 +1,49 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([VCP Discovery Start]) --> CheckCache{Cached<br/>handles?}
+    
+    CheckCache -->|Yes| InjectHandles[Inject cached handles]
+    CheckCache -->|No| FullDiscovery[GATT Service Discovery]
+    
+    InjectHandles --> Subscribe[Enable notifications]
+    
+    Subscribe --> SubSuccess{Success?}
+    
+    SubSuccess -->|No| ClearCache[Invalidate cache]
+    SubSuccess -->|Yes| Ready
+    
+    ClearCache --> FullDiscovery
+    
+    FullDiscovery --> DiscoverService[Discover VCS service]
+    
+    DiscoverService --> DiscoverChars[Discover characteristics]
+    
+    DiscoverChars --> DiscoverCCCD[Discover CCCD descriptors]
+    
+    DiscoverCCCD --> DiscSuccess{All found?}
+    
+    DiscSuccess -->|No| Error([Discovery Failed])
+    DiscSuccess -->|Yes| Subscribe
+    
+    Subscribe --> CacheNew[Store handles in NVS]
+    
+    CacheNew --> Ready([VCP Ready])
+    
+    Ready -.->|Volume changes| Notification[Notification received]
+    
+    Notification --> Parse[Parse volume state]
+    
+    Parse --> UpdateState[Update stored state]
+    
+    UpdateState --> UpdateUI[Update display]
+    
+    UpdateUI --> WaitNext[Wait for next event]
+    
+    WaitNext -.-> Notification
+    
+    style Start fill:#e1f5e1
+    style Ready fill:#e1f5e1
+    style Error fill:#ffe1e1
+    style CheckCache fill:#fff4e1
+    style SubSuccess fill:#fff4e1
+    style DiscSuccess fill:#fff4e1
