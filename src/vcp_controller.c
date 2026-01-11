@@ -27,6 +27,7 @@ int vcp_cmd_discover(uint8_t device_id)
         LOG_INF("Loaded cached VCP handles [DEVICE ID %d]", device_id);
         int inject_err = bt_vcp_vol_ctlr_set_handles(ctx->conn, &cached_handles);
         if (inject_err != 0) {
+            // Here if subscibtion fails
             LOG_WRN("Failed to inject cached VCP handles (err %d), proceeding with full discovery", inject_err);
             vcp_settings_clear_handles(&ctx->info.addr);
         } else {
