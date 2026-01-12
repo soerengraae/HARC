@@ -30,7 +30,6 @@
 #define BT_NAME_MAX_LEN 12
 #define BT_SECURITY_WANTED BT_SECURITY_L2
 #define BT_SCAN_TIMEOUT_MS 10000
-#define BT_AUTO_CONNECT_TIMEOUT_MS 4000
 
 /* CSIP Set Information */
 #define CSIP_SIRK_SIZE 16
@@ -118,7 +117,7 @@ struct ble_cmd {
 
 /* Command queue configuration */
 #define BLE_CMD_QUEUE_SIZE 10
-#define BLE_CMD_TIMEOUT_MS 15000
+#define BLE_CMD_TIMEOUT_MS 2000
 
 /* BLE manager public functions */
 int ble_manager_init(void);

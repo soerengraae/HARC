@@ -366,7 +366,7 @@ static void disconnected_cb(struct bt_conn *conn, uint8_t reason)
 	ctx->conn = NULL;
 
 	// if (queue_is_active[ctx->device_id])
-	// 	ble_cmd_queue_reset(ctx->device_id);
+	ble_cmd_queue_reset(ctx->device_id);
 
 	if (ctx->info.vcp_discovered)
 	{
@@ -461,7 +461,7 @@ static bool parse_adv(struct bt_data *data, void *user_data)
 			for (size_t i = 0; i <= data->data_len - 2; i += 2)
 			{
 				uint16_t uuid_val = sys_get_le16(&data->data[i]);
-				// LOG_DBG("Service Data UUID 0x%04X", uuid_val);
+				LOG_DBG("Service Data UUID 0x%04X", uuid_val);
 
 				if (uuid_val == 0xFEFE)
 				{
@@ -497,13 +497,11 @@ static void advertisement_found_cb(const bt_addr_le_t *addr, int8_t rssi, uint8_
 	bt_addr_le_to_str(addr, addr_str, sizeof(addr_str));
 
 	if (type != BT_GAP_ADV_TYPE_EXT_ADV) {
-		LOG_DBG("Received adv from %s, RSSI %d dBm, EAD len %u", addr_str, rssi, ad->len);
+		// LOG_DBG("Received adv from %s, RSSI %d dBm, EAD len %u", addr_str, rssi, ad->len);
 		return;
 	} else {
-		LOG_DBG("Received extended adv from %s, RSSI %d dBm, EXT_AD len %u", addr_str, rssi, ad->len);
+		// LOG_DBG("Received extended adv from %s, RSSI %d dBm, EXT_AD len %u", addr_str, rssi, ad->len);
 	}
-
-	
 
 	int err;
 
@@ -1025,38 +1023,6 @@ void ble_cmd_complete(uint8_t device_id, int err)
 				LOG_ERR("VCP command failed due to incorrect change_counter - reading state [DEVICE ID %d]", ctx->device_id);
 				ble_cmd_vcp_read_state(ctx->current_ble_cmd->device_id, true);
 			}
-
-			// switch (ctx->current_ble_cmd->type)
-			// 	{
-			// 	case BLE_CMD_VCP_VOLUME_UP:
-			// 		ble_cmd_vcp_volume_up(ctx->current_ble_cmd->device_id,
-			// 							  true);
-			// 		break;
-			// 	case BLE_CMD_VCP_VOLUME_DOWN:
-			// 		ble_cmd_vcp_volume_down(ctx->current_ble_cmd->device_id,
-			// 								true);
-			// 		break;
-			// 	case BLE_CMD_VCP_SET_VOLUME:
-			// 		ble_cmd_vcp_set_volume(ctx->current_ble_cmd->device_id,
-			// 							   ctx->current_ble_cmd->d0, true);
-			// 		break;
-			// 	case BLE_CMD_VCP_MUTE:
-			// 		ble_cmd_vcp_mute(ctx->current_ble_cmd->device_id, true);
-			// 		break;
-			// 	case BLE_CMD_VCP_UNMUTE:
-			// 		ble_cmd_vcp_unmute(ctx->current_ble_cmd->device_id, true);
-			// 		break;
-			// 	case BLE_CMD_VCP_READ_STATE:
-			// 		ble_cmd_vcp_read_state(ctx->current_ble_cmd->device_id,
-			// 							   true);
-			// 		break;
-			// 	case BLE_CMD_VCP_READ_FLAGS:
-			// 		ble_cmd_vcp_read_flags(ctx->current_ble_cmd->device_id,
-			// 							   true);
-			// 		break;
-			// 	default:
-			// 		break;
-			// 	}
 		}
 	}
 	else

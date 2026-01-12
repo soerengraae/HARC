@@ -94,19 +94,17 @@ static void vcp_state_cb(struct bt_vcp_vol_ctlr *vol_ctlr, int err, uint8_t volu
     ctx->vcp_ctlr.state.mute = mute;
 
     float volume_percent = (float)ctx->vcp_ctlr.state.volume * 100.0f / 255.0f;
-    if (ctx->current_ble_cmd && ctx->current_ble_cmd->type == BLE_CMD_VCP_READ_STATE) {
-        LOG_INF("VCP state read: Volume: %u%%, Mute: %u [DEVICE ID %d]", (uint8_t)(volume_percent), ctx->vcp_ctlr.state.mute, ctx->device_id);
-    } else {
-        LOG_DBG("VCP state notification: Volume: %u%%, Mute: %u [DEVICE ID %d]", (uint8_t)(volume_percent), ctx->vcp_ctlr.state.mute, ctx->device_id);
-    }
 
     /* Update display with current volume state */
     display_manager_update_volume(ctx->device_id, volume, mute);
 
     // Mark as complete only if this was a READ_STATE command
     if (ctx->current_ble_cmd && ctx->current_ble_cmd->type == BLE_CMD_VCP_READ_STATE) {
+        LOG_INF("VCP state read: Volume: %u%%, Mute: %u [DEVICE ID %d]", (uint8_t)(volume_percent), ctx->vcp_ctlr.state.mute, ctx->device_id);
         app_controller_notify_vcp_state_read(ctx->device_id, 0);
         ble_cmd_complete(ctx->device_id, 0);
+    } else {
+        LOG_DBG("VCP state notification: Volume: %u%%, Mute: %u [DEVICE ID %d]", (uint8_t)(volume_percent), ctx->vcp_ctlr.state.mute, ctx->device_id);
     }
 }
 

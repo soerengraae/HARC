@@ -1,0 +1,24 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([VCP State Callback]) --> CheckErr{Error in<br/>callback?}
+  
+    
+    CheckErr -->|Yes| LogErr[Log error message]
+    LogErr --> Complete1[Complete command with error]
+    Complete1 --> End1([Return])
+    
+    CheckErr -->|No| UpdateState[Update state for device:<br/>volume and mute]
+    
+    UpdateState --> CalcPercent[Calculate volume percentage<br/>0-255 → 0-100%]
+    
+    CalcPercent --> UpdateDisplay[Update display with<br/>volume and mute]
+    
+    UpdateDisplay --> CheckComplete{Command is<br/>READ_STATE?}
+    
+    CheckComplete -->|Yes| LogInfo[Log INFO: VCP state read]
+    LogInfo --> NotifyApp[Notify app controller<br/>of state read]
+    NotifyApp --> Complete2[Complete command<br/>with success]
+    Complete2 --> End2([Return])
+    
+    CheckComplete -->|No| LogDebug[Log DEBUG: VCP notification]
+    LogDebug --> End3([Return])

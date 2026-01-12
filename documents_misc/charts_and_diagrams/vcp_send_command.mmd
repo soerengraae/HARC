@@ -1,0 +1,6 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    A[HARC sends ATT_WRITE_REQ] --> B[ATT Acknowledgment - HA sends ATT_WRITE_RSP]
+    B --> C[HA increments volume]
+    C --> D[HA sends ATT_HANDLE_VALUE_NTF]
+    D --> E[HARC updates local volume state]

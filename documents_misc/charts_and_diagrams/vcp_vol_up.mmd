@@ -1,0 +1,11 @@
+%%{init: {'theme':'default'}}%%
+sequenceDiagram
+    participant HARC
+    participant HA
+    
+    Note over HARC,HA: Relative Volume Up Operation
+    
+    HARC->>HA: ATT_WRITE_REQ<br/>Handle: 216 (Vol Control Point)<br/>Value: [0x01, change_counter]
+    
+    HA->>HARC: ATT_WRITE_RSP
+    HA->>HARC: ATT_HANDLE_VALUE_NTF<br/>Handle: 213 (Volume State)<br/>Value: [volume, change_counter, mute]

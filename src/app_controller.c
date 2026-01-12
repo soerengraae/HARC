@@ -105,11 +105,11 @@ void app_controller_thread(void)
 				state = SM_POWER_OFF;
 				break;
 
-            /**
-             * Volume up button pressed event
-             * In single device operation, send volume up to device 0
-             * In dual device operation, send volume up to both devices
-             */
+				/**
+				 * Volume up button pressed event
+				 * In single device operation, send volume up to device 0
+				 * In dual device operation, send volume up to both devices
+				 */
 			case EVENT_VOLUME_UP_BUTTON_PRESSED:
 				LOG_DBG("SM_IDLE: Volume up button pressed");
 				if (bonded_devices_count == 1) {
@@ -128,11 +128,11 @@ void app_controller_thread(void)
 				}
 				break;
 
-            /**
-             * Volume down button pressed event
-             * In single device operation, send volume down to device 0
-             * In dual device operation, send volume down to both devices
-             */
+				/**
+				 * Volume down button pressed event
+				 * In single device operation, send volume down to device 0
+				 * In dual device operation, send volume down to both devices
+				 */
 			case EVENT_VOLUME_DOWN_BUTTON_PRESSED:
 				LOG_DBG("SM_IDLE: Volume down button pressed");
 				if (bonded_devices_count == 1) {
@@ -148,7 +148,7 @@ void app_controller_thread(void)
 					LOG_WRN("No connected device to send volume down command");
 				}
 				break;
-			
+
 			case EVENT_PRESET_BUTTON_PRESSED:
 				LOG_DBG("SM_IDLE: Preset button pressed, going to next preset");
 				if (bonded_devices_count == 0) {
@@ -156,20 +156,25 @@ void app_controller_thread(void)
 					break;
 				}
 
-				ble_cmd_has_next_preset(0, false); // HI uses synced presets, so only send to one device
+				ble_cmd_has_next_preset(0, false); // HI uses synced presets, so
+								   // only send to one device
 				break;
 
-            case EVENT_PAIR_BUTTON_PRESSED:
-                LOG_DBG("SM_IDLE: Pair button pressed, clearing bonds and starting first time use procedure");
+			case EVENT_PAIR_BUTTON_PRESSED:
+				LOG_DBG("SM_IDLE: Pair button pressed, clearing bonds and starting "
+					"first time use procedure");
 				button_manager_reset_buttons();
 
 				devices_manager_clear_all_bonds();
-				while(k_msgq_get(&app_event_queue, &evt, K_FOREVER));
+				while (k_msgq_get(&app_event_queue, &evt, K_FOREVER))
+					;
 				if (evt.type != EVENT_BONDS_CLEARED) {
-					LOG_ERR("Expected EVENT_BONDS_CLEARED after clearing bonds, got %d", evt.type);
+					LOG_ERR("Expected EVENT_BONDS_CLEARED after clearing "
+						"bonds, got %d",
+						evt.type);
 					break;
 				}
-				
+
 				if (ble_manager_disconnect_device(device_ctx[0].conn) == -EINVAL) {
 					LOG_DBG("No active connection to disconnect for device 0");
 					app_controller_notify_device_disconnected(0);
@@ -180,24 +185,29 @@ void app_controller_thread(void)
 					app_controller_notify_device_disconnected(1);
 				}
 
-				while(k_msgq_get(&app_event_queue, &evt, K_FOREVER)); // Wait for device disconnect
-				while(k_msgq_get(&app_event_queue, &evt, K_FOREVER)); // Wait for device disconnect
+				while (k_msgq_get(&app_event_queue, &evt, K_FOREVER))
+					; // Wait for device disconnect
+				while (k_msgq_get(&app_event_queue, &evt, K_FOREVER))
+					; // Wait for device disconnect
 
 				devices_manager_reset_device_contexts();
 
-                state = SM_WAKE;
-                break;
-            
-            case EVENT_CLEAR_BONDS_BUTTON_PRESSED:
-                LOG_DBG("SM_IDLE: Clear bonds button pressed, clearing all bonds");
-                devices_manager_clear_all_bonds();
-				while(k_msgq_get(&app_event_queue, &evt, K_FOREVER));
+				state = SM_WAKE;
+				break;
+
+			case EVENT_CLEAR_BONDS_BUTTON_PRESSED:
+				LOG_DBG("SM_IDLE: Clear bonds button pressed, clearing all bonds");
+				devices_manager_clear_all_bonds();
+				while (k_msgq_get(&app_event_queue, &evt, K_FOREVER))
+					;
 				if (evt.type != EVENT_BONDS_CLEARED) {
-					LOG_ERR("Expected EVENT_BONDS_CLEARED after clearing bonds, got %d", evt.type);
+					LOG_ERR("Expected EVENT_BONDS_CLEARED after clearing "
+						"bonds, got %d",
+						evt.type);
 					break;
 				}
 
-                break;
+				break;
 
 			case EVENT_HAS_READ_PRESETS:
 				LOG_DBG("SM_IDLE: Reading HAS presets");
@@ -214,19 +224,25 @@ void app_controller_thread(void)
 		case SM_POWER_OFF:
 			LOG_DBG("SM_POWER_OFF: Powering off device");
 			power_manager_prepare_power_off();
-			while(k_msgq_get(&app_event_queue, &evt, K_FOREVER)); // Wait for device disconnect
-			while(k_msgq_get(&app_event_queue, &evt, K_FOREVER)); // Wait for device disconnect
+			while (k_msgq_get(&app_event_queue, &evt, K_FOREVER))
+				; // Wait for device disconnect
+			while (k_msgq_get(&app_event_queue, &evt, K_FOREVER))
+				; // Wait for device disconnect
 			power_manager_power_off();
 			break;
 
 		case SM_WAKE:
 			if (power_manager_wake_button == PAIR_BTN_ID) {
-				LOG_DBG("SM_WAKE: Wake button is PAIR button, clearing bonds and starting first time use procedure");
+				LOG_DBG("SM_WAKE: Wake button is PAIR button, clearing bonds and "
+					"starting first time use procedure");
 				button_manager_reset_buttons();
 				devices_manager_clear_all_bonds();
-				while(k_msgq_get(&app_event_queue, &evt, K_FOREVER));
+				while (k_msgq_get(&app_event_queue, &evt, K_FOREVER))
+					;
 				if (evt.type != EVENT_BONDS_CLEARED) {
-					LOG_ERR("Expected EVENT_BONDS_CLEARED after clearing bonds, got %d", evt.type);
+					LOG_ERR("Expected EVENT_BONDS_CLEARED after clearing "
+						"bonds, got %d",
+						evt.type);
 				}
 
 				state = SM_FIRST_TIME_USE;
@@ -294,8 +310,8 @@ void app_controller_thread(void)
 				0, 0); // Connects to first scanned device using Device 0
 
 			/* Now wait for the device to be ready */
-			if (k_msgq_get(&app_event_queue, &evt,
-				       APP_CONTROLLER_PAIRING_TIMEOUT) == 0) {
+			if (k_msgq_get(&app_event_queue, &evt, APP_CONTROLLER_PAIRING_TIMEOUT) ==
+			    0) {
 				if (evt.type == EVENT_DEVICE_READY) {
 					LOG_INF("[DEVICE ID %d] ready, discovering CSIP",
 						evt.device_id);
@@ -349,7 +365,8 @@ void app_controller_thread(void)
 			LOG_INF("Bonding to device");
 
 			ble_manager_connect(1, evt.data);
-			if (k_msgq_get(&app_event_queue, &evt, APP_CONTROLLER_PAIRING_TIMEOUT) == 0) {
+			if (k_msgq_get(&app_event_queue, &evt, APP_CONTROLLER_PAIRING_TIMEOUT) ==
+			    0) {
 				if (evt.type == EVENT_DEVICE_READY) {
 					LOG_INF("[DEVICE ID %d] ready, discovering CSIP",
 						evt.device_id);
@@ -366,14 +383,14 @@ void app_controller_thread(void)
 			}
 
 			ble_cmd_csip_discover(evt.device_id, false);
-			while (k_msgq_get(&app_event_queue, &evt, K_FOREVER));
+			while (k_msgq_get(&app_event_queue, &evt, K_FOREVER))
+				;
 			if (evt.type != EVENT_CSIP_DISCOVERED) {
 				LOG_ERR("Unexpected event %d in SM_FIRST_TIME_USE", evt.type);
 				state = SM_IDLE;
 				break;
 			} else {
-				LOG_INF("CSIP discovered for device %d",
-					evt.device_id);
+				LOG_INF("CSIP discovered for device %d", evt.device_id);
 			}
 
 			if (csip_verify_devices_are_set()) {
@@ -383,7 +400,7 @@ void app_controller_thread(void)
 				state = SM_IDLE;
 				break;
 			}
-			
+
 			LOG_DBG("First time use procedure complete, entering bonded devices state");
 			state = SM_BONDED_DEVICES;
 			break;
@@ -391,77 +408,94 @@ void app_controller_thread(void)
 		case SM_BONDED_DEVICES:
 			LOG_DBG("SM_BONDED_DEVICES: Managing bonded device(s)");
 
-            if (bonded_devices_count == 0) {
-                LOG_ERR("No bonded devices count set in SM_BONDED_DEVICES");
-                state = SM_IDLE;
-                return;
-            }
+			if (bonded_devices_count == 0) {
+				LOG_ERR("No bonded devices count set in SM_BONDED_DEVICES");
+				state = SM_IDLE;
+				return;
+			}
 
-			/* Update bonded devices collection to include CSIP info discovered in SM_FIRST_TIME_USE */
+			/* Update bonded devices collection to include CSIP info discovered in
+			 * SM_FIRST_TIME_USE */
 			devices_manager_update_bonded_devices_collection();
 
 			ble_manager_establish_trusted_bond(0);
-			
+
 			/** If we're bonded to both HIs, establish trusted bond with second HI */
 			if (bonded_devices_count == 2) {
-				/** Wait for first HI to be connected, before we can use bt_conn_le_create() again */
-				if (k_msgq_get(&app_event_queue, &evt, APP_CONTROLLER_PAIRING_TIMEOUT) == 0) {
+				/** Wait for first HI to be connected, before we can use
+				 * bt_conn_le_create() again */
+				if (k_msgq_get(&app_event_queue, &evt,
+					       APP_CONTROLLER_PAIRING_TIMEOUT) == 0) {
 					if (evt.type != EVENT_DEVICE_CONNECTED) {
-						LOG_ERR("Unexpected event %d in SM_BONDED_DEVICES", evt.type);
+						LOG_ERR("Unexpected event %d in SM_BONDED_DEVICES",
+							evt.type);
 						state = SM_IDLE;
 						break;
 					} else {
 						LOG_INF("[DEVICE ID %d] connected", evt.device_id);
 					}
 				} else {
-					LOG_ERR("Timeout waiting for device to be connected in SM_BONDED_DEVICES");
+					LOG_ERR("Timeout waiting for device to be connected in "
+						"SM_BONDED_DEVICES");
 					state = SM_POWER_OFF;
 					break;
 				}
 
 				ble_manager_establish_trusted_bond(1);
-				/** Wait for second HI to be connected, before we can use bt_conn_le_create() again */
-				if (k_msgq_get(&app_event_queue, &evt, APP_CONTROLLER_PAIRING_TIMEOUT) == 0) {
+				/** Wait for second HI to be connected, before we can use
+				 * bt_conn_le_create() again */
+				if (k_msgq_get(&app_event_queue, &evt,
+					       APP_CONTROLLER_PAIRING_TIMEOUT) == 0) {
 					if (evt.type != EVENT_DEVICE_CONNECTED) {
-						LOG_ERR("Unexpected event %d in SM_BONDED_DEVICES", evt.type);
+						LOG_ERR("Unexpected event %d in SM_BONDED_DEVICES",
+							evt.type);
 						state = SM_IDLE;
 						break;
 					} else {
 						LOG_INF("[DEVICE ID %d] connected", evt.device_id);
 					}
 				} else {
-					LOG_ERR("Timeout waiting for device to be connected in SM_BONDED_DEVICES");
+					LOG_ERR("Timeout waiting for device to be connected in "
+						"SM_BONDED_DEVICES");
 					state = SM_POWER_OFF;
 					break;
 				}
 
 				/** Waiting for either device to be ready */
-				if(k_msgq_get(&app_event_queue, &evt, APP_CONTROLLER_PAIRING_TIMEOUT) == 0) {
+				if (k_msgq_get(&app_event_queue, &evt,
+					       APP_CONTROLLER_PAIRING_TIMEOUT) == 0) {
 					if (evt.type != EVENT_DEVICE_READY) {
-						LOG_ERR("Unexpected event %d in SM_BONDED_DEVICES", evt.type);
+						LOG_ERR("Unexpected event %d in SM_BONDED_DEVICES",
+							evt.type);
 						state = SM_IDLE;
 						break;
 					} else {
-						LOG_INF("[DEVICE ID %d] ready after trusted bond", evt.device_id);
+						LOG_INF("[DEVICE ID %d] ready after trusted bond",
+							evt.device_id);
 					}
 				} else {
-					LOG_ERR("Timeout waiting for device to be ready in SM_BONDED_DEVICES");
+					LOG_ERR("Timeout waiting for device to be ready in "
+						"SM_BONDED_DEVICES");
 					state = SM_POWER_OFF;
 					break;
 				}
 			}
 
 			/** Waiting for either device to be ready */
-			if(k_msgq_get(&app_event_queue, &evt, APP_CONTROLLER_PAIRING_TIMEOUT) == 0) {
+			if (k_msgq_get(&app_event_queue, &evt, APP_CONTROLLER_PAIRING_TIMEOUT) ==
+			    0) {
 				if (evt.type != EVENT_DEVICE_READY) {
-					LOG_ERR("Unexpected event %d in SM_BONDED_DEVICES", evt.type);
+					LOG_ERR("Unexpected event %d in SM_BONDED_DEVICES",
+						evt.type);
 					state = SM_IDLE;
 					break;
 				} else {
-					LOG_INF("[DEVICE ID %d] ready after trusted bond", evt.device_id);
+					LOG_INF("[DEVICE ID %d] ready after trusted bond",
+						evt.device_id);
 				}
 			} else {
-				LOG_ERR("Timeout waiting for device to be ready in SM_BONDED_DEVICES");
+				LOG_ERR("Timeout waiting for device to be ready in "
+					"SM_BONDED_DEVICES");
 				state = SM_POWER_OFF;
 				break;
 			}
@@ -481,7 +515,8 @@ void app_controller_thread(void)
 
 			/* Event-driven service discovery loop */
 			while (devices_pending_completion > 0) {
-				if (k_msgq_get(&app_event_queue, &evt, APP_CONTROLLER_ACTION_TIMEOUT) == -EAGAIN) {
+				if (k_msgq_get(&app_event_queue, &evt,
+					       APP_CONTROLLER_ACTION_TIMEOUT) == -EAGAIN) {
 					LOG_ERR("Timeout waiting for service discovery events");
 					state = SM_POWER_OFF;
 					break;
@@ -490,10 +525,12 @@ void app_controller_thread(void)
 				switch (evt.type) {
 				case EVENT_BAS_DISCOVERED:
 					if (evt.error_code != 0) {
-						LOG_ERR("BAS discovery failed for device %d (err %d)",
+						LOG_ERR("BAS discovery failed for device %d (err "
+							"%d)",
 							evt.device_id, evt.error_code);
 					} else {
-						LOG_INF("BAS discovered for device %d, reading level",
+						LOG_INF("BAS discovered for device %d, reading "
+							"level",
 							evt.device_id);
 						ble_cmd_bas_read_level(evt.device_id, false);
 					}
@@ -507,7 +544,8 @@ void app_controller_thread(void)
 						LOG_ERR("VCP discovery failed for device %d",
 							evt.device_id);
 					} else {
-						LOG_INF("VCP discovered for device %d", evt.device_id);
+						LOG_INF("VCP discovered for device %d",
+							evt.device_id);
 					}
 					/* VCP state read is auto-queued by vcp_controller */
 					break;
@@ -517,7 +555,8 @@ void app_controller_thread(void)
 						LOG_ERR("VCP state read failed for device %d",
 							evt.device_id);
 					} else {
-						LOG_INF("VCP state read for device %d", evt.device_id);
+						LOG_INF("VCP state read for device %d",
+							evt.device_id);
 					}
 					/* Chain: Start HAS discovery for this device */
 					has_controller_reset(evt.device_id);
@@ -526,27 +565,34 @@ void app_controller_thread(void)
 
 				case EVENT_HAS_DISCOVERED:
 					if (evt.error_code != 0) {
-						LOG_WRN("HAS discovery failed for device %d (err %d)",
+						LOG_WRN("HAS discovery failed for device %d (err "
+							"%d)",
 							evt.device_id, evt.error_code);
 						if (evt.error_code == 15) {
-							LOG_DBG("Attempting to discover HAS again for device %d",
+							LOG_DBG("Attempting to discover HAS again "
+								"for device %d",
 								evt.device_id);
 							ble_cmd_has_discover(evt.device_id, false);
 						}
 					} else {
-						LOG_INF("HAS discovered for device %d", evt.device_id);
+						LOG_INF("HAS discovered for device %d",
+							evt.device_id);
 						/* Mark this device as complete */
 						if (!device_services_complete[evt.device_id]) {
-							device_services_complete[evt.device_id] = true;
+							device_services_complete[evt.device_id] =
+								true;
 							devices_pending_completion--;
-							LOG_DBG("Device %d services complete, %d device(s) remaining",
-								evt.device_id, devices_pending_completion);
+							LOG_DBG("Device %d services complete, %d "
+								"device(s) remaining",
+								evt.device_id,
+								devices_pending_completion);
 						}
 					}
 					break;
 
 				default:
-					LOG_DBG("Received event %d during parallel discovery", evt.type);
+					LOG_DBG("Received event %d during parallel discovery",
+						evt.type);
 					break;
 				}
 			}
@@ -577,7 +623,7 @@ void app_controller_thread(void)
 
 				break;
 			}
-			
+
 			power_manager_wake_button = 0;
 			break;
 
@@ -593,14 +639,15 @@ static void determine_state(void)
 {
 	struct bond_collection collection;
 	devices_manager_get_bonded_devices_collection(&collection);
-    bonded_devices_count = collection.count;
+	bonded_devices_count = collection.count;
 
 	switch (bonded_devices_count) {
 	case 0:
 		LOG_INF("No bonded devices found, entering first time use procedure");
 		state = SM_FIRST_TIME_USE;
 		break;
-	case 1: case 2:
+	case 1:
+	case 2:
 		LOG_INF("One or two bonded devices found");
 		state = SM_BONDED_DEVICES;
 		break;
