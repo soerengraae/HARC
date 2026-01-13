@@ -10,11 +10,11 @@
 
 /* Connection state machine states for dual-device coordination */
 enum sm_state {
-    SM_IDLE, /* No active connection process */
-    SM_WAKE, /* Wake up and determine state */
-    SM_FIRST_TIME_USE, /* First device bonding/discovering */
-    SM_BONDED_DEVICES, /* Managing bonded device(s) */
-    SM_POWER_OFF, /* Powering off the device */
+    SM_IDLE,            /* Normal operation, waiting for user input */
+    SM_WAKE,            /* Just woke up, determining next state */
+    SM_FIRST_TIME_USE,  /* Initial pairing with new hearing aids */
+    SM_BONDED_DEVICES,  /* Reconnecting to bonded devices */
+    SM_POWER_OFF,       /* Shutting down */
 };
 
 #define APP_CONTROLLER_PAIRING_TIMEOUT K_SECONDS(30)

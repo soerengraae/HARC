@@ -1,0 +1,12 @@
+%%{init: {'theme':'default'}}%%
+sequenceDiagram
+    participant HARC as HARC
+    participant HA as Hearing Aid
+    
+    Note over HARC,HA: Battery Level Read Operation
+    
+    HARC->>HA: ATT_READ_REQ<br/>handle: 0x0120
+    
+    HA->>HARC: ATT_READ_RSP<br/>value: [percentage]<br/>(uint8: 0-100)
+    
+    Note over HARC: Update local state<br/>Update display

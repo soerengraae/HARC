@@ -1,0 +1,20 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([From Part 1:<br/>Discovery complete callback]) --> ValidateHandle{battery_level_handle<br/>stored?}
+
+    ValidateHandle -->|No| Failed[Discovery failed<br/>Notify error]
+    ValidateHandle -->|Yes| CacheHandles{From cache?}
+
+    CacheHandles -->|Yes| Skip[Skip storage]
+    CacheHandles -->|No| StoreNVS[Store handles to NVS]
+
+    StoreNVS --> CSIPCheck{Device is<br/>CSIP set member?}
+
+    CSIPCheck -->|No| Skip
+    CSIPCheck -->|Yes| PropagateCSIP[Store handles for all<br/>set members with same SIRK]
+
+    PropagateCSIP --> Success[Mark bas_discovered<br/>Notify success]
+    Skip --> Success
+
+    Failed --> End([End])
+    Success --> End

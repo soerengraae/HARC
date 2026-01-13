@@ -1,0 +1,37 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([Battery Read Callback]) --> CheckErr{Error<br/>occurred?}
+    
+    CheckErr -->|Yes| LogErr[Log error message]
+    CheckErr -->|No| CheckData{Data<br/>present?}
+    
+    LogErr --> Stop1([Return STOP])
+    
+    CheckData -->|No| LogComplete[Log read complete]
+    CheckData -->|Yes| CheckLen{Length<br/>== 1?}
+    
+    LogComplete --> Stop2([Return STOP])
+    
+    CheckLen -->|No| LogWarn[Log unexpected length]
+    CheckLen -->|Yes| Extract[Extract battery percentage<br/>from data]
+    
+    LogWarn --> Stop3([Return STOP])
+    
+    Extract --> Store[Store in ctx->bas_ctlr.battery_level]
+    
+    Store --> LogInfo[Log battery level]
+    
+    LogInfo --> UpdateDisplay[Update display with<br/>battery level]
+    
+    UpdateDisplay --> Complete[Mark BLE command complete]
+    
+    Complete --> Stop4([Return STOP])
+    
+    style Start fill:#e1f5e1
+    style Stop1 fill:#ffe1e1
+    style Stop2 fill:#fff4e1
+    style Stop3 fill:#ffe1e1
+    style Stop4 fill:#e1f5e1
+    style CheckErr fill:#fff4e1
+    style CheckData fill:#fff4e1
+    style CheckLen fill:#fff4e1

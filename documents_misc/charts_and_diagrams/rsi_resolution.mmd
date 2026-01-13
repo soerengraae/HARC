@@ -1,0 +1,20 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([RSI Resolution]) --> ReceiveRSI[Receive RSI from advertisement]
+    
+    ReceiveRSI --> ExtractPrand[Extract prand<br/>24-bit value]
+    
+    ExtractPrand --> UseSIRK[Use stored SIRK<br/>128-bit key]
+    
+    UseSIRK --> CalcHash["Calculate:<br/>hash_calc = sih(SIRK, prand)"]
+    
+    CalcHash --> Compare{hash_calc<br/>==<br/>hash_rx?}
+    
+    Compare -->|Yes| Match([RSI Resolved:<br/>Device is set member])
+    Compare -->|No| NoMatch([Not a set member])
+    
+    style Start fill:#e1f5e1
+    style Match fill:#e1f5e1
+    style NoMatch fill:#ffe1e1
+    style Compare fill:#fff4e1
+    style CalcHash fill:#e3f2fd

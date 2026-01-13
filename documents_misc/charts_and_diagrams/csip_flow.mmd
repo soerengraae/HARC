@@ -1,0 +1,37 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([CSIS Ready]) --> StoreSIRK[Store SIRK value]
+    
+    StoreSIRK --> StartScan[Start RSI scan]
+    
+    StartScan --> ScanAdv[Scan for RSI advertisements]
+    
+    ScanAdv --> AdvFound{RSI adv<br/>found?}
+    
+    AdvFound -->|No| Timeout{Scan<br/>timeout?}
+    AdvFound -->|Yes| ResolveRSI[Resolve RSI with SIRK]
+    
+    Timeout -->|Yes| Error([Discovery Failed])
+    Timeout -->|No| ScanAdv
+    
+    ResolveRSI --> RSIMatch{RSI<br/>matches?}
+    
+    RSIMatch -->|No| ScanAdv
+    RSIMatch -->|Yes| Connect2[Connect to matching device]
+    
+    Connect2 --> VerifyCSIS[Discover CSIS on second device]
+    
+    VerifyCSIS --> ReadSIRK2[Read SIRK characteristic]
+    
+    ReadSIRK2 --> CompareSIRK{SIRKs<br/>match?}
+    
+    CompareSIRK -->|No| Error
+    CompareSIRK -->|Yes| BothReady([Both Set Members Connected])
+    
+    style Start fill:#e1f5e1
+    style BothReady fill:#e1f5e1
+    style Error fill:#ffe1e1
+    style AdvFound fill:#fff4e1
+    style Timeout fill:#fff4e1
+    style RSIMatch fill:#fff4e1
+    style CompareSIRK fill:#fff4e1

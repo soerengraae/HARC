@@ -23,19 +23,22 @@ static uint8_t battery_read_cb(struct bt_conn *conn, uint8_t err,
 	if (err)
 	{
 		LOG_ERR("Battery level read failed (err %u) [DEVICE ID %d]", err, ctx->device_id);
-		return BT_GATT_ITER_STOP;
+		ble_cmd_complete(ctx->device_id, err);
+		return 0;
 	}
 
 	if (!data)
 	{
 		LOG_DBG("Battery level read complete [DEVICE ID %d]", ctx->device_id);
-		return BT_GATT_ITER_STOP;
+		ble_cmd_complete(ctx->device_id, -1);
+		return 0;
 	}
 
 	if (length != 1)
 	{
 		LOG_WRN("Unexpected battery level length: %u [DEVICE ID %d]", length, ctx->device_id);
-		return BT_GATT_ITER_STOP;
+		ble_cmd_complete(ctx->device_id, -2);
+		return 0;
 	}
 
 	ctx->bas_ctlr.battery_level = *(uint8_t *)data;
@@ -46,7 +49,7 @@ static uint8_t battery_read_cb(struct bt_conn *conn, uint8_t err,
 
 	ble_cmd_complete(ctx->device_id, 0);
 
-	return BT_GATT_ITER_STOP;
+	return 0;
 }
 
 /* Read parameters for battery level */

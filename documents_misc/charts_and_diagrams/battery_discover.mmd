@@ -1,0 +1,26 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([battery_discover]) --> CheckDiscovered{bas_discovered?}
+
+    CheckDiscovered -->|Yes| AlreadyDiscovered[LOG_DBG: Already discovered<br/>Return 0]
+    CheckDiscovered -->|No| ResetCache[Reset cache flag to false]
+
+    ResetCache --> LoadCache[Try to load cached handles<br/>bas_settings_load_handles]
+    LoadCache --> CacheResult{Load successful?}
+
+    CacheResult -->|Yes| SetHandles[Set battery service handles<br/>from cached values]
+    SetHandles --> SetDiscovered[Set bas_discovered = true<br/>Set handles_from_cache = true]
+    SetDiscovered --> NotifyDiscovered[Notify BAS discovered]
+    NotifyDiscovered --> CmdComplete[BLE command complete<br/>Return 0]
+
+    CacheResult -->|No| PrepareDiscovery[Prepare discovery params:<br/>- UUID: 0x180F<br/>- Type: PRIMARY<br/>- Range: 0x0001 to 0xFFFF]
+    PrepareDiscovery --> StartDiscovery[bt_gatt_discover]
+    StartDiscovery --> DiscoveryResult{Discovery<br/>started?}
+
+    DiscoveryResult -->|Error| DiscoveryFailed[LOG_ERR: Discovery failed<br/>Return error code]
+    DiscoveryResult -->|Success| ReturnSuccess[Return 0]
+
+    AlreadyDiscovered --> End([End])
+    CmdComplete --> End
+    DiscoveryFailed --> End
+    ReturnSuccess --> End

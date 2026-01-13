@@ -1,0 +1,37 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([SM_WAKE]) --> CheckWakeBtn{Wake button<br/>== PAIR_BTN?}
+    
+    CheckWakeBtn -->|Yes| ResetBtn[Reset buttons]
+    CheckWakeBtn -->|No| DetermineState[Call determine_state]
+    
+    ResetBtn --> ClearBonds[Clear all bonds]
+    ClearBonds --> FirstTime1[State = SM_FIRST_TIME_USE]
+    FirstTime1 --> End1([Break])
+    
+    DetermineState --> GetBonds[Get bonded devices collection]
+    GetBonds --> StorCount[Store bonded_devices_count]
+    StorCount --> CheckCount{Bonded<br/>device count?}
+    
+    CheckCount -->|0| FirstTime2[State = SM_FIRST_TIME_USE]
+    CheckCount -->|1 or 2| Bonded[State = SM_BONDED_DEVICES]
+    CheckCount -->|Other| LogErr[Log error:<br/>Invalid count]
+    
+    FirstTime2 --> End2([Return])
+    Bonded --> End3([Return])
+    
+    LogErr --> ClearAll[Clear all bonds]
+    ClearAll --> BackWake[State = SM_WAKE]
+    BackWake --> End4([Return])
+    
+    style Start fill:#e1f5e1
+    style End1 fill:#e1f5e1
+    style End2 fill:#e1f5e1
+    style End3 fill:#e1f5e1
+    style End4 fill:#fff4e1
+    style CheckWakeBtn fill:#fff4e1
+    style CheckCount fill:#fff4e1
+    style FirstTime1 fill:#e1f5ff
+    style FirstTime2 fill:#e1f5ff
+    style Bonded fill:#e1f5ff
+    style BackWake fill:#ffe1e1

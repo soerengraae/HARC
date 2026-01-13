@@ -1,0 +1,26 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([bt_gatt_discover called]) --> ServiceCB[discover_service_cb]
+
+    ServiceCB --> ServiceFound{Service<br/>found?}
+
+    ServiceFound -->|No| NotFound[Service not found<br/>Return STOP]
+    ServiceFound -->|Yes| StoreService[Store service handle range]
+
+    StoreService --> DiscoverChars[Start characteristic discovery<br/>bt_gatt_discover]
+
+    DiscoverChars --> CharCB[discover_char_cb<br/>called for each characteristic]
+
+    CharCB --> BattLevelFound{Battery Level<br/>characteristic<br/>found?}
+
+    BattLevelFound -->|Yes| StoreHandle[Store battery_level_handle]
+    BattLevelFound -->|No| Continue[Continue iteration]
+
+    StoreHandle --> Continue
+    Continue --> MoreChars{More<br/>characteristics?}
+
+    MoreChars -->|Yes| CharCB
+    MoreChars -->|No| Complete[Discovery complete callback<br/>Continue to Part 2]
+
+    NotFound --> End([End])
+    Complete --> End2([Continue to Part 2])

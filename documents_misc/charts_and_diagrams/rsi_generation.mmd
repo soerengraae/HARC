@@ -1,0 +1,17 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([RSI Generation]) --> InputPrand[Input: prand<br/>24-bit random value]
+    
+    InputPrand --> InputSIRK[Input: SIRK<br/>128-bit key]
+    
+    InputSIRK --> HashFunc["sih hash function<br/>hash = sih(SIRK, prand)"]
+    
+    HashFunc --> Extract[Extract 24-bit hash]
+    
+    Extract --> Combine["Combine: RSI = hash || prand"]
+    
+    Combine --> Complete([48-bit RSI])
+    
+    style Start fill:#e1f5e1
+    style Complete fill:#e1f5e1
+    style HashFunc fill:#e3f2fd
