@@ -1,0 +1,49 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([System Ready]) --> Wake[SM_WAKE]
+    
+    Wake --> CheckWake{Wake button<br/>and bonded<br/>device count?}
+    
+    CheckWake -->|PAIR button held<br/>OR 0 devices| FirstTime[SM_FIRST_TIME_USE]
+    CheckWake -->|1-2 bonded devices| Bonded[SM_BONDED_DEVICES]
+    CheckWake -->|Invalid count| ClearBonds[Clear all bonds]
+    
+    ClearBonds --> Wake
+    
+    FirstTime --> Scanning[Scanning for HIs<br/>CSIP discovery<br/>RSI scan and pairing]
+    
+    Scanning --> CheckPair{Pairing<br/>result?}
+    
+    CheckPair -->|Success<br/>1-2 devices| Bonded
+    CheckPair -->|Error/Timeout| Idle[SM_IDLE]
+    
+    Bonded --> Connect[Establishing connections<br/>Parallel service discovery<br/>BAS, VCP, HAS]
+    
+    Connect --> CheckServices{All services<br/>discovered?}
+    
+    CheckServices -->|Yes| Idle
+    CheckServices -->|Timeout| PowerOff[SM_POWER_OFF]
+    
+    Idle --> WaitEvent{Event received?}
+    
+    WaitEvent -->|Button events<br/>Volume, Preset| ProcessCmd[Process command]
+    WaitEvent -->|PAIR button| ClearForPair[Clear bonds]
+    WaitEvent -->|CLEAR BONDS button| Wake
+    WaitEvent -->|Timeout<br/>OR Power off| PowerOff
+    
+    ProcessCmd --> Idle
+    ClearForPair --> FirstTime
+    
+    PowerOff --> End([Device powered off])
+    
+    style Start fill:#e1f5e1
+    style End fill:#e1f5e1
+    style Wake fill:#e1f5ff
+    style FirstTime fill:#fff4e1
+    style Bonded fill:#ffe1f5
+    style Idle fill:#e1ffe1
+    style PowerOff fill:#ffe1e1
+    style CheckWake fill:#fff4e1
+    style CheckPair fill:#fff4e1
+    style CheckServices fill:#fff4e1
+    style WaitEvent fill:#fff4e1

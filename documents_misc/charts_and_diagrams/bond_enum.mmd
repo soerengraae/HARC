@@ -1,0 +1,28 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([enumerate_bonded_devices]) --> ValidateInput{collection<br/>pointer valid?}
+    
+    ValidateInput -->|No| ReturnErr([Return -EINVAL])
+    ValidateInput -->|Yes| ClearMem[Clear collection memory<br/>memset to zero]
+    
+    ClearMem --> Iterate[Iterate through all bonded devices<br/>bt_foreach_bond]
+    
+    Iterate --> CheckCount{Collection<br/>count > 1?}
+    
+    CheckCount -->|No| LogResult[Log enumeration result]
+    CheckCount -->|Yes| BubbleSort[Sort devices by set_rank<br/>using bubble sort]
+    
+    BubbleSort --> SortLogic[Sort logic:<br/>• Set members before non-members<br/>• Within set members: by rank ascending]
+    
+    SortLogic --> LogSorted[Log sorted device list]
+    
+    LogSorted --> LogResult
+    
+    LogResult --> ReturnOk([Return 0])
+    
+    style Start fill:#e1f5e1
+    style ReturnErr fill:#ffe1e1
+    style ReturnOk fill:#e1f5e1
+    style ValidateInput fill:#fff4e1
+    style CheckCount fill:#fff4e1
+    style BubbleSort fill:#e1f5ff

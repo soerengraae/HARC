@@ -1,0 +1,50 @@
+%%{init: {'theme': 'neutral'}}%%
+flowchart TB
+    subgraph Producers["Command Sources"]
+        direction LR
+        APP["App Controller"]
+        BTN["Button Handler"]
+        ERR["Error Recovery"]
+    end
+
+    subgraph QueueSystem["Per-Device Command Queues"]
+        direction LR
+        subgraph Dev0["Device 0 (Left HA)"]
+            Q0[/"Queue 0"/]
+            T0(["Thread 0"])
+        end
+        subgraph Dev1["Device 1 (Right HA)"]
+            Q1[/"Queue 1"/]
+            T1(["Thread 1"])
+        end
+    end
+
+    DISPATCH{{"ble_cmd_execute()<br>switch(cmd->type)"}}
+
+    subgraph Handlers["Profile Command Handlers"]
+        direction LR
+        VCP["vcp_cmd_*()"]
+        HAS["has_cmd_*()"]
+        BAS["battery_*()"]
+        CSIP["csip_cmd_*()"]
+    end
+
+    STACK[["Zephyr BLE Stack<br>(GATT Operations)"]]
+
+    COMPLETE["ble_cmd_complete()"]
+
+    %% Flow
+    APP & BTN & ERR -->|"ble_cmd_enqueue()"| Q0 & Q1
+
+    Q0 -->|"k_sem_take()"| T0
+    Q1 -->|"k_sem_take()"| T1
+
+    T0 & T1 --> DISPATCH
+
+    DISPATCH --> VCP & HAS & BAS & CSIP
+
+    VCP & HAS & BAS & CSIP --> STACK
+
+    STACK -.->|"async callback"| COMPLETE
+
+    COMPLETE -.->|"process next"| Q0 & Q1

@@ -1,0 +1,26 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([devices_manager_clear_all_bonds]) --> LogWarn[Log warning message]
+    
+    LogWarn --> LoopDevices[Loop through all<br/>bonded devices]
+    
+    LoopDevices --> ClearCache[Clear cached handles<br/>for each profile:<br/>HAS, VCP, CSIP, BAS]
+    
+    ClearCache --> UnpairDevice[Unpair device from<br/>Bluetooth stack]
+    
+    UnpairDevice --> NextDevice{More<br/>devices?}
+    
+    NextDevice -->|Yes| ClearCache
+    NextDevice -->|No| SaveNVS[Save settings to NVS]
+    
+    SaveNVS --> ClearRAM[Clear bonds from RAM]
+    
+    ClearRAM --> Notify[Notify app controller]
+    
+    Notify --> End([Return])
+    
+    style Start fill:#e1f5e1
+    style End fill:#e1f5e1
+    style NextDevice fill:#fff4e1
+    style ClearCache fill:#ffe1e1
+    style UnpairDevice fill:#ffe1e1

@@ -1,0 +1,29 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([enumerate_bonds_cb called]) --> GetCollection[Get bond_collection from user_data]
+    
+    GetCollection --> GetEntry["Get entry pointer:<br/>collection->devices#91;collection->count#93;"]
+    
+    GetEntry --> CopyAddr[Copy Bluetooth address<br/>to entry->addr]
+    
+    CopyAddr --> InitFlags[Initialize:<br/>entry->has_sirk = false<br/>entry->is_set_member = false]
+    
+    InitFlags --> InitRank[Initialize:<br/>rank = 0]
+    
+    InitRank --> LoadSIRK[Attempt to load CSIP metadata<br/>from NVS]
+    
+    LoadSIRK --> CheckLoad{Load<br/>successful?}
+    
+    CheckLoad -->|Yes<br/>err == 0| SetFlags[Set flags:<br/>entry->has_sirk = true<br/>entry->is_set_member = true]
+    CheckLoad -->|No| IncCount[Increment collection->count]
+    
+    SetFlags --> SetRank[Store rank:<br/>entry->set_rank = rank]
+    
+    SetRank --> IncCount
+    
+    IncCount --> End([Return])
+    
+    style Start fill:#e1f5e1
+    style End fill:#e1f5e1
+    style CheckLoad fill:#fff4e1
+    style LoadSIRK fill:#e1f5ff

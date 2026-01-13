@@ -9,13 +9,12 @@
 #include <zephyr/bluetooth/conn.h>
 #include <zephyr/settings/settings.h>
 
-struct bonded_device_entry
-{
-    bt_addr_le_t addr;
-    uint8_t sirk[CSIP_SIRK_SIZE];
-    bool has_sirk;
-    uint8_t set_rank;
-    bool is_set_member;
+struct bonded_device_entry {
+    bt_addr_le_t addr; /* Bluetooth address */
+    uint8_t sirk[CSIP_SIRK_SIZE]; /* Set Identity Resolving Key */
+    bool has_sirk; /* True if SIRK was loaded */
+    uint8_t set_rank; /* Position in set (1=left, 2=right) */
+    bool is_set_member; /* True if part of coordinated set */
 };
 
 struct bond_collection
@@ -65,19 +64,18 @@ enum connection_state
     CONN_STATE_TRUSTING,
 };
 
-struct device_context
-{
-    uint8_t device_id;
-    struct bt_conn *conn;
-    enum connection_state state;
-    struct device_info info;
-    struct bt_vcp_ctlr vcp_ctlr;
-    struct bt_has_ctlr has_ctlr;
-    struct bt_bas_ctlr bas_ctlr;
-    struct ble_cmd *current_ble_cmd;
+struct device_context {
+    uint8_t device_id; /* 0 = left/primary, 1 = right/secondary */
+    struct bt_conn *conn; /* Zephyr connection handle */
+    enum connection_state state; /* Current connection state */
+    struct device_info info; /* Address and discovery flags */
+    struct bt_vcp_ctlr vcp_ctlr; /* Volume control state */
+    struct bt_has_ctlr has_ctlr; /* Hearing access state */
+    struct bt_bas_ctlr bas_ctlr; /* Battery service state */
+    struct ble_cmd *current_ble_cmd; /* Active command for this device */
 };
 
-extern struct device_context *device_ctx;
+extern struct device_context *device_ctx;  /* Holds the 2 hearing aid device contexts */
 
 void devices_manager_clear_all_bonds(void);
 void devices_manager_update_bonded_devices_collection(void);

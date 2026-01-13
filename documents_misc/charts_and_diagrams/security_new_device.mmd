@@ -1,0 +1,26 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([New Device Connected]) --> SetConn[State: CONNECTED]
+    SetConn --> ReqSec[Request Security<br/>bt_conn_set_security]
+    ReqSec --> SetPair[State: PAIRING]
+    SetPair --> SecChange{Security Changed<br/>Callback}
+    SecChange -->|Level >= L2| Encrypt[Encryption Established<br/>at Level 2]
+    SecChange -->|Error| SecFail[Security Failed]
+    Encrypt --> WaitPair[Wait for Pairing<br/>Complete Callback]
+    WaitPair --> PairComp{Pairing Complete<br/>Bonded?}
+    PairComp -->|Yes| SetPaired[State: PAIRED]
+    PairComp -->|No| Error[Pairing Failed<br/>No Bond Created]
+    SetPaired --> SaveBond[Save bond to NVS<br/>settings_save]
+    SaveBond --> UpdateCollection[Update bonded devices<br/>collection]
+    UpdateCollection --> Ready[Notify Device Ready<br/>State: READY]
+    Error --> RetryPair[Retry Security Request]
+    SecFail --> RetryPair
+    RetryPair --> ReqSec
+    
+    style Start fill:#e1f5ff
+    style Ready fill:#e1ffe1
+    style Error fill:#ffe1e1
+    style SecFail fill:#ffe1e1
+    style SecChange fill:#fff4e1
+    style PairComp fill:#fff4e1
+    style SaveBond fill:#ffe1f5

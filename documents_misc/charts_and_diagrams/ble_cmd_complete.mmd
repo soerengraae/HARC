@@ -1,0 +1,54 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([ble_cmd_complete]) --> CancelTimeout[Cancel command timeout work]
+    
+    CancelTimeout --> CheckCmd{Current command<br/>exists?}
+    
+    CheckCmd -->|No| LogWarn[Log warning:<br/>No current command]
+    LogWarn --> Return1([Return])
+    
+    CheckCmd -->|Yes| CheckErr{Error<br/>occurred?}
+    
+    CheckErr -->|Yes| LogErr[Log command failed]
+    LogErr --> CheckSecurity{Command type:<br/>REQUEST_SECURITY<br/>AND err == -1?}
+    
+    CheckSecurity -->|Yes| RetrySecurity[Retry security request]
+    CheckSecurity -->|No| CheckVCP{Command type:<br/>VCP command<br/>0x2-0x8?}
+    
+    CheckVCP -->|No| FreeCmd
+    CheckVCP -->|Yes| CheckErrCode{Error code?}
+    
+    CheckErrCode -->|0x0F<br/>Insufficient Auth| Reconnect[Log error and<br/>establish trusted bond]
+    CheckErrCode -->|0x80<br/>Invalid Counter| ReadState[Log error and<br/>read VCP state]
+    CheckErrCode -->|Other| FreeCmd
+    
+    RetrySecurity --> FreeCmd
+    Reconnect --> FreeCmd
+    ReadState --> FreeCmd
+    
+    CheckErr -->|No| LogSuccess[Log command success]
+    LogSuccess --> CheckVCPDisc{Command type:<br/>VCP_DISCOVER?}
+    
+    CheckVCPDisc -->|Yes| QueueRead[Queue VCP state read]
+    CheckVCPDisc -->|No| FreeCmd
+    
+    QueueRead --> FreeCmd[Free current command<br/>Set current_ble_cmd = NULL<br/>Clear in_progress flag]
+    
+    FreeCmd --> CheckErrAgain{Error<br/>occurred?}
+    
+    CheckErrAgain -->|Yes| Return2([Return])
+    CheckErrAgain -->|No| ProcessNext[Process next command<br/>in queue]
+    
+    ProcessNext --> Return3([Return])
+    
+    style Start fill:#e1f5e1
+    style Return1 fill:#fff4e1
+    style Return2 fill:#ffe1e1
+    style Return3 fill:#e1f5e1
+    style CheckCmd fill:#fff4e1
+    style CheckErr fill:#fff4e1
+    style CheckSecurity fill:#fff4e1
+    style CheckVCP fill:#fff4e1
+    style CheckErrCode fill:#fff4e1
+    style CheckVCPDisc fill:#fff4e1
+    style CheckErrAgain fill:#fff4e1

@@ -100,7 +100,6 @@ static int enumerate_bonded_devices(struct bond_collection *collection)
 	bt_foreach_bond(BT_ID_DEFAULT, enumerate_bonds_cb, collection);
 
 	// Sort devices by set_rank to ensure consistent device_id mapping
-	// This is critical for HAS handle caching to work correctly across reboots
 	if (collection->count > 1) {
 		for (uint8_t i = 0; i < collection->count - 1; i++) {
 			for (uint8_t j = i + 1; j < collection->count; j++) {

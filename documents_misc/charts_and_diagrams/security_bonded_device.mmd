@@ -1,0 +1,25 @@
+%%{init: {'theme':'default'}}%%
+flowchart TD
+    Start([establish_trusted_bond<br/>called]) --> SetTrust[State: TRUSTING]
+    SetTrust --> CheckConn{Device<br/>connected?}
+    CheckConn -->|Yes| Disconnect[Disconnect Device]
+    CheckConn -->|No| Schedule[Schedule Connection]
+    Disconnect --> Schedule
+    Schedule --> Reconnect[Reconnect to<br/>Bonded Device Address]
+    Reconnect --> Connect[Device Connected]
+    Connect --> SetBond[State: BONDED]
+    SetBond --> ReqSec[Request Security<br/>bt_conn_set_security]
+    ReqSec --> SecChange{Security Changed<br/>Callback}
+    SecChange -->|Level >= L2| Encrypt[Encryption Re-established<br/>at Level 2]
+    SecChange -->|Error| SecFail[Security Failed]
+    Encrypt --> CopyAddr[Copy device address<br/>to context]
+    CopyAddr --> Ready[Notify Device Ready<br/>State: READY]
+    SecFail --> Retry[Retry Security Request]
+    Retry --> ReqSec
+    
+    style Start fill:#e1f5ff
+    style Ready fill:#e1ffe1
+    style SecFail fill:#ffe1e1
+    style SecChange fill:#fff4e1
+    style CheckConn fill:#fff4e1
+    style SetTrust fill:#ffe1f5
